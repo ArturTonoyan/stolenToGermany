@@ -11,8 +11,6 @@ interface SearchPageProps {}
 const SearchPage: React.FC<SearchPageProps> = () => {
   const store = useSelector((state: RootState) => state.peopleSlice);
 
-  console.log("store", store);
-
   const [inpValue, setInpValue] = useState<string>("");
 
   const funOnChange = (text: string): void => {

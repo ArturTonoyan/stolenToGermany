@@ -1,18 +1,26 @@
 import React from "react";
-import "./styles/App.module.scss";
+import styles from "./styles/App.module.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 function App() {
   return (
     <BrowserRouter>
-      <main className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </main>
+      <Provider store={store}>
+        <main className={styles.App}>
+          <Header />
+          <div className={styles.mainpage}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/SearchPage" element={<SearchPage />} />
+            </Routes>
+          </div>
+        </main>
+      </Provider>
     </BrowserRouter>
   );
 }

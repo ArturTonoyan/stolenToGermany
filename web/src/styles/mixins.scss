@@ -1,43 +1,60 @@
+@import "./colors.scss";
+
 @mixin Button(
+  $width: 277px,
   $paddingTB: 10px,
   $paddingLR: 20px,
-  $bgColor: #007bff,
+  $bgColor: var(--blue1),
   $textColor: #fff,
-  $borderradius: 8px
+  $borderradius: 0px,
+  $fs: 30px,
+  $fw: 300
 ) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: $bgColor;
   padding: $paddingTB $paddingLR;
-  display: flex;
   outline: none;
   color: $textColor;
   border-radius: $borderradius;
   border: none;
-  width: auto;
+  width: $width;
+  font-size: $fs;
+  font-weight: $fw;
+
   &:hover {
-    opacity: 0.8;
+    background-color: var(--blue2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  &:active {
+    background-color: var(--blue3);
     cursor: pointer;
     transition: all 0.15s;
   }
 }
 
 @mixin Input(
-  $width: 100px,
-  $border-radius: 8px,
+  $width: 600px,
+  $border-radius: 0px,
   $bgColor: #fff,
-  $paddingTB: 15px,
-  $paddingLR: 15px,
-  $color: #7e7e7e
+  $paddingTB: 16.5px,
+  $paddingLR: 10px,
+  $color: #828282
 ) {
   width: $width;
   outline: none;
   background-color: #fff;
   color: $color;
   padding: $paddingTB $paddingLR;
-  border: 1px solid #adadad;
   border-radius: $border-radius;
+  box-sizing: border-box;
   &::placeholder {
     color: #afbbbd;
   }
+  font-size: 20px;
+  font-weight: 400;
 }
 
 @mixin Ul() {

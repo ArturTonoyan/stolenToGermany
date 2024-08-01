@@ -1,0 +1,39 @@
+@import "./../../styles/mixins.scss";
+
+.Header {
+  width: 100%;
+  .headerInner {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo {
+    left: 48px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    // margin-left: 48px;
+    .logoText {
+      display: flex;
+      flex-direction: column;
+      padding-left: 16px;
+    }
+  }
+
+  ul {
+    @include Ul;
+    margin: 0 auto;
+    li {
+      margin-right: 77px;
+      cursor: pointer;
+    }
+    li:last-child {
+      margin: 0;
+    }
+  }
+}

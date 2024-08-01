@@ -1,0 +1,50 @@
+@mixin Button(
+  $paddingTB: 10px,
+  $paddingLR: 20px,
+  $bgColor: #007bff,
+  $textColor: #fff,
+  $borderradius: 8px
+) {
+  background-color: $bgColor;
+  padding: $paddingTB $paddingLR;
+  display: flex;
+  outline: none;
+  color: $textColor;
+  border-radius: $borderradius;
+  border: none;
+  width: auto;
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+}
+
+@mixin Input(
+  $width: 100px,
+  $border-radius: 8px,
+  $bgColor: #fff,
+  $paddingTB: 15px,
+  $paddingLR: 15px,
+  $color: #7e7e7e
+) {
+  width: $width;
+  outline: none;
+  background-color: #fff;
+  color: $color;
+  padding: $paddingTB $paddingLR;
+  border: 1px solid #adadad;
+  border-radius: $border-radius;
+  &::placeholder {
+    color: #afbbbd;
+  }
+}
+
+@mixin Ul() {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

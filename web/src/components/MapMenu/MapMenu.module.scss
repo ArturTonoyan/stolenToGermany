@@ -1,0 +1,69 @@
+@import "./../../styles/mixins.scss";
+@import "./../../styles/colors.scss";
+
+.MapMenu {
+  width: 30vw;
+  height: 80vh;
+  background-color: #fff;
+  padding: 24px 32px;
+  box-sizing: border-box;
+
+  .head {
+    border-bottom: 1px solid var(--border2);
+    flex-grow: 1;
+    h2 {
+      margin: 0;
+      padding: 0;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 35px;
+    }
+    .adress {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--border);
+    }
+    .info {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 27px;
+    }
+  }
+  .peopleList {
+    @include Ul();
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    overflow-y: auto;
+    max-height: 50%;
+    @include scrollStyle;
+    justify-content: start;
+
+    li:hover {
+      cursor: pointer;
+      color: var(--blue1);
+      transition: all 0.15s ease;
+    }
+
+    li:active {
+      color: var(--blue2);
+    }
+    li p {
+      margin: 0;
+      padding: 0;
+    }
+    p:nth-child(1) {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 25px;
+    }
+    p:nth-child(2) {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 27px;
+      color: var(--border);
+      margin-bottom: 16px;
+    }
+  }
+}

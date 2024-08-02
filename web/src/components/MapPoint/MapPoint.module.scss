@@ -1,0 +1,21 @@
+@import "./../../styles/mixins.scss";
+
+// .MapPoint {
+// }
+.balloon {
+  padding: 12px;
+  h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 29.33px;
+  }
+  button {
+    margin-top: 16px;
+    @include Button();
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 29.33px;
+  }
+}

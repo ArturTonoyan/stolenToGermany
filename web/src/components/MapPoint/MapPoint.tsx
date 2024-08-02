@@ -1,6 +1,13 @@
 import { Placemark } from "react-yandex-map";
 import styles from "./MapPoint.module.scss";
 function MapPoint(props: any) {
+  const getBalun = () => {
+    return `<div class=${styles.balloon}>
+        <h3>Трудовые лагеря в Берлине</h3>
+        <button>Узнать больше</button>
+      </div>`;
+  };
+
   return (
     <div className={styles.MapPoint}>
       <Placemark
@@ -8,14 +15,7 @@ function MapPoint(props: any) {
         modules={["geoObject.addon.balloon"]}
         defaultGeometry={props.defaultGeometry}
         properties={{
-          balloonContentBody: `<div class="content__body" id=${1} onClick=${true} >
-        <div  class="content__text">${1}</div>
-
-        <div class="content__prise">
-
-        </div>
-    </div>
-  `,
+          balloonContentBody: getBalun(),
         }}
         options={{
           iconLayout: "default#image",

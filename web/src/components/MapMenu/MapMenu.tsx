@@ -3,8 +3,11 @@ import styles from "./MapMenu.module.scss";
 function MapMenu() {
   return (
     <div className={styles.MapMenu}>
+      <div className={styles.openButton}>
+        <img src="./img/arrow.svg" alt="<" />
+      </div>
       <div className={styles.head}>
-        <h2>Трудовые лагеря в Берлине</h2>
+        <h2>Трудовые лагеря в Берлине</h2>
         <p className={styles.adress}>Адрес: Берлин, аллея Ландсбергер, 370</p>
         <p className={styles.info}>
           Lorem ipsum dolor sit amet consectetur. Quam adipiscing tempor congue

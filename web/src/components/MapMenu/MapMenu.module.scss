@@ -7,7 +7,18 @@
   background-color: #fff;
   padding: 24px 32px;
   box-sizing: border-box;
-
+  .openButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #fff;
+    left: -50px;
+    top: 0;
+    width: 38px;
+    height: 58px;
+    cursor: pointer;
+  }
   .head {
     border-bottom: 1px solid var(--border2);
     flex-grow: 1;

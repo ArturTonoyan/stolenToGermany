@@ -1,23 +1,25 @@
+import { useSelector } from "react-redux";
 import styles from "./MapMenu.module.scss";
+import { RootState } from "../../store/store";
 
-function MapMenu() {
+function MapMenu(props: any) {
+  const store = useSelector((state: RootState) => state.campsSlice);
+  const pointData = store.camps.find((el) => el.id === store.selectedPoint.id);
+
+  console.log(store.camps);
   return (
     <div className={styles.MapMenu}>
-      <div className={styles.openButton}>
-        <img src="./img/arrow.svg" alt="<" />
+      <div onClick={props.funShowMenu} className={styles.openButton}>
+        <img
+          style={!props.menuOpen ? { transform: "rotate(-180deg)" } : {}}
+          src="./img/arrow.svg"
+          alt="<"
+        />
       </div>
       <div className={styles.head}>
-        <h2>Трудовые лагеря в Берлине</h2>
-        <p className={styles.adress}>Адрес: Берлин, аллея Ландсбергер, 370</p>
-        <p className={styles.info}>
-          Lorem ipsum dolor sit amet consectetur. Quam adipiscing tempor congue
-          massa. Tellus ut erat felis quis nisl eget volutpat. Integer viverra
-          orci id sed. Massa pretium cursus vitae sapien ac varius feugiat. Orci
-          imperdiet commodo a amet ut. Nunc tellus sit pharetra gravida
-          ultricies morbi tortor. Vel commodo aliquam urna nulla. Urna nulla a
-          sollicitudin duis neque. Etiam interdum amet tellus convallis ut.
-          Augue vel suspendisse laoreet dolor.
-        </p>
+        <h2>{pointData?.name}</h2>
+        <p className={styles.adress}>{pointData?.address}</p>
+        <p className={styles.info}>{pointData?.info}</p>
       </div>
 
       <ul className={styles.peopleList}>

@@ -7,7 +7,6 @@ import { RootState } from "../../store/store";
 
 function MapPointList() {
   const store = useSelector((state: RootState) => state.campsSlice);
-  console.log("store", store.camps);
   const dispacth = useDispatch();
   useEffect(() => {
     dispacth(apiGetCamps());
@@ -16,7 +15,7 @@ function MapPointList() {
   return (
     <div className={styles.MapPointList}>
       {store.camps.map((item) => (
-        <MapPoint key={item.id} defaultGeometry={item.coordinates} />
+        <MapPoint key={item.id} item={item} />
       ))}
     </div>
   );

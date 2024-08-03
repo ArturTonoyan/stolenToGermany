@@ -36,7 +36,7 @@ const germanyLabourCamps: Camps[] = [
     name: "Arbeitslager Buchenwald",
     address: "Gedenkstätte Buchenwald, 99427 Веймар, Германия",
     info: "Нацистский концентрационный лагерь, основанный в 1937 году. Это был один из крупнейших концентрационных лагерей в Германии и местом многочисленных зверств.",
-    coordinates: [51.0023, 11.2312],
+    coordinates: [52.516363, 13.378906],
   },
   {
     id: "3",

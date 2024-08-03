@@ -12,10 +12,6 @@ function MapModule() {
   const dispatch = useDispatch();
   const funShowMenu = (): void => {
     dispatch(setModalOpen({ action: !store.selectedPoint.menuOpen }));
-
-    // document.body.style.overflow = !store.selectedPoint.menuOpen
-    //   ? "hidden"
-    //   : "auto";
   };
 
   return (
@@ -24,7 +20,7 @@ function MapModule() {
         <MapComponent />
         <div
           className={
-            store.selectedPoint.menuOpen ? styles.menuactive : styles.menu
+            !store.selectedPoint.menuOpen ? styles.menuactive : styles.menu
           }
         >
           <MapMenu

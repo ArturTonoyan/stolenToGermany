@@ -18,8 +18,14 @@ function Header() {
           <li className={hrefName === "" ? styles.active : ""}>
             <Link to="/">Главная</Link>
           </li>
-          <li className={hrefName === "SearchPage" ? styles.active : ""}>
-            <Link to="SearchPage">Поиск</Link>
+          <li
+            className={
+              hrefName === "SearchPage" || hrefName === "HumanProfile"
+                ? styles.active
+                : ""
+            }
+          >
+            <Link to="SearchPage/SearchModule">Поиск</Link>
           </li>
           <li className={hrefName === "MapPage" ? styles.active : ""}>
             <Link to="MapPage">Крата</Link>

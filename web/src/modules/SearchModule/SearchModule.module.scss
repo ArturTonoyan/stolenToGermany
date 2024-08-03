@@ -1,0 +1,34 @@
+@import "./../../styles/mixins.scss";
+
+.SearchModule {
+  .topMenu {
+    display: flex;
+    flex-direction: row;
+    button {
+      @include Button();
+      width: 277px;
+
+      margin-left: 32px;
+    }
+  }
+  .search {
+    width: 47vw;
+    input {
+      display: flex;
+      width: 100%;
+      border: none;
+    }
+  }
+
+  .container {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  a {
+    outline: none;
+    text-decoration: none;
+    color: #000;
+  }
+}

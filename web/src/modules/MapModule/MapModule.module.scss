@@ -1,0 +1,17 @@
+.MapModule {
+  padding: 0;
+  margin: 0;
+
+  .menu {
+    position: absolute;
+    right: 48px;
+    z-index: 11;
+    transition: all 0.15s ease;
+  }
+  .menuactive {
+    position: absolute;
+    right: -30%;
+    z-index: 11;
+    transition: all 0.15s ease;
+  }
+}

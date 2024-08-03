@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
 import Logo from "../Logo/Logo";
 import { Link, useLocation } from "react-router-dom";
 
 function Header() {
   const { pathname } = useLocation();
-  const [hrefName, setHrefName] = React.useState("");
-  React.useEffect(() => {
+  const [hrefName, setHrefName] = useState("");
+  useEffect(() => {
     setHrefName(pathname.split("/").pop() || "");
   }, [pathname]);
 

@@ -1,35 +1,12 @@
-.Slider{
+.Slider {
   top: -200px;
   width: 1200px;
   height: 1200px;
   left: 1150px;
   position: absolute;
-  img{
+  img {
     width: 160px;
     height: 160px;
+    transform-origin: center center;
   }
-  animation: 60s linear infinite rotate;
 }
-
-
-@keyframes rotate {
-    0% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes rotateImg {
-    from {
-      transform: rotate(0deg);
-    }
-  
-    to {
-      transform: rotate(360deg);
-    }
-  }

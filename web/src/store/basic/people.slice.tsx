@@ -6,6 +6,7 @@ interface Person {
   address: string;
   post: string;
   birthData: string;
+  campsId: string;
 }
 
 export interface PeopleState {
@@ -28,6 +29,7 @@ const peopleSlice = createSlice({
           address: "г. Таганрог",
           post: "Рабочий",
           birthData: "1908",
+          campsId: "1",
         },
         {
           id: 2,
@@ -35,6 +37,7 @@ const peopleSlice = createSlice({
           address: "г. Москва",
           post: "Менеджер",
           birthData: "1985",
+          campsId: "2",
         },
         {
           id: 3,
@@ -42,6 +45,7 @@ const peopleSlice = createSlice({
           address: "г. Санкт-Петербург",
           post: "Бухгалтер",
           birthData: "1992",
+          campsId: "3",
         },
         {
           id: 4,
@@ -49,6 +53,7 @@ const peopleSlice = createSlice({
           address: "г. Новосибирск",
           post: "Инженер",
           birthData: "1975",
+          campsId: "4",
         },
         {
           id: 5,
@@ -56,6 +61,7 @@ const peopleSlice = createSlice({
           address: "г. Екатеринбург",
           post: "Администратор",
           birthData: "1988",
+          campsId: "3",
         },
         {
           id: 6,
@@ -63,6 +69,7 @@ const peopleSlice = createSlice({
           address: "г. Краснодар",
           post: "Водитель",
           birthData: "1982",
+          campsId: "2",
         },
         {
           id: 7,
@@ -70,6 +77,7 @@ const peopleSlice = createSlice({
           address: "г. Ростов-на-Дону",
           post: "Врач",
           birthData: "1990",
+          campsId: "1",
         },
         {
           id: 8,
@@ -77,6 +85,7 @@ const peopleSlice = createSlice({
           address: "г. Нижний Новгород",
           post: "Программист",
           birthData: "1987",
+          campsId: "1",
         },
         {
           id: 9,
@@ -84,6 +93,7 @@ const peopleSlice = createSlice({
           address: "г. Казань",
           post: "Преподаватель",
           birthData: "1979",
+          campsId: "1",
         },
         {
           id: 10,
@@ -91,6 +101,7 @@ const peopleSlice = createSlice({
           address: "г. Волгоград",
           post: "Менеджер",
           birthData: "1983",
+          campsId: "1",
         },
         {
           id: 11,
@@ -98,6 +109,7 @@ const peopleSlice = createSlice({
           address: "г. Уфа",
           post: "Бухгалтер",
           birthData: "1991",
+          campsId: "1",
         },
         {
           id: 12,
@@ -105,6 +117,7 @@ const peopleSlice = createSlice({
           address: "г. Пермь",
           post: "Инженер",
           birthData: "1978",
+          campsId: "1",
         },
         {
           id: 13,
@@ -112,6 +125,7 @@ const peopleSlice = createSlice({
           address: "г. Воронеж",
           post: "Администратор",
           birthData: "1989",
+          campsId: "1",
         },
         {
           id: 14,
@@ -119,6 +133,7 @@ const peopleSlice = createSlice({
           address: "г. Самара",
           post: "Водитель",
           birthData: "1980",
+          campsId: "1",
         },
         {
           id: 15,
@@ -126,6 +141,7 @@ const peopleSlice = createSlice({
           address: "г. Челябинск",
           post: "Врач",
           birthData: "1993",
+          campsId: "1",
         },
       ];
     },

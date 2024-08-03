@@ -7,6 +7,7 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import MapPage from "./pages/MapPage/MapPage";
+import HumanProfilePage from "./pages/HumanProfilePage/HumanProfilePage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/SearchPage" element={<SearchPage />} />
+              <Route path="/HumanProfilePage" element={<HumanProfilePage />} />
               <Route path="/MapPage" element={<MapPage />} />
             </Routes>
           </div>

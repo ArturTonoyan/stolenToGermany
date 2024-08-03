@@ -5,6 +5,7 @@ import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { apiGetPeople } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
+import { Link } from "react-router-dom";
 
 interface SearchPageProps {}
 
@@ -39,7 +40,9 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       </div>
       <div className={styles.container}>
         {store.people.map((item) => (
-          <Card key={item.id} />
+          <Link to="./../HumanProfilePage">
+            <Card key={item.id} item={item} />
+          </Link>
         ))}
       </div>
     </div>

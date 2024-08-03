@@ -1,12 +1,12 @@
 import { Placemark } from "react-yandex-map";
 import styles from "./MapPoint.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setModalOpen, setSelectedPoint } from "../../store/basic/camps.slice";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 
 function MapPoint(props: any) {
   const dispatch = useDispatch();
-  const store = useSelector((state: RootState) => state.campsSlice);
+  // const store = useSelector((state: RootState) => state.campsSlice);
 
   const funClickPoint = () => {
     const id = props.item.id || "";

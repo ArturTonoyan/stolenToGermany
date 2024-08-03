@@ -6,6 +6,8 @@
     flex-direction: row;
     button {
       @include Button();
+      width: 277px;
+
       margin-left: 32px;
     }
   }

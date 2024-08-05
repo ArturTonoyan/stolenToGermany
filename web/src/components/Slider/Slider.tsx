@@ -27,7 +27,7 @@ const Slider = () => {
         console.log('indexISPause', index);
         setIndex((prevIndex) => (prevIndex + 1) % images.length);
       }
-    }, 2000); // Rotate every 2 seconds
+    }, 3000); // Rotate every 2 seconds
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -63,11 +63,11 @@ const Slider = () => {
               style={{
                 position: "absolute",
                 transition: "transform 0.5s ease, width 0.5s ease, height 0.5s ease",
-                left: `${50 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)}%`,
-                top: `${50 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)}%`,
+                left: `${41.5 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)}%`,
+                top: `${41.5 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)}%`,
                 transform: `rotate(${angle}deg)`,
-                width: isActive ? "200px" : "160px",
-                height: isActive ? "200px" : "160px",
+                width: isActive ? "190px" : "160px",
+                height: isActive ? "190px" : "160px",
               }}
             />
           );

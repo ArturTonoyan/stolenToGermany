@@ -46,6 +46,11 @@
     }
     .footer__mesagers{
       img{
+        transition: 0.1s linear all;
+        &:hover{
+          cursor: pointer;
+          opacity: 0.8;
+        }
         margin: 0px 10px;
       }
     }

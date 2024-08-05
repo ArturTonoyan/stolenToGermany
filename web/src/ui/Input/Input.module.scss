@@ -1,8 +1,11 @@
 @import "./../../styles/mixins.scss";
+@import "./../../styles/colors.scss";
 .Input {
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #adadad;
+  background-color: var(--background-body);
+  width: 949px;
   .input {
     @include Input();
   }

@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiGetPeople } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
+import Form from "../../components/Form/Form";
+import { openClodeAction } from "../../store/basic/action.slice";
 
 interface SearchModuleProps {}
 
 const SearchModule: React.FC<SearchModuleProps> = () => {
   const store = useSelector((state: RootState) => state.peopleSlice);
+  const isActionOpen = useSelector((state: RootState) => state.actionSlice.action);
 
   const [inpValue, setInpValue] = useState<string>("");
 
@@ -23,21 +26,28 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     dispacth(apiGetPeople());
   }, []);
 
+
   return (
     <div className={styles.SearchModule}>
-      <div className={styles.topMenu}>
-        <div className={styles.search}>
-          <Input
-            type="text"
-            placeholder={"Фамилия, Имя, Отчество, год рождения"}
-            value={inpValue}
-            funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-              funOnChange(e.target.value)
-            }
-          />
+    
+        <div className={styles.topMenu}>
+          <div className={styles.search}>
+            <Input
+              type="text"
+              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              value={inpValue}
+              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+                funOnChange(e.target.value)
+              }
+            />
+          </div>
+          {!isActionOpen &&<button>НАЙТИ</button>}
         </div>
-        <button>НАЙТИ</button>
-      </div>
+      {isActionOpen &&
+        <div className={styles.filter}>
+          <Form/>
+        </div>
+      }
       <div className={styles.container}>
         {store.people.map((item) => (
           <Link to="HumanProfile">

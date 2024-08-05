@@ -10,6 +10,10 @@ function Header() {
     setHrefName(pathname.split("/").pop() || "");
   }, [pathname]);
 
+  const handleLinkClick = () => {
+    window.scrollTo({ top: 1020, behavior: 'smooth' }); // Прокрутка страницы на 500px от верха с плавным эффектом
+  };
+
   return (
     <header className={styles.Header}>
       <div className={styles.headerInner}>
@@ -31,7 +35,7 @@ function Header() {
             <Link to="MapPage">Крата</Link>
           </li>
           <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="#">О проекте</Link>
+            <Link to="/" onClick={handleLinkClick}>О проекте</Link>
           </li>
         </ul>
       </div>

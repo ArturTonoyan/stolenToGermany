@@ -8,7 +8,7 @@ function HomePage() {
     <div className={styles.HomePage}>
       <div className={styles.HomePage__firstBlock}>
         <FormModuleHomePage />
-        <SliderModule/>
+        {/* <SliderModule/> */}
       </div>
       <img className={styles.sliderImg}  src="./img/sliderImg.png" />
       <img className={styles.sliderImg2}  src="./img/sliderImg2.png" />

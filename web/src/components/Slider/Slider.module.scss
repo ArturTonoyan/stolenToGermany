@@ -5,16 +5,15 @@
 //   padding: 200px;
 //   border-radius: 50%;
   .Slider {
-    position: fixed;
+    position: absolute;
     left: 1150px;
-    top: -100px;
+    top: -200px;
     min-width: 1200px;
     min-height: 1200px;
     max-width: 1200px;
     max-height: 1200px;
     width: 1200px;
     height: 1200px;
-  border: 1px solid #000;
     border-radius: 50%;
     img {
       width: 160px;

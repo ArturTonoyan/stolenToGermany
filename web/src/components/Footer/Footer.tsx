@@ -1,0 +1,53 @@
+import { useEffect, useState } from "react";
+import styles from "./Footer.module.scss";
+import { Link, useLocation } from "react-router-dom";
+
+function Footer() {
+  const { pathname } = useLocation();
+  const [hrefName, setHrefName] = useState("");
+  useEffect(() => {
+    setHrefName(pathname.split("/").pop() || "");
+  }, [pathname]);
+
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.footer_innerTop}>
+        <div>
+          <img src="./img/logoFooter.svg"/>
+        </div>
+        <div>
+        <ul>
+          <li className={hrefName === "" ? styles.active : ""}>
+            <Link to="/">Главная</Link>
+          </li>
+          <li
+            className={
+              hrefName === "SearchPage" || hrefName === "HumanProfile"
+                ? styles.active
+                : ""
+            }
+          >
+            <Link to="SearchPage/SearchModule">Поиск</Link>
+          </li>
+          <li className={hrefName === "MapPage" ? styles.active : ""}>
+            <Link to="MapPage">Крата</Link>
+          </li>
+          <li className={hrefName === "#" ? styles.active : ""}>
+            <Link to="#">О проекте</Link>
+          </li>
+        </ul>
+        </div>
+        <div className={styles.footer__mesagers}>
+          <img src="./img/vk.png"/>
+          <img src="./img/tg.png"/>
+        </div>
+        
+      </div>
+      <div className={styles.footer_innerBottom}>
+        <p>© Все права защищены</p>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;

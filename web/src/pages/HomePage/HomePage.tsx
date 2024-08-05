@@ -10,6 +10,10 @@ function HomePage() {
         <FormModuleHomePage />
         <SliderModule/>
       </div>
+      <img className={styles.sliderImg}  src="./img/sliderImg.png" />
+      <img className={styles.sliderImg2}  src="./img/sliderImg2.png" />
+      <img className={styles.HomePage__bg1}  src="./img/bgMain1.png" />
+      <img  className={styles.BgAboutHomeLeft} src="./img/BgAboutHomeLeft.png"/>
       <div className={styles.about}>
         <div className={styles.about_inner}>
           <h3>О проекте</h3>
@@ -26,6 +30,7 @@ function HomePage() {
           </ul>
           </div>
       </div>
+      <img  className={styles.BgAboutHomeRight} src="./img/BgAboutHomeRight.png"/>
     </div>
   )
 }

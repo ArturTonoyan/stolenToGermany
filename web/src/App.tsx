@@ -8,6 +8,7 @@ import store from "./store/store";
 import MapPage from "./pages/MapPage/MapPage";
 import SearchModule from "./modules/SearchModule/SearchModule";
 import HumanProfile from "./modules/HumanProfile/HumanProfile";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/MapPage" element={<MapPage />} />
             </Routes>
           </div>
+          <Footer />
         </main>
       </Provider>
     </BrowserRouter>

@@ -50,27 +50,29 @@ const Slider = () => {
   }, [index]);
   
   return (
-    <div className={styles.Slider} id="sliderBlock">
-      {images.map((image, i) => {
-        const angle = (360 / images.length) * i + 180;
-        const isActive = (index + 6) % images.length === i; // Adjusted to check the left-central image
-        return (
-          <img
-            key={i}
-            src={image}
-            alt={`Image ${i + 1}`}
-            style={{
-              position: "absolute",
-              transition: "transform 0.5s ease, width 0.5s ease, height 0.5s ease",
-              left: `${50 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)}%`,
-              top: `${50 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)}%`,
-              transform: `rotate(${angle}deg)`,
-              width: isActive ? "200px" : "160px",
-              height: isActive ? "200px" : "160px",
-            }}
-          />
-        );
-      })}
+    <div className={styles.sliderContainer}>
+      <div className={styles.Slider} id="sliderBlock">
+        {images.map((image, i) => {
+          const angle = (360 / images.length) * i + 180;
+          const isActive = (index + 6) % images.length === i; // Adjusted to check the left-central image
+          return (
+            <img
+              key={i}
+              src={image}
+              alt={`Image ${i + 1}`}
+              style={{
+                position: "absolute",
+                transition: "transform 0.5s ease, width 0.5s ease, height 0.5s ease",
+                left: `${50 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)}%`,
+                top: `${50 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)}%`,
+                transform: `rotate(${angle}deg)`,
+                width: isActive ? "200px" : "160px",
+                height: isActive ? "200px" : "160px",
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

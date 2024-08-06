@@ -50,7 +50,7 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
       }
       <div className={styles.container}>
         {store.people.map((item) => (
-          <Link to="HumanProfile">
+          <Link to="/SearchPage/HumanProfile">
             <Card key={item.id} />
           </Link>
         ))}

@@ -3,6 +3,7 @@ import Form from "../../components/Form/Form";
 import FormModuleHomePage from "../../module/FormModuleHomePage/FormModuleHomePage";
 import SliderModule from "../../module/SliderModule/SliderModule";
 import styles from "./HomePage.module.scss";
+import Footer from "../../components/Footer/Footer";
 function HomePage() {
   return(
     <div className={styles.HomePage}>

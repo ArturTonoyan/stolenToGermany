@@ -7,9 +7,12 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import MapPage from "./pages/MapPage/MapPage";
 import SearchModule from "./modules/SearchModule/SearchModule";
-import HumanProfile from "./modules/HumanProfile/HumanProfile";
+import HumanProfile from "./modules/HumanProfileModule/HumanProfile";
 import Footer from "./components/Footer/Footer";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import NoSearchResults from "./pages/NoSearchResults/NoSearchResults";
+import AdminPage from "./pages/AdminPage/AdminPage";
+import AdminPanelModule from "./modules/AdminPanelModule/AdminPanelModule";
 
 function App() {
   // const navigate = useNavigate();
@@ -29,6 +32,10 @@ function App() {
               </Route>
               <Route path="/MapPage" element={<MapPage />} />
               <Route path="/ErrorPage" element={<ErrorPage />} />
+              <Route path="/NoSearchResults" element={<NoSearchResults />} />
+              <Route path="/AdminPage*" element={<AdminPage />}>
+                <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+              </Route>
             </Routes>
           </div>
           <Footer />

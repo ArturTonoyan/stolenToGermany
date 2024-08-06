@@ -17,11 +17,10 @@ const images = [
 ];
 
 const Slider = () => {
-  const [index, setIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [index, setIndex] = useState<number>(0);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("go")
     const interval = setInterval(() => {
       if (!isPaused) {
         console.log('indexISPause', index);
@@ -32,7 +31,6 @@ const Slider = () => {
   }, [isPaused]);
 
   useEffect(() => {
-    console.log("paused")
     if (isPaused) {
       const timeout = setTimeout(() => {
         setIsPaused(false);
@@ -42,7 +40,7 @@ const Slider = () => {
   }, [isPaused]);
 
   useEffect(() => {
-    const slider = document.getElementById("sliderBlock");
+    const slider : any = document.getElementById("sliderBlock");
     if (slider) {
       slider.style.transition = "transform 0.5s ease";  // Add smooth transition
       slider.style.transform = `rotate(-${index * 30}deg)`;  // Smoothly rotate by 30 degree counterclockwise
@@ -53,8 +51,8 @@ const Slider = () => {
     <div className={styles.sliderContainer}>
       <div className={styles.Slider} id="sliderBlock">
         {images.map((image, i) => {
-          const angle = (360 / images.length) * i + 180;
-          const isActive = (index + 6) % images.length === i; // Adjusted to check the left-central image
+          const angle : number = (360 / images.length) * i + 180;
+          const isActive : boolean = (index + 6) % images.length === i; // Adjusted to check the left-central image
           return (
             <img
               key={i}

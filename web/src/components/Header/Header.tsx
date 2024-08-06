@@ -37,6 +37,11 @@ function Header() {
           <li className={hrefName === "#" ? styles.active : ""}>
             <Link to="/" onClick={handleLinkClick}>О проекте</Link>
           </li>
+          <li className={hrefName === "#" ? styles.active : ""}>
+            <Link to="/AdminPage/AdminPanelModule" >Админка</Link>
+          </li>
+
+          
         </ul>
       </div>
     </header>

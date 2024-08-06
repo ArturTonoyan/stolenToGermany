@@ -1,0 +1,28 @@
+
+@import "./../../styles/colors.scss";
+@import "./../../styles/mixins.scss";
+
+.AdminPanelModule{
+    h1{
+        margin-top: 164px;
+    font-family: Playfair Display;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 42.5px;
+    text-align: left;
+    width: 500px;
+    }
+    .search__inner{
+        display: flex;
+        button {
+            @include Button();
+            width: 277px!important;
+            margin-left: 32px;
+        }
+        input {
+            display: flex;
+            width: 896px;
+            border: none;
+        }
+    }
+}

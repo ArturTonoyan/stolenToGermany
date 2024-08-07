@@ -4,6 +4,7 @@ import styles from "./AdminPanelModule.module.scss";
 import Form from "../../components/Form/Form";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import CreateHuman from "../../components/CreateHuman/CreateHuman";
 function AdminPanelModule() {
     const [inpValue, setInpValue] = useState<string>("");
 
@@ -35,6 +36,9 @@ function AdminPanelModule() {
                     <Form/>
                     </div>
                 }
+            </div>
+            <div>
+                <CreateHuman/>
             </div>
         </div>
        

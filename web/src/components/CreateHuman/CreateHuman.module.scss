@@ -1,0 +1,41 @@
+@import "./../../styles/mixins.scss";
+@import "./../../styles/colors.scss";
+
+form{
+    .blockInput{
+        display: flex;
+        width: 949px;
+        .blockFormFirst{
+            display: block;
+            width: 250px;
+            margin-right: 102px;
+            input{
+                border: none;
+                @include Input();
+                border-bottom: 1px solid var(--border);
+              
+            }
+        }
+        .blockFormSecond{
+            display: block;
+            width: 597px;
+            input{
+                border: none;
+                @include Input();
+                border-bottom: 1px solid var(--border);
+               
+             
+            }
+        }
+        input{
+            margin: 25px 0px;
+        }
+    }
+    .SubmitButton{
+        width: 949px;
+        input{
+            width: 100%;
+            @include Button();
+        }
+    }
+}

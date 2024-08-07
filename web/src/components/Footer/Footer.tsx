@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import styles from "./Header.module.scss";
-import Logo from "../Logo/Logo";
+import styles from "./Footer.module.scss";
 import { Link, useLocation } from "react-router-dom";
 
-function Header() {
+function Footer() {
   const { pathname } = useLocation();
   const [hrefName, setHrefName] = useState("");
   useEffect(() => {
@@ -13,11 +12,14 @@ function Header() {
   const handleLinkClick = () => {
     window.scrollTo({ top: 1020, behavior: 'smooth' }); // Прокрутка страницы на 500px от верха с плавным эффектом
   };
-
+  
   return (
-    <header className={styles.Header}>
-      <div className={styles.headerInner}>
-        <Logo />
+    <footer className={styles.footer}>
+      <div className={styles.footer_innerTop}>
+        <div>
+          <img src="./../../img/logoFooter.svg"/>
+        </div>
+        <div>
         <ul>
           <li className={hrefName === "" ? styles.active : ""}>
             <Link to="/">Главная</Link>
@@ -38,9 +40,18 @@ function Header() {
             <Link to="/" onClick={handleLinkClick}>О проекте</Link>
           </li>
         </ul>
+        </div>
+        <div className={styles.footer__mesagers}>
+          <img src="./../../img/vk.png"/>
+          <img src="./../../img/tg.png"/>
+        </div>
+        
       </div>
-    </header>
+      <div className={styles.footer_innerBottom}>
+        <p>© Все права защищены</p>
+      </div>
+    </footer>
   );
 }
 
-export default Header;
+export default Footer;

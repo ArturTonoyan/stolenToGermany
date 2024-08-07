@@ -1,15 +1,20 @@
-import React from "react";
 import styles from "./styles/App.module.scss";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import MapPage from "./pages/MapPage/MapPage";
-import HumanProfilePage from "./pages/HumanProfilePage/HumanProfilePage";
+import SearchModule from "./modules/SearchModule/SearchModule";
+import HumanProfile from "./modules/HumanProfile/HumanProfile";
+import Footer from "./components/Footer/Footer";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
 function App() {
+  // const navigate = useNavigate();
+  // const location = navigate();
+  
   return (
     <BrowserRouter>
       <Provider store={store}>
@@ -18,11 +23,15 @@ function App() {
           <div className={styles.mainpage}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/SearchPage" element={<SearchPage />} />
-              <Route path="/HumanProfilePage" element={<HumanProfilePage />} />
+              <Route path="/SearchPage*" element={<SearchPage />}>
+                <Route path="SearchModule" element={<SearchModule />} />
+                <Route path="HumanProfile" element={<HumanProfile />} />
+              </Route>
               <Route path="/MapPage" element={<MapPage />} />
+              <Route path="/ErrorPage" element={<ErrorPage />} />
             </Routes>
           </div>
+          <Footer />
         </main>
       </Provider>
     </BrowserRouter>

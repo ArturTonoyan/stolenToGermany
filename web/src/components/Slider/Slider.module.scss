@@ -1,12 +1,26 @@
-.Slider {
-  top: -200px;
-  width: 1200px;
-  height: 1200px;
-  left: 1150px;
-  position: absolute;
-  img {
-    width: 160px;
-    height: 160px;
-    transform-origin: center center;
+// .sliderContainer{
+//   position: fixed;
+//   left: 1150px;
+//   top: -100px;
+//   padding: 200px;
+//   border-radius: 50%;
+  .Slider {
+    position: absolute;
+    left: 1020px;
+    top: -250px;
+    min-width: 1200px;
+    min-height: 1200px;
+    max-width: 1200px;
+    max-height: 1200px;
+    width: 1200px;
+    height: 1200px;
+    border-radius: 50%;
+    img {
+      width: 160px;
+      height: 160px;
+      transform-origin: center;
+    }
   }
-}
+  
+ 
+

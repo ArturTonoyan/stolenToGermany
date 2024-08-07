@@ -1,32 +1,41 @@
 .HumanProfile {
-  width: 100%;  
+  width: 100%;
   color: black;
-  .HumanProfile__card{
+  .HumanProfile__card {
     display: flex;
-    img{
+    img {
       width: 432px;
       height: 552px;
       margin-right: 32px;
     }
+    .way {
+      display: flex;
+      margin-left: 150px;
+    }
     margin-left: 200px;
     margin-top: 220px;
-    .HumanProfile__card__info{
+    a {
+      outline: none;
+      text-decoration: none;
+      color: #000;
+    }
+    .HumanProfile__card__info {
       width: 325px;
-      .HumanProfile__card__info__name{
-          font-family: Playfair Display;
-          font-size: 60px;
-          font-weight: 500;
-          line-height: 75px;
-          text-align: left;
-          color: #3D4970;
-          p{
-            border-bottom: 2px solid #3D4970;
-            margin: 0;
-          }
+      .HumanProfile__card__info__name {
+        font-family: Playfair Display;
+        font-size: 60px;
+        font-weight: 500;
+        line-height: 75px;
+        text-align: left;
+        color: #3d4970;
+        p {
+          border-bottom: 2px solid #3d4970;
+          margin: 0;
+        }
       }
-     .HumanProfile__card__info__archiv{
-      transition: 0.1s linear all;
-        span{
+      .HumanProfile__card__info__archiv {
+        transition: 0.1s linear all;
+        span {
           font-family: Playfair Display;
           font-size: 26px;
           font-weight: 500;
@@ -35,52 +44,50 @@
           color: #828282;
           border-bottom: 2px solid #828282;
         }
-        &:hover{
+        &:hover {
           cursor: pointer;
           opacity: 0.6;
         }
       }
-      img{
+      img {
         width: 16px;
         height: 20px;
         margin-left: 8px;
       }
     }
   }
-  .BgImgCardHuman{
+  .BgImgCardHuman {
     position: absolute;
     right: 0;
     top: 105px;
-    width: 448px!important;
-    height: 67px!important;
+    width: 448px !important;
+    height: 67px !important;
   }
-  .HumanProfile__info{
+  .HumanProfile__info {
     margin-left: 200px;
     margin-top: 100px;
-    border-left: 2px solid #3D4970;
+    border-left: 2px solid #3d4970;
     padding-left: 36px;
-    .HumanProfile__info__link{
-      color: #3D4970;
+    .HumanProfile__info__link {
+      color: #3d4970;
       transition: 0.1s linear all;
       width: max-content;
-      border-bottom: 1px solid #3D4970;
-      &:hover{
+      border-bottom: 1px solid #3d4970;
+      &:hover {
         cursor: pointer;
         opacity: 0.6;
       }
     }
-    p{
+    p {
       margin: 0;
       font-family: Playfair Display;
       font-size: 22px;
       font-weight: 500;
       line-height: 44px;
       text-align: left;
-      span{
+      span {
         font-weight: 600;
       }
     }
   }
 }
-
-

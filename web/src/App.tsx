@@ -1,5 +1,5 @@
 import styles from "./styles/App.module.scss";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
@@ -14,11 +14,12 @@ import NoSearchResults from "./pages/NoSearchResults/NoSearchResults";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import AdminPanelModule from "./modules/AdminPanelModule/AdminPanelModule";
 import AdminPageAuth from "./modules/AdminPageAuth/AdminPageAuth";
+import PersonalArchive from "./pages/PersonalArchive/PersonalArchive";
 
 function App() {
   // const navigate = useNavigate();
   // const location = navigate();
-  
+
   return (
     <BrowserRouter>
       <Provider store={store}>
@@ -31,6 +32,7 @@ function App() {
                 <Route path="SearchModule" element={<SearchModule />} />
                 <Route path="HumanProfile" element={<HumanProfile />} />
               </Route>
+              <Route path="/PersonalArchive" element={<PersonalArchive />} />
               <Route path="/MapPage" element={<MapPage />} />
               <Route path="/ErrorPage" element={<ErrorPage />} />
               <Route path="/NoSearchResults" element={<NoSearchResults />} />

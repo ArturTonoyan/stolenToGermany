@@ -1,0 +1,38 @@
+@import "./../../styles/mixins.scss";
+@import "./../../styles/colors.scss";
+
+.AdminAuth{
+    margin-top: -150px;
+    form{
+        display: block;
+        input{
+            width: 581px;
+            margin: 24px 0px;
+            border: none;
+            @include Input();
+            border-bottom: 1px solid var(--border);
+        
+        }
+    }
+    .SubmitButton{
+        width: 581px;
+        margin-top: 15px;
+        input{
+            width: 100%;
+            @include Button();
+        }
+    }
+    .ErrorMessage{
+        color: var(--RedColor);
+        display: flex;
+        justify-content: center;
+
+    }
+    .AdminAuthInput{
+        span{
+            color: var(--RedColor);
+            position: relative;
+            top: -15px;
+        }
+    }
+}

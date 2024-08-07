@@ -5,8 +5,10 @@
 //   padding: 200px;
 //   border-radius: 50%;
   .Slider {
-    position: absolute;
-    left: 1020px;
+    // position: absolute;
+    // left: 1020px;
+    position: relative;
+    left: -4%;
     top: -250px;
     min-width: 1200px;
     min-height: 1200px;

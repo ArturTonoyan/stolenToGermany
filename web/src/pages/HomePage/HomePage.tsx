@@ -1,7 +1,6 @@
 import React from "react";
-import Form from "../../components/Form/Form";
-import FormModuleHomePage from "../../module/FormModuleHomePage/FormModuleHomePage";
-import SliderModule from "../../module/SliderModule/SliderModule";
+import FormModuleHomePage from "../../modules/HomePageFormModule/FormModuleHomePage";
+import SliderModule from "../../modules/SliderModule/SliderModule";
 import styles from "./HomePage.module.scss";
 import Footer from "../../components/Footer/Footer";
 function HomePage() {
@@ -11,10 +10,10 @@ function HomePage() {
         <FormModuleHomePage />
         <SliderModule/>
       </div>
-      <img className={styles.sliderImg}  src="./img/sliderImg.png" />
-      <img className={styles.sliderImg2}  src="./img/sliderImg2.png" />
-      <img className={styles.HomePage__bg1}  src="./img/bgMain1.png" />
-      <img  className={styles.BgAboutHomeLeft} src="./img/BgAboutHomeLeft.png"/>
+      <img className={styles.sliderImg}  src="./img/sliderImg.png" alt="bg"/>
+      <img className={styles.sliderImg2}  src="./img/sliderImg2.png" alt="bg"/>
+      <img className={styles.HomePage__bg1}  src="./img/bgMain1.png" alt="bg"/>
+      <img  className={styles.BgAboutHomeLeft} src="./img/BgAboutHomeLeft.png" alt="bg"/>
       <div className={styles.about}>
         <div className={styles.about_inner}>
           <h3>О проекте</h3>

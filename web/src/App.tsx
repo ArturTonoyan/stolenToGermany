@@ -13,6 +13,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import NoSearchResults from "./pages/NoSearchResults/NoSearchResults";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import AdminPanelModule from "./modules/AdminPanelModule/AdminPanelModule";
+import AdminPageAuth from "./modules/AdminPageAuth/AdminPageAuth";
 
 function App() {
   // const navigate = useNavigate();
@@ -33,7 +34,9 @@ function App() {
               <Route path="/MapPage" element={<MapPage />} />
               <Route path="/ErrorPage" element={<ErrorPage />} />
               <Route path="/NoSearchResults" element={<NoSearchResults />} />
+
               <Route path="/AdminPage*" element={<AdminPage />}>
+                <Route path="AdminPageAuth" element={<AdminPageAuth />} />
                 <Route path="AdminPanelModule" element={<AdminPanelModule />} />
               </Route>
             </Routes>

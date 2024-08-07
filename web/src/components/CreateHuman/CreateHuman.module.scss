@@ -1,41 +1,160 @@
 @import "./../../styles/mixins.scss";
 @import "./../../styles/colors.scss";
 
-form{
-    .blockInput{
-        display: flex;
-        width: 949px;
-        .blockFormFirst{
-            display: block;
-            width: 250px;
-            margin-right: 102px;
-            input{
-                border: none;
-                @include Input();
-                border-bottom: 1px solid var(--border);
-              
-            }
-        }
-        .blockFormSecond{
-            display: block;
-            width: 597px;
-            input{
-                border: none;
-                @include Input();
-                border-bottom: 1px solid var(--border);
-               
-             
-            }
-        }
-        input{
-            margin: 25px 0px;
-        }
+
+.CreateHuman{
+    h1{
+        margin-top: 64px;
     }
-    .SubmitButton{
-        width: 949px;
-        input{
+    form{
+        .blockInput{
+            display: flex;
             width: 100%;
-            @include Button();
+            .blockFormFirst{
+                display: block;
+                width: 581px;
+                margin-right: 102px;
+                input{
+                    border: none;
+                    @include Input();
+                    border-bottom: 1px solid var(--border);
+                }
+            }
+            .blockFormSecond{
+                display: block;
+                width: 741px;
+                input{
+                    border: none;
+                    @include Input();
+                    border-bottom: 1px solid var(--border);
+                   
+                 
+                }
+            }
+            input{
+                margin: 25px 0px;
+            }
+            .SubmitButton{
+                // width: 949px;
+                position: relative;
+                top: -30px;
+                input{
+                    width: 100%;
+                    @include Button();
+                }
+            }
+            .SelectFile{
+                display: flex;
+                position: relative;
+                top: -90px;
+                cursor: pointer;
+                 width: 741px;
+                justify-content: end;
+                height: 61px;
+                input{
+                    pointer-events: none;
+                }
+                .SelectFile__img{
+                    display: flex;
+                    width: 120px;
+                    justify-content: center;
+                    align-items: center;
+                    color: var(--border);
+                    margin-right: 12px;
+                    img{
+                        margin-left: 15px;
+                        width: 25px;
+                        height: 50px;
+                        cursor: pointer;
+                        transition: 0.1s linear all;
+                        &:hover{
+                            opacity: 0.6;
+                        }
+                    }
+                }
+            }
+            .DataSave, .DataNotSave{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 737px;
+                height: 112px;
+                width: 741px;
+                position: relative;
+                top: -20px;
+                img{
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    transition: 0.1s linear all;
+                    &:hover{
+                        opacity: 0.6;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .DataSave{
+                border: 2px solid var(--GeenColor);
+                color: var(--GeenColor);
+            }
+            .DataNotSave{
+                border: 2px solid var(--RedColor);
+                color: var(--RedColor);
+            }
+            .SelectFile__multiple{
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+                top: -50px;
+                background-color: var(--BgColor);
+                border-bottom: 1px solid var(--border);
+                padding: 0 5px;
+                background-color: #EFF2F166;
+                .SelectFile__multiple__containerNameFile{
+                    display: flex;
+                    align-items: center;
+                    img{
+                        position: relative;
+                        top: 3px;
+                        margin-left: 10px;
+                        width: 12px;
+                        height: 12px;
+                        transition: 0.1s linear all;
+                        &:hover{
+                            cursor: pointer;
+                            opacity: 0.6;
+                        }
+                    }
+                }
+                .SelectFile__multiple__img{
+                    display: flex;
+                    color: var(--border);
+                    position: relative;
+                    top: 8px;
+                    right: 15px;
+                    transition: 0.1s linear all;
+                    &:hover{
+                        cursor: pointer;
+                        opacity: 0.6;
+                    }
+                    img{
+                        margin-left: 15px;
+                        width: 25px;
+                        height: 50px;
+                        cursor: pointer;
+                        transition: 0.1s linear all;
+                        &:hover{
+                            opacity: 0.6;
+                        }
+                    }
+                }
+                .SelectFile__multiple__textNotData{
+                    color: #afbbbd;
+                    font-size: 20px;
+                    font-weight: 400;
+                }
+            }
         }
+       
     }
 }

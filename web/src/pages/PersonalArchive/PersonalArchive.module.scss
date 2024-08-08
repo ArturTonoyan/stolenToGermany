@@ -26,6 +26,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+
     img {
       width: 1203px;
       height: 904px;
@@ -34,10 +35,27 @@
       background-color: inherit;
       border: none;
       cursor: pointer;
-      img {
+      &:hover {
+        background-color: #d6d6d648;
+        svg * {
+          stroke: var(--blue1);
+          transition: all 0.15s linear;
+        }
+        transition: all 0.15s linear;
+      }
+      &:active {
+        svg * {
+          stroke: var(--blue3);
+          transition: all 0.15s linear;
+        }
+      }
+      svg {
         margin: 20px;
         width: 29px;
         height: 93px;
+      }
+      .rigth {
+        transform: rotate(180deg);
       }
     }
   }
@@ -46,6 +64,8 @@
     ul {
       @include Ul();
       li {
+        cursor: pointer;
+
         width: 12px;
         height: 12px;
         background-color: var(--GrayTextLight);

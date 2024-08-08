@@ -4,15 +4,17 @@
 
 .AdminPanelModule{
     h1{
-    &:first-child{
-        margin-top: 164px;
-    }
+      
     font-family: Playfair Display;
     font-size: 34px;
     font-weight: 500;
     line-height: 42.5px;
     text-align: left;
     width: 500px;
+    }
+    .ArrowBack{
+            margin-top: 48px;
+        
     }
     .search__inner{
         display: flex;
@@ -26,8 +28,5 @@
             width: 896px;
             border: none;
         }
-    }
-    .title{
-        margin-top: 64px!important;
     }
 }

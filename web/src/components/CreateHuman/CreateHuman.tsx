@@ -82,7 +82,6 @@ export default function CreateHuman() {
 
   return (
     <div className={styles.CreateHuman}>
-      <h1>Внести новые данные о человеке:</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.blockInput}>
           <div className={styles.blockFormFirst}>

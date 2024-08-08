@@ -52,9 +52,9 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
       }
       <div className={styles.container}>
         {store.people.map((item) => (
-          <Link to="/SearchPage/HumanProfile">
+        
             <CardAdmin key={item.id} />
-          </Link>
+     
         ))}
       </div>
     </div>

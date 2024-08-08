@@ -37,6 +37,7 @@ function AdminPanelModule() {
                 }
             </div>
             <div>
+                <h1 className={styles.title}>Внести новые данные о человеке:</h1>
                 <CreateHuman/>
             </div>
         </div>

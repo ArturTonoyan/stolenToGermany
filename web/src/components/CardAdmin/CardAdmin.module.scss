@@ -1,8 +1,12 @@
 @import "./../../styles/mixins.scss";
 @import "./../../styles/colors.scss";
 
+.CardAdminMainBlock{
+
+position: relative;
 
 .CardAdmin {
+  margin: 10px;
   display: flex;
   flex-direction: column;
   width: 278px;
@@ -12,6 +16,7 @@
   margin-bottom: 32px;
   position: relative;
   justify-content: center;
+  align-items: center;
   // margin: 16px 15px;
   cursor: pointer;
   &:hover {
@@ -22,36 +27,44 @@
   .CardAdminImg{
     display: flex;
     justify-content: center;
-    img {
+    svg {
       &:nth-child(0) {
         width: 246px;
         height: 314px;
         margin: 16px;
       }
-      &:last-child{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #fff;
-        z-index: 10;
-        padding: 10px;
-        transition: 0.1s linear all;
-        &:hover{
-          cursor: pointer;
-          background-color: var(--blue1);
+     
+
+    }
+    .CarrdEdit{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #fff;
+      z-index: 10;
+      padding: 10px;
+      transition: 0.1s linear all;
+      &:hover{
+        *{  
+          fill: #fff;
         }
+        cursor: pointer;
+        background-color: var(--blue1);
       }
-      &:first-child{
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: #fff;
-        padding: 10px;
-        transition: 0.1s linear all;
-        &:hover{
-          cursor: pointer;
-          background-color: var(--blue1);
+    }
+    .CarrdDelite{
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #fff;
+      padding: 10px;
+      transition: 0.1s linear all;
+      &:hover{
+        *{  
+          fill: #fff;
         }
+        cursor: pointer;
+        background-color: var(--blue1);
       }
     }
   }
@@ -73,4 +86,42 @@
       line-height: 20px;
     }
   }
+}
+.DeleteCard{
+  position: absolute;
+  background-color: #EFF2F1;
+  width: 246px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  top: 80px;
+  left: 25px;
+  .text{
+    text-align: center;
+    font-family: Playfair Display;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 29.33px;
+    text-align: center;
+
+  }
+  .button__inner{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    button{
+      margin: 0 auto;
+      margin-top: 10px;
+      @include Button();
+      width: 135px;
+      height: 49px;
+    }
+}
+
+} 
+
 }

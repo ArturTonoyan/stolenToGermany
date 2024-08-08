@@ -63,6 +63,27 @@
     width: 448px !important;
     height: 67px !important;
   }
+  .pageArrow {
+    position: absolute;
+    top: 220px;
+    left: 100px;
+    width: 84px;
+    height: 20px;
+    cursor: pointer;
+    &:hover {
+      svg * {
+        fill: var(--blue1);
+        transition: all 0.15s linear;
+      }
+      transition: all 0.15s linear;
+    }
+    &:active {
+      svg * {
+        fill: var(--blue3);
+        transition: all 0.15s linear;
+      }
+    }
+  }
   .HumanProfile__info {
     margin-left: 200px;
     margin-top: 100px;

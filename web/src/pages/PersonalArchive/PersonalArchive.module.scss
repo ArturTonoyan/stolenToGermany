@@ -21,6 +21,19 @@
     width: 84px;
     height: 20px;
     cursor: pointer;
+    &:hover {
+      svg * {
+        fill: var(--blue1);
+        transition: all 0.15s linear;
+      }
+      transition: all 0.15s linear;
+    }
+    &:active {
+      svg * {
+        fill: var(--blue3);
+        transition: all 0.15s linear;
+      }
+    }
   }
   .slider {
     display: flex;

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./PersonalArchive.module.scss";
 import { ReactComponent as ArrowLeft } from "./../../imgs/arrowLeft.svg";
+import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
+import { Link } from "react-router-dom";
 
 function PersonalArchive() {
   const [imgs, setImgs] = useState<string[]>([]);
@@ -55,7 +57,11 @@ function PersonalArchive() {
         alt="Bg"
       />
       <div className={styles.container}>
-        <img className={styles.pageArrow} src="./img/pageArrow.svg" alt="<" />
+        <div className={styles.pageArrow}>
+          <Link to="../SearchPage/HumanProfile">
+            <PageArrow />
+          </Link>
+        </div>
         <div className={styles.slider}>
           <button onClick={funScrollLeft}>
             <ArrowLeft />

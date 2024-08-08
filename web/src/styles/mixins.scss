@@ -38,14 +38,14 @@
 @mixin Input(
   $width: 100%,
   $border-radius: 0px,
-  $bgColor: #EFF2F166,
+  $bgColor: #eff2f166,
   $paddingTB: 16.5px,
   $paddingLR: 10px,
-  $color: #000000,
+  $color: #000000
 ) {
   width: $width;
   outline: none;
-  background-color: #EFF2F166;
+  background-color: #eff2f166;
   color: $color;
   padding: $paddingTB $paddingLR;
   border-radius: $border-radius;
@@ -74,7 +74,7 @@
     height: $height;
   }
   &::-webkit-scrollbar-track {
-    background: #fff; /* цвет дорожки */
+    background: inherit; /* цвет дорожки */
   }
   &::-webkit-scrollbar-thumb,
   &::-webkit-scrollbar-thumb {

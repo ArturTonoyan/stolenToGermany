@@ -11,7 +11,7 @@ function Header() {
   }, [pathname]);
 
   const handleLinkClick = () => {
-    window.scrollTo({ top: 1020, behavior: 'smooth' }); // Прокрутка страницы на 500px от верха с плавным эффектом
+    window.scrollTo({ top: 1020, behavior: "smooth" }); // Прокрутка страницы на 500px от верха с плавным эффектом
   };
 
   return (
@@ -24,7 +24,9 @@ function Header() {
           </li>
           <li
             className={
-              hrefName === "SearchPage" || hrefName === "HumanProfile"
+              hrefName === "SearchPage" ||
+              hrefName === "HumanProfile" ||
+              hrefName === "PersonalArchive"
                 ? styles.active
                 : ""
             }
@@ -35,13 +37,13 @@ function Header() {
             <Link to="MapPage">Крата</Link>
           </li>
           <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="/" onClick={handleLinkClick}>О проекте</Link>
+            <Link to="/" onClick={handleLinkClick}>
+              О проекте
+            </Link>
           </li>
           <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="/AdminPage/AdminPageAuth" >Админка</Link>
+            <Link to="/AdminPage/AdminPageAuth">Админка</Link>
           </li>
-
-          
         </ul>
       </div>
     </header>

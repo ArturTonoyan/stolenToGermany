@@ -13,7 +13,8 @@ function PersonalArchive() {
           <button>
             <img src="./img/arrowLeft.svg" alt="<" />
           </button>
-          <img src="./img/arhiv.png" alt="foto" />
+          <img src="./img/imgSlider/1.png" alt="foto" />
+          {/* <img src="./img/arhiv.png" alt="foto" /> */}
           <button>
             <img
               style={{ transform: "rotate(-180deg)" }}
@@ -25,8 +26,11 @@ function PersonalArchive() {
         <div className={styles.styderPoints}>
           <ul>
             <li className={styles.active}></li>
-            <li></li>
-            <li></li>
+            {Array(20)
+              .fill(0)
+              .map((_, index) => (
+                <li></li>
+              ))}
           </ul>
         </div>
       </div>

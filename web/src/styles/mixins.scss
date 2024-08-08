@@ -38,7 +38,7 @@
 @mixin Input(
   $width: 100%,
   $border-radius: 0px,
-  $bgColor: #eff2f166,
+  $bgColor: inherit,
   $paddingTB: 16.5px,
   $paddingLR: 10px,
   $color: #000000

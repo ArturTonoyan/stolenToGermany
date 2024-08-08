@@ -15,6 +15,7 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import AdminPanelModule from "./modules/AdminPanelModule/AdminPanelModule";
 import AdminPageAuth from "./modules/AdminPageAuth/AdminPageAuth";
 import PersonalArchive from "./pages/PersonalArchive/PersonalArchive";
+import AdminSearchResult from "./modules/AdminSearchResultModule/AdminSearchResult";
 
 function App() {
   // const navigate = useNavigate();
@@ -40,6 +41,7 @@ function App() {
               <Route path="/AdminPage*" element={<AdminPage />}>
                 <Route path="AdminPageAuth" element={<AdminPageAuth />} />
                 <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+                <Route path="AdminSearchResult" element={<AdminSearchResult />} />
               </Route>
             </Routes>
           </div>

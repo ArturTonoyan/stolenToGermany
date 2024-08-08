@@ -11,7 +11,6 @@ function AdminPanelModule() {
     const funOnChange = (text: string): void => {
       setInpValue(text);
     };
-
     const store = useSelector((state: RootState) => state.peopleSlice);
     const isActionOpen = useSelector((state: RootState) => state.actionSlice.action);
   return (

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Card from "../../components/Card/Card";
 import PathToPoint from "../../components/PathToPoint/PathToPoint";
 import styles from "./HumanProfile.module.scss";
+import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
 
 function HumanProfile() {
   return (
@@ -13,6 +14,11 @@ function HumanProfile() {
             src="./../../img/CardHumanBg.png"
             alt="Bg"
           />
+          <div className={styles.pageArrow}>
+            <Link to="./../SearchModule">
+              <PageArrow />
+            </Link>
+          </div>
           <div>
             <img src="./../../img/man.png" alt="man" />
           </div>

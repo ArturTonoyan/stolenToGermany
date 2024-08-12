@@ -8,9 +8,9 @@ const http = axios.create({
 });
 
 //! получаем преподов
-export const Educator = async () => {
+export const apiOstarbaiters = async () => {
   try {
-    const response = await http.get(`${server}/camps`);
+    const response = await http.get(`${server}/ostarbaiters`);
     console.log(response);
     return response;
   } catch (error) {

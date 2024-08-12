@@ -31,6 +31,7 @@ export default function CreateHuman() {
     data.photo = fileData;
     data.additionalFiles = additionalFiles;
     console.log(data);
+    
     reset();
     setSelectedFileName("");
     setAdditionalFileNames([]);

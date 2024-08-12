@@ -3,7 +3,7 @@ import Ostarbeiter from "../models/index.js";
 import { Admin }   from "../models/index.js";
 import ExcelJS from 'exceljs';
 import { v4 as uuidv4 } from 'uuid';
-
+import 'dotenv/config';
 export async function initializeDbModels() {
     if (typeof Ostarbeiter.initialize === 'function') Ostarbeiter.initialize(sequelize);
     if (typeof Admin.initialize === 'function') Admin.initialize(sequelize);

@@ -1,7 +1,6 @@
 @import "./../../styles/mixins.scss";
 
 .SearchModule {
-
   .topMenu {
     display: flex;
     flex-direction: row;
@@ -19,21 +18,21 @@
       border: none;
     }
   }
-.filter{
-  display: block;
-  position: relative;
-  width: 949px;
-  img{
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: 0.15s linear all;
-    &:hover{
-      opacity: 0.6;
-      cursor: pointer;
+  .filter {
+    display: block;
+    position: relative;
+    width: 949px;
+    img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: 0.15s linear all;
+      &:hover {
+        opacity: 0.6;
+        cursor: pointer;
+      }
     }
   }
-}
   .container {
     margin-top: 32px;
     display: flex;

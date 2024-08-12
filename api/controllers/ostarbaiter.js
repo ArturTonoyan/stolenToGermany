@@ -21,11 +21,12 @@ export default {
             },
         });
 
+
         const fulname=[filters.surname, filters.name, filters.patronymic].filter(c=>c).join(' ')
         const ostarbaiters=await Ostarbeiter.findAll({
             order: ['fio'],
             where: {
-                ...(fulname && { fio: {[Op.like]:`%${fulname}`  }}),
+                ...(fulname && { fio: {[Op.like]:`% ${fulname} %`  }}),
                 ...(filters.date && { date: new Date(filters.date)}),
                 ...(filters.address && { address: {[Op.like]:`%${filters.address}`}}),
                 ...(filters.departureDate && {departureDate: new Date(filters.departureDate)}),

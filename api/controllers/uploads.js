@@ -76,10 +76,12 @@ export default {
         if(req.url==='/image')
         {
 
+            console.log(req);
             if(!req.file) throw new AppErrorMissing('image')
             return res.json({ status: 'OK' });
         }
         if (!req.files) throw new AppErrorMissing('files');
+        console.log(req)
         const files=req.files
         let e=0
         for (const file of files) {

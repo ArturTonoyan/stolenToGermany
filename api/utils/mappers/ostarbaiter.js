@@ -4,23 +4,31 @@ import { cdnUrlImg } from "../cdn-url.js";
 export default async ostarbaiter=>({
     id: ostarbaiter.id,
     date: ostarbaiter.date,
-    fio: ostarbaiter.fio,
-    address: ostarbaiter.address,
-    departureDate: ostarbaiter.departureDate,
-    departure: ostarbaiter.departure,
-    arrival: ostarbaiter.arrival,
+    surname: ostarbaiter.surname,
+    name: ostarbaiter?.name,
+    patronymic: ostarbaiter?.patronymic,
+    departure: ostarbaiter?.departure,
+    profession: ostarbaiter?.profession,
+    dateDeparture: ostarbaiter?.dateDeparture,
+    localityDeparture: ostarbaiter?.localityDeparture,
+    localityWork: ostarbaiter?.localityWork,
+    infoOfDeath: ostarbaiter?.infoOfDeath,
+    infoOfRepatriation: ostarbaiter?.infoOfRepatriation,
+    addressAfterReturning: ostarbaiter?.addressAfterReturning,
     links: await cdnUrl(ostarbaiter),
-    img: cdnUrlImg(ostarbaiter)
+    img: await cdnUrlImg(ostarbaiter)
 });
 
-export function mapShort(ostarbaiter){
+export async function mapShort(ostarbaiter){
     return {
         id: ostarbaiter.id,
         date: ostarbaiter.date,
-        fio: ostarbaiter.fio,
-        address: ostarbaiter.address,
-        profession: ostarbaiter.profession,
-        img: cdnUrlImg(ostarbaiter)
+        surname: ostarbaiter.surname,
+        name: ostarbaiter?.name,
+        patronymic: ostarbaiter?.patronymic,
+        localityDeparture: ostarbaiter?.localityDeparture,
+        profession: ostarbaiter?.profession,
+        img: await cdnUrlImg(ostarbaiter)
     }
 }
 
@@ -29,7 +37,9 @@ export function mapOfStolen(ostarbaiter){
     return {
         id: ostarbaiter.id,
         date: ostarbaiter.date,
-        fio: ostarbaiter.fio,
-        profession: ostarbaiter.profession,
+        surname: ostarbaiter.surname,
+        name: ostarbaiter?.name,
+        patronymic: ostarbaiter?.patronymic,
+        profession: ostarbaiter?.profession,
     }
 }

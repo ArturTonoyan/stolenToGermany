@@ -4,6 +4,7 @@ import fs from "fs"
 import {AppError, AppErrorInvalid, AppErrorMissing} from "../utils/error.js";
 import Ostarbeiter from "../models/index.js";
 import { readdir } from "node:fs/promises";
+import { Op } from "sequelize";
 
 const errorCodes  = JSON.parse(fs.readFileSync('../api/config/errorCodes.json'));
 
@@ -47,14 +48,21 @@ const storage = multer.diskStorage({
             .join('')
             .split('-')[0]
             .match(/[А-ЯЁA-Z][а-яёa-z]+/g)
-            .join(' ')
 
+
+        const [surname, name, patronymic] = fio
         const date=originalname.trim().split(extension).join('').split('-')[1]
+        console.log(surname, name, date)
         const ostarbaiter=await Ostarbeiter.findOne({
             where: {
-                fio,
+            ...(surname  && { surname: { [Op.like]: `%${surname}%` }}),
+            ...(name &&  { name : { [Op.like]: `%${name}%` }}),
+            ...(patronymic && { patronymic: { [Op.like]: `%${patronymic}%` }} ),
+                date
             },
         })
+
+
         if(!ostarbaiter) cb(new AppError(errorCodes.NotExist))
 
         cb(null, ostarbaiter.id + '_1' + extension);
@@ -81,7 +89,7 @@ export default {
             return res.json({ status: 'OK' });
         }
         if (!req.files) throw new AppErrorMissing('files');
-        console.log(req)
+
         const files=req.files
         let e=0
         for (const file of files) {
@@ -104,6 +112,7 @@ export default {
                     });
             }
         }
+
         res.json({ status:'Ok' })
     },
 

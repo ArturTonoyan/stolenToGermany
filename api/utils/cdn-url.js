@@ -2,7 +2,8 @@ import { readdir } from 'node:fs/promises';
 
 export default async function (ostarbaiter){
     const result=[]
-    const path=`uploads/${ostarbaiter.fio.replace(/\s+/g, '') + ostarbaiter.date}`
+    const fullname= [ostarbaiter.surname.trim(), ostarbaiter?.name?.trim(), ostarbaiter?.patronymic?.trim()].join('')
+    const path=`uploads/${fullname + ostarbaiter.date}`
     try {
         const directories = await readdir(path);
         directories.map(async directory => {
@@ -10,8 +11,7 @@ export default async function (ostarbaiter){
             const pathDirectoryFiles = []
             files.map(file => pathDirectoryFiles.push(`${path}/${directory}/${file}`))
             result.push({[directory]: pathDirectoryFiles})
-        }
-    )
+        })
         /*
         for (const directory of directories) {
             const files=await readdir(`${path}/${directory}`)
@@ -21,15 +21,18 @@ export default async function (ostarbaiter){
             }
             result.push({[directory]: pathDirectoryFiles })
         }*/
-    }catch (e) {
+    }
+    catch (e) {
         return null
     }
+
     return result
 }
 
 
 export  async function cdnUrlImg(ostarbaiter){
-    const path=`uploads/${ostarbaiter.fio.replace(/\s+/g, '') + ostarbaiter.date}/image`
+    const fullname= [ostarbaiter.surname.trim(), ostarbaiter?.name?.trim(), ostarbaiter?.patronymic?.trim()].join('')
+    const path=`uploads/${fullname + ostarbaiter.date}/image`
     try {
         const file=await readdir(path)
         if(file) return `${path}/${file}`

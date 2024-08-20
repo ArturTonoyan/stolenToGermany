@@ -1,6 +1,5 @@
 import  { sequelize } from '../models/index.js'
-import Ostarbeiter from "../models/index.js";
-import { Admin }   from "../models/index.js";
+import Ostarbeiter, { Admin } from "../models/index.js";
 import ExcelJS from 'exceljs';
 import { v4 as uuidv4 } from 'uuid';
 import 'dotenv/config';
@@ -14,26 +13,28 @@ export async function initializeDbModels() {
 export async function parsnigExsel(){
 
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile('../api/uploads/ostarbiters.xlsx');
-    const worksheet=await workbook.getWorksheet('д10')
+    await workbook.xlsx.readFile('../api/uploads/sample.xlsx');
+    const worksheet=await workbook.getWorksheet('Таганрог')
     const data=[]
     await Ostarbeiter.truncate();
     worksheet.eachRow(function(row, rowNumber) {
-        const [,
-            fio, date, placeBirthday, partyMembership, nationality,
-            profession , departure, arrival, filtrationPoint, address, footnote, note
+        const [, ,
+            surname, name , patronymic, date, departure, profession, dateDeparture,
+            localityDeparture , localityWork, infoOfDeath, infoOfRepatriation, addressAfterReturning, note
         ]=row.values
+
+
 
         if(rowNumber!==1)
         {
             data.push(
                 {
-                    id:uuidv4(),  fio, date: new Date(date), placeBirthday, partyMembership, nationality,
-                    profession , departure, arrival, filtrationPoint, address, footnote, note
+                    id:uuidv4(),  surname, name , patronymic, date, departure, profession, dateDeparture,
+                    localityDeparture , localityWork, infoOfDeath, infoOfRepatriation, addressAfterReturning, note
                 })
         }
     })
 
-   await Ostarbeiter.bulkCreate(data)
+  await Ostarbeiter.bulkCreate(data)
 }
 

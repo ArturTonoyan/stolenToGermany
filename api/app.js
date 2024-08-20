@@ -50,17 +50,18 @@ app.use(corsMiddleware);
 
 // ==== on server start functions
 (async function initDb() {
-  try {
-    await initializeDbModels();
-    await parsnigExsel();
-  } catch (e) {
-    if (app.get("env") !== "test") {
-      console.log(e);
-      console.log("COULD NOT CONNECT TO THE DB, retrying in 5 seconds");
+    try {
+        await initializeDbModels();
+        //await parsnigExsel()
+    } catch (e) {
+        if (app.get('env') !== 'test') {
+            console.log(e);
+            console.log('COULD NOT CONNECT TO THE DB, retrying in 5 seconds');
+        }
+        setTimeout(initDb, 5000);
     }
     setTimeout(initDb, 5000);
-  }
-})();
+  })();
 // ====
 
 app

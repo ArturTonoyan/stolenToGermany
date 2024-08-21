@@ -13,7 +13,7 @@ import ostarbaiterRoute from "./routes/ostarbaiter.js";
 import uploadsRoute from "./routes/uploads.js";
 import corsMiddleware from "./middlewares/cors.js";
 import { AppError, MultipleError, SystemError } from "./utils/error.js";
-import cors from "cors";
+
 logger.token("body", (req) => {
   try {
     if (req.method === "POST" || req.method === "PUT") {

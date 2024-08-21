@@ -1,25 +1,24 @@
-
-import map, {mapOfStolen, mapShort} from '../utils/mappers/ostarbaiter.js'
+import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
 import Ostarbeiter from "../models/index.js";
-import {AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
-import axios from 'axios'
-import { Op} from "sequelize";
+import { AppErrorMissing, AppErrorNotExist } from "../utils/error.js";
+import axios from "axios";
+import { Op } from "sequelize";
 
 export default {
-    async get({ query }, res){
-        const {  filters } = prepareParams(query, {
-            allowedFilters: {
-                surname: String,
-                name: String,
-                patronymic: String,
-                date: String,
-                localityWork: String,
-                departure: String,
-                profession: String,
-                localityDeparture: String
-            },
-        });
+  async get({ query }, res) {
+    const { filters } = prepareParams(query, {
+      allowedFilters: {
+        surname: String,
+        name: String,
+        patronymic: String,
+        date: String,
+        localityWork: String,
+        departure: String,
+        profession: String,
+        localityDeparture: String,
+      },
+    });
 
         const ostarbaiters=await Ostarbeiter.findAll({
             order: ['surname', 'name', 'patronymic'],
@@ -46,58 +45,90 @@ export default {
         })
     },
 
-    async delete({ params: { ostarbaiterId } }, res){
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-        await ostarbaiter.destroy();
-        res.json({ status: 'Ok' })
+  async delete({ params: { ostarbaiterId } }, res) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    await ostarbaiter.destroy();
+    res.json({ status: "Ok" });
+  },
+
+  async getById({ params: { ostarbaiterId } }, res) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    res.json({ ostarbaiter: await map(ostarbaiter) });
+  },
+
+  async update(
+    {
+      params: { ostarbaiterId },
+      body: {
+        name,
+        surname,
+        patronymic,
+        date,
+        profession,
+        localityWork,
+        localityDeparture,
+        departure,
+        infoOfRepatriation,
+        addressAfterReturning,
+        infoOfDeath,
+      },
     },
+    res
+  ) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
-    async getById({ params: { ostarbaiterId } }, res){
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-        res.json({ostarbaiter:  await map(ostarbaiter)})
+    await ostarbaiter.update({
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      date: date,
+      profession: profession,
+      localityWork: localityWork,
+      localityDeparture: localityDeparture,
+      departure: departure,
+      infoOfRepatriation: infoOfRepatriation,
+      addressAfterReturning: addressAfterReturning,
+      infoOfDeath: infoOfDeath,
+    });
+    res.json({ status: "Ok" });
+  },
+
+  async create(
+    {
+      body: {
+        name,
+        surname,
+        patronymic,
+        date,
+        profession,
+        localityWork,
+        localityDeparture,
+        departure,
+        infoOfRepatriation,
+        addressAfterReturning,
+        infoOfDeath,
+      },
     },
-
-    async update({params: { ostarbaiterId }, body: { name, surname, patronymic, date, profession,
-        localityWork, localityDeparture, departure, infoOfRepatriation, addressAfterReturning,infoOfDeath }},res){
-
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-
-        await ostarbaiter.update({
-            surname: surname,
-            name: name,
-            patronymic: patronymic,
-            date:date,
-            profession: profession,
-            localityWork: localityWork,
-            localityDeparture: localityDeparture,
-            departure: departure,
-            infoOfRepatriation: infoOfRepatriation,
-            addressAfterReturning: addressAfterReturning,
-            infoOfDeath: infoOfDeath
-        })
-        res.json({status: 'Ok'})
-    },
-
-    async create({body: { name, surname, patronymic, date, profession,
-        localityWork, localityDeparture, departure, infoOfRepatriation, addressAfterReturning,infoOfDeath  } },res){
-        if(!surname) throw new AppErrorMissing('surname')
-        if(!date) throw new AppErrorMissing('date')
-        await Ostarbeiter.create({
-            surname: surname,
-            name: name,
-            patronymic: patronymic,
-            date:date,
-            profession: profession,
-            localityWork: localityWork,
-            localityDeparture: localityDeparture,
-            departure: departure,
-            infoOfRepatriation: infoOfRepatriation,
-            addressAfterReturning: addressAfterReturning,
-            infoOfDeath: infoOfDeath
-        })
+    res
+  ) {
+    if (!surname) throw new AppErrorMissing("surname");
+    if (!date) throw new AppErrorMissing("date");
+    await Ostarbeiter.create({
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      date: date,
+      profession: profession,
+      localityWork: localityWork,
+      localityDeparture: localityDeparture,
+      departure: departure,
+      infoOfRepatriation: infoOfRepatriation,
+      addressAfterReturning: addressAfterReturning,
+      infoOfDeath: infoOfDeath,
+    });
 
         res.json({status: 'Ok'})
 

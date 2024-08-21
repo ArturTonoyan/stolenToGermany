@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/Card/Card";
 import PathToPoint from "../../components/PathToPoint/PathToPoint";
 import styles from "./HumanProfile.module.scss";
@@ -47,7 +47,12 @@ function HumanProfile() {
     surname: "",
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (store.selectedPerson === "") {
+      navigate("/SearchPage/SearchModule");
+    }
     if (store.selectedPerson) {
       apiGetOstarbaiter(store.selectedPerson).then((req) => {
         console.log("req", req);
@@ -113,18 +118,23 @@ function HumanProfile() {
           </p>
           <p className={styles.HumanProfile__info__link}>
             Населенный пункт откуда угнан на принудительные работы —{" "}
-            <span></span>информация отсутсвует
+            <span>
+              {humanData?.localityDeparture || "информация отсутсвует"}
+            </span>
           </p>
           <p>
             Место трудоиспользования на принудительных работах в Германии —{" "}
-            <span>информация отсутсвует</span>
+            <span>{humanData?.localityWork || "информация отсутсвует"}</span>
           </p>
           <p className={styles.HumanProfile__info__link}>
             Дата, место и причина смерти на момент пребывания в Германии —{" "}
-            <span>информация отсутсвует</span>
+            <span>{humanData?.infoOfDeath || "информация отсутсвует"}</span>
           </p>
           <p className={styles.HumanProfile__info__link}>
-            Дата и место репатриации — <span>информация отсутсвует</span>
+            Дата и место репатриации —{" "}
+            <span>
+              {humanData?.infoOfRepatriation || "информация отсутсвует"}
+            </span>
           </p>
           <p className={styles.HumanProfile__info__link}>
             Адрес проживания после возвращения в СССР —{" "}

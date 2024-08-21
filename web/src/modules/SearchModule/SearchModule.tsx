@@ -3,27 +3,39 @@ import styles from "./SearchModule.module.scss";
 import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedPerson } from "../../store/basic/people.slice";
+import { Person, setSelectedPerson } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
-import { openClodeAction } from "../../store/basic/action.slice";
 
 interface SearchModuleProps {}
 
 const SearchModule: React.FC<SearchModuleProps> = () => {
   const navigate = useNavigate();
+  const dispacth = useDispatch();
   const store = useSelector((state: RootState) => state.peopleSlice);
+  const [inpValue, setInpValue] = useState<string>("");
+  const [filterHumen, setFilterHumen] = useState<Person[]>([]);
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
   );
 
-  const dispacth = useDispatch();
-
-  const [inpValue, setInpValue] = useState<string>("");
+  useEffect(() => {
+    setFilterHumen(store.people);
+  }, [store.people]);
 
   const funOnChange = (text: string): void => {
     setInpValue(text);
+    setFilterHumen(
+      store.people.filter((person) =>
+        Object.values(person).some(
+          (value) =>
+            value !== null &&
+            value !== undefined &&
+            value.toString().toLowerCase().includes(text.toLowerCase())
+        )
+      )
+    );
   };
 
   const clickCard = (id: string) => {
@@ -53,12 +65,10 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
         </div>
       )}
       <div className={styles.container}>
-        {store.people?.map((item) => (
-          // <Link key={item.id + "link"} to="/SearchPage/HumanProfile">
+        {filterHumen?.map((item) => (
           <div key={item.id + "link"} onClick={() => clickCard(item?.id)}>
             <Card key={item.id} item={item} />
           </div>
-          // </Link>
         ))}
       </div>
     </div>

@@ -20,39 +20,30 @@ export default {
       },
     });
 
-    const ostarbaiters = await Ostarbeiter.findAll({
-      order: ["surname", "name", "patronymic"],
-      where: {
-        ...(filters.surname && {
-          surname: { [Op.like]: `%${filters.surname}%` },
-        }),
-        ...(filters.name && { name: { [Op.like]: `%${filters.name}%` } }),
-        ...(filters.patronymic && {
-          patronymic: { [Op.like]: `%${filters.patronymic}%` },
-        }),
-        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
-        ...(filters.localityWork && {
-          localityWork: { [Op.like]: `%${filters.localityWork}` },
-        }),
-        ...(filters.departure && {
-          departure: { [Op.like]: `%${filters.departure}` },
-        }),
-        ...(filters.profession && {
-          profession: { [Op.like]: `%${filters.profession}` },
-        }),
-        ...(filters.localityDeparture && {
-          localityDeparture: { [Op.like]: `%${filters.localityDeparture}` },
-        }),
-      },
-    });
-    console.log(ostarbaiters);
+        const ostarbaiters=await Ostarbeiter.findAll({
+            order: ['surname', 'name', 'patronymic'],
+            where: {
+                ...(filters.surname && { surname: {[Op.like]:`%${filters.surname}%`  }}),
+                ...(filters.name && { name: {[Op.like]:`%${filters.name}%`  }}),
+                ...(filters.patronymic && { patronymic: {[Op.like]:`%${filters.patronymic}%`  }}),
+                ...(filters.date && { date: {[Op.like]:`%${filters.date}%`  }}),
+                ...(filters.localityWork && { localityWork: {[Op.like]:`%${filters.localityWork}`}}),
+                ...(filters.departure && {departure: {[Op.like]:`%${filters.departure}`}}),
+                ...(filters.profession && {profession: {[Op.like]: `%${filters.profession}`}}),
+                ...(filters.localityDeparture && {localityDeparture: {[Op.like]: `%${filters.localityDeparture}`}}),
+            },
+        })
+        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
 
-    if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
+        const mapOstarbaiters=[]
+        for (const ostarbaiter of ostarbaiters){
+            mapOstarbaiters.push(await mapShort(ostarbaiter))
+        }
 
-    res.json({
-      ostarbaiters: ostarbaiters.map(mapShort),
-    });
-  },
+        res.json({
+            ostarbaiters: mapOstarbaiters
+        })
+    },
 
   async delete({ params: { ostarbaiterId } }, res) {
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
@@ -139,39 +130,37 @@ export default {
       infoOfDeath: infoOfDeath,
     });
 
-    res.json({ status: "Ok" });
-  },
+        res.json({status: 'Ok'})
 
-  async stolenInCamps({ query }, res) {
-    const { filters } = prepareParams(query, {
-      allowedFilters: {
-        localityWork: String,
-      },
-    });
-    if (!filters.localityWork) throw new AppErrorMissing("city");
+    },
 
-    const ostarbaiters = await Ostarbeiter.findAll({
-      where: {
-        localityWork: { [Op.like]: `%${filters.localityWork}` },
-      },
-    });
+    async stolenInCamps( { query }, res){
+        const {  filters } = prepareParams(query, {
+            allowedFilters: {
+                localityWork: String,
+            },
+        });
+        if(!filters.localityWork) throw new AppErrorMissing('city')
 
-    if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
+        const ostarbaiters=await Ostarbeiter.findAll({
+            where: {
+                localityWork: {[Op.like]:`%${filters.localityWork}` },
+            }
+        })
 
-    const { data } = await axios({
-      method: "get",
-      url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
-      responseType: "json",
-    });
-    const [{ ...feature }] =
-      data.response.GeoObjectCollection.featureMember.filter(
-        (object) =>
-          object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality"
-      );
+        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
 
-    res.json({
-      point: feature.GeoObject.Point,
-      ostarbaiters: ostarbaiters?.map(mapOfStolen),
-    });
-  },
-};
+        const {data }=await axios({
+            method: 'get',
+            url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
+            responseType: 'json'
+        })
+        const [{ ...feature  }]=data.response.GeoObjectCollection.featureMember
+            .filter(object => object.GeoObject.metaDataProperty.GeocoderMetaData.kind==='locality')
+
+        res.json({
+            point: feature.GeoObject.Point,
+            ostarbaiters: ostarbaiters?.map(mapOfStolen)
+        })
+    },
+}

@@ -25,7 +25,6 @@ logger.token("body", (req) => {
     return `Body parse error ${e?.message ?? e}`;
   }
 });
-app.use(corsMiddleware);
 
 if (app.get("env") === "production") {
   app.use(
@@ -44,23 +43,25 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(corsMiddleware)
 app.use("/auth", authRoute);
 app.use("/ostarbaiters", ostarbaiterRoute);
 app.use("/uploads", express.static("./uploads"), uploadsRoute);
 
+
 // ==== on server start functions
 (async function initDb() {
-  try {
-    await initializeDbModels();
-    await parsnigExsel();
-  } catch (e) {
-    if (app.get("env") !== "test") {
-      console.log(e);
-      console.log("COULD NOT CONNECT TO THE DB, retrying in 5 seconds");
+    try {
+        await initializeDbModels();
+        //await parsnigExsel()
+    } catch (e) {
+        if (app.get('env') !== 'test') {
+            console.log(e);
+            console.log('COULD NOT CONNECT TO THE DB, retrying in 5 seconds');
+        }
+        setTimeout(initDb, 5000);
     }
-    setTimeout(initDb, 5000);
-  }
-})();
+  })();
 // ====
 
 app

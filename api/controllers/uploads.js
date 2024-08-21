@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
     destination: async (req, { originalname }, cb) => {
         const extension = path.extname(originalname).toLowerCase();
         const data=originalname.trim().split(extension).join('').split('-')
-            if(data.length===2) {
+        if(data.length===2) {
                 fs.mkdirSync( path.join(path.resolve('./uploads'), `${data[0]}${data[1]}`, 'images'),{ recursive: true })
                 cb(null, `./uploads/${data[0]}${data[1]}/images`)
             }
@@ -64,8 +64,8 @@ const storage = multer.diskStorage({
 
 
         if(!ostarbaiter) cb(new AppError(errorCodes.NotExist))
-
-        cb(null, ostarbaiter.id + '_1' + extension);
+        if(req.url==='/image') cb(null, ostarbaiter.id+extension)
+        else cb(null, ostarbaiter.id + '_1' + extension);
     },
 });
 
@@ -84,7 +84,6 @@ export default {
         if(req.url==='/image')
         {
 
-            console.log(req);
             if(!req.file) throw new AppErrorMissing('image')
             return res.json({ status: 'OK' });
         }

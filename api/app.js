@@ -39,11 +39,11 @@ if (app.get("env") === "production") {
     })
   );
 }
+app.use(corsMiddleware)
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(corsMiddleware)
 app.use("/auth", authRoute);
 app.use("/ostarbaiters", ostarbaiterRoute);
 app.use("/uploads", express.static("./uploads"), uploadsRoute);
@@ -53,7 +53,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 (async function initDb() {
     try {
         await initializeDbModels();
-        //await parsnigExsel()
+        await parsnigExsel()
     } catch (e) {
         if (app.get('env') !== 'test') {
             console.log(e);

@@ -18,6 +18,30 @@ export const apiOstarbaiters = async () => {
   }
 };
 
+
+//! запрос на авторизацию
+export const Auth = async (data) => {
+  try {
+    const response = await http.post(`${server}/auth/login`, data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+//!запрос на создание human
+export const OstarbaitersCreate = async (data) => {
+  try {
+    const response = await http.post(`${server}/ostarbaiters/create`, data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+
 // export const CreateEducator = async (data) => {
 //   try {
 //     const response = await http.post(`${server}/educator/`, data);

@@ -1,20 +1,20 @@
 import React, { useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
+import { OstarbaitersCreate } from "../../api/ApiRequest";
 
 type Inputs = {
-  firstName: string;
-  lastName: string;
-  patronumic: string;
-  burthDate: Date;
+  name: string;
+  surname: string;
+  patronymic: string;
+  date: Date;
   profession: string;
-  adressWorked: string;
-  aresDosygon: string;
-  daterepatriation: string;
-  adress: string;
-  dateygon: string;
-  aressygon: string;
-  aresDeat: string;
+  localityWork: string;
+  localityDeparture: string;
+  departure: string;
+  infoOfRepatriation: string;
+  addressAfterReturning: string;
+  infoOfDeath: string;
   photo: File;
   additionalFiles: File[];
 };
@@ -31,11 +31,26 @@ export default function CreateHuman() {
     data.photo = fileData;
     data.additionalFiles = additionalFiles;
     console.log(data);
-    
-    reset();
-    setSelectedFileName("");
-    setAdditionalFileNames([]);
-    setDataSaved(true);
+    const dataTextHuman = {
+      name: data.name,
+      surname: data.surname,
+      patronymic: data.patronymic,
+      date: data.date,
+      profession: data.profession,
+      localityWork: data.localityWork,
+      localityDeparture: data.localityDeparture,
+      departure: data.departure,
+      infoOfRepatriation: data.infoOfRepatriation,
+      addressAfterReturning: data.addressAfterReturning,
+      infoOfDeath: data.infoOfDeath,
+    }
+    OstarbaitersCreate(dataTextHuman).then((response) => {
+      console.log(response);
+    })
+    // reset();
+    // setSelectedFileName("");
+    // setAdditionalFileNames([]);
+    // setDataSaved(true);
   };
 
   const [selectedFileName, setSelectedFileName] = useState<string>("");
@@ -89,22 +104,22 @@ export default function CreateHuman() {
             <input
               placeholder="Фамилия"
               maxLength={50}
-              {...register("lastName", { required: true, maxLength: 50 })}
+              {...register("name", { required: true, maxLength: 50 })}
             />
             <input
               placeholder="Отчество"
               maxLength={50}
-              {...register("patronumic", { required: true, maxLength: 20 })}
+              {...register("patronymic", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Имя"
               maxLength={50}
-              {...register("firstName", { required: true, maxLength: 50 })}
+              {...register("surname", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Год рождения"
               maxLength={50}
-              {...register("burthDate", { required: true, maxLength: 50 })}
+              {...register("date", { required: true, maxLength: 50 })}
               type="date"
             />
             <input
@@ -115,34 +130,34 @@ export default function CreateHuman() {
             <input
               placeholder="Место трудоиспользования"
               maxLength={50}
-              {...register("adressWorked", { required: false, maxLength: 50 })}
+              {...register("localityWork", { required: false, maxLength: 50 })}
             />
           </div>
           <div className={styles.blockFormSecond}>
             <input
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
-              {...register("aressygon", { required: false, maxLength: 50 })}
+              {...register("localityDeparture", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
               maxLength={50}
-              {...register("aresDosygon", { required: false, maxLength: 20 })}
+              {...register("departure", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Дата и место репатриации"
               maxLength={50}
-              {...register("daterepatriation", { required: false, maxLength: 50 })}
+              {...register("infoOfRepatriation", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Адрес проживания после возвращения в СССР"
               maxLength={50}
-              {...register("adress", { required: false, maxLength: 50 })}
+              {...register("addressAfterReturning", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Дата, место и причина смерти на момент пребывания в Германии"
               maxLength={50}
-              {...register("aresDeat", { required: false, maxLength: 50 })}
+              {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Добавить фото"

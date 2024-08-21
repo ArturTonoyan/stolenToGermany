@@ -1,4 +1,3 @@
-
 import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./AdminSearchResult.module.scss";
 import Input from "../../ui/Input/Input";
@@ -14,7 +13,9 @@ interface SearchModuleProps {}
 
 const AdminSearchResult: React.FC<SearchModuleProps> = () => {
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const isActionOpen = useSelector((state: RootState) => state.actionSlice.action);
+  const isActionOpen = useSelector(
+    (state: RootState) => state.actionSlice.action
+  );
 
   const [inpValue, setInpValue] = useState<string>("");
 
@@ -22,39 +23,43 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     setInpValue(text);
   };
 
-  const dispacth = useDispatch();
-  useEffect(() => {
-    dispacth(apiGetPeople());
-  }, []);
-
+  // const dispacth = useDispatch();
+  // useEffect(() => {
+  //   dispacth(apiGetPeople());
+  // }, []);
 
   return (
     <div className={styles.SearchModule}>
-        <Link to="/AdminPage/AdminPanelModule"> <img className={styles.ArrowBack} src="./../img/pageArrow.svg" alt="<"/> </Link> 
-        <h1>Поиск для редактирования существующей информации:</h1>
-        <div className={styles.topMenu}>
-          <div className={styles.search}>
-            <Input
-              type="text"
-              placeholder={"Фамилия, Имя, Отчество, год рождения"}
-              value={inpValue}
-              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-                funOnChange(e.target.value)
-              }
-            />
-          </div>
-          {!isActionOpen &&<button>НАЙТИ</button>}
+      <Link to="/AdminPage/AdminPanelModule">
+        {" "}
+        <img
+          className={styles.ArrowBack}
+          src="./../img/pageArrow.svg"
+          alt="<"
+        />{" "}
+      </Link>
+      <h1>Поиск для редактирования существующей информации:</h1>
+      <div className={styles.topMenu}>
+        <div className={styles.search}>
+          <Input
+            type="text"
+            placeholder={"Фамилия, Имя, Отчество, год рождения"}
+            value={inpValue}
+            funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+              funOnChange(e.target.value)
+            }
+          />
         </div>
-      {isActionOpen &&
+        {!isActionOpen && <button>НАЙТИ</button>}
+      </div>
+      {isActionOpen && (
         <div className={styles.filter}>
-          <Form/>
+          <Form />
         </div>
-      }
+      )}
       <div className={styles.container}>
         {store.people.map((item) => (
-        
-            <CardAdmin key={item.id} />
-     
+          <CardAdmin key={item.id} />
         ))}
       </div>
     </div>

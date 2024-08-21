@@ -7,11 +7,22 @@ const http = axios.create({
   withCredentials: true,
 });
 
-//! получаем преподов
+//! получаем людей
 export const apiOstarbaiters = async () => {
   try {
     const response = await http.get(`${server}/ostarbaiters`);
-    console.log(response);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+//! получаем человека
+export const apiGetOstarbaiter = async (param) => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/${param}`);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);

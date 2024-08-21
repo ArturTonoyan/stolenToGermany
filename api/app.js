@@ -13,7 +13,7 @@ import ostarbaiterRoute from "./routes/ostarbaiter.js";
 import uploadsRoute from "./routes/uploads.js";
 import corsMiddleware from "./middlewares/cors.js";
 import { AppError, MultipleError, SystemError } from "./utils/error.js";
-
+import cors from "cors";
 logger.token("body", (req) => {
   try {
     if (req.method === "POST" || req.method === "PUT") {
@@ -43,10 +43,11 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(corsMiddleware)
 app.use("/auth", authRoute);
 app.use("/ostarbaiters", ostarbaiterRoute);
 app.use("/uploads", express.static("./uploads"), uploadsRoute);
-app.use(corsMiddleware);
+
 
 // ==== on server start functions
 (async function initDb() {
@@ -60,7 +61,6 @@ app.use(corsMiddleware);
         }
         setTimeout(initDb, 5000);
     }
-    setTimeout(initDb, 5000);
   })();
 // ====
 

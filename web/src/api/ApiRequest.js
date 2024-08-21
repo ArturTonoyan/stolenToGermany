@@ -2,7 +2,7 @@
 
 import axios from "axios";
 // const server = "https://workload.sfedu.ru";
-const server = "http://localhost:3000";
+const server = "http://localhost:3001";
 const http = axios.create({
   withCredentials: true,
 });

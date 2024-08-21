@@ -6,12 +6,15 @@ export default async function (ostarbaiter){
     const path=`uploads/${fullname + ostarbaiter.date}`
     try {
         const directories = await readdir(path);
-        directories.map(async directory => {
-            const files = await readdir(`${path}/${directory}`)
-            const pathDirectoryFiles = []
-            files.map(file => pathDirectoryFiles.push(`${path}/${directory}/${file}`))
-            result.push({[directory]: pathDirectoryFiles})
-        })
+        await Promise.all(directories.map(async directory => {
+            if(directory!=='images'){
+                const files = await readdir(`${path}/${directory}`)
+                const pathDirectoryFiles = []
+                files.map(file => pathDirectoryFiles.push(`${path}/${directory}/${file}`))
+                result.push({[directory]: pathDirectoryFiles})
+            }
+
+        }))
         /*
         for (const directory of directories) {
             const files=await readdir(`${path}/${directory}`)
@@ -21,23 +24,23 @@ export default async function (ostarbaiter){
             }
             result.push({[directory]: pathDirectoryFiles })
         }*/
-    }
-    catch (e) {
+
+        return result
+    }catch (e){
         return null
     }
-
-    return result
 }
 
 
-export  async function cdnUrlImg(ostarbaiter){
+export async function cdnUrlImg(ostarbaiter){
     const fullname= [ostarbaiter.surname.trim(), ostarbaiter?.name?.trim(), ostarbaiter?.patronymic?.trim()].join('')
-    const path=`uploads/${fullname + ostarbaiter.date}/image`
+    const path=`uploads/${fullname + ostarbaiter.date}/images`
+    const result=[]
     try {
-        const file=await readdir(path)
-        if(file) return `${path}/${file}`
-        return null
-    }catch (e) {
-        return null
-    }
+        const files= await readdir(path)
+        await Promise.all(files.map(async file => { result.push(`${path}/${file}`) }))
+   }catch (e) {
+       return null
+   }
+   return result.toString()
 }

@@ -36,8 +36,13 @@ export default {
         })
         if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
 
+        const mapOstarbaiters=[]
+        for (const ostarbaiter of ostarbaiters){
+            mapOstarbaiters.push(await mapShort(ostarbaiter))
+        }
+
         res.json({
-            ostarbaiters: ostarbaiters.map(mapShort)
+            ostarbaiters: mapOstarbaiters
         })
     },
 

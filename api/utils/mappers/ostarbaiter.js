@@ -16,10 +16,10 @@ export default async ostarbaiter=>({
     infoOfRepatriation: ostarbaiter?.infoOfRepatriation,
     addressAfterReturning: ostarbaiter?.addressAfterReturning,
     links: await cdnUrl(ostarbaiter),
-    img: await cdnUrlImg(ostarbaiter)
+    img: await cdnUrlImg(ostarbaiter) ?? null
 });
 
-export async function mapShort(ostarbaiter){
+export  async function mapShort(ostarbaiter) {
     return {
         id: ostarbaiter.id,
         date: ostarbaiter.date,
@@ -28,7 +28,7 @@ export async function mapShort(ostarbaiter){
         patronymic: ostarbaiter?.patronymic,
         localityDeparture: ostarbaiter?.localityDeparture,
         profession: ostarbaiter?.profession,
-        img: await cdnUrlImg(ostarbaiter)
+        img: await cdnUrlImg(ostarbaiter)  ?? null
     }
 }
 

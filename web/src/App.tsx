@@ -30,7 +30,7 @@ function App() {
           <div className={styles.mainpage}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/SearchPage*" element={<SearchPage />}>
+              <Route path="/SearchPage/*" element={<SearchPage />}>
                 <Route path="SearchModule" element={<SearchModule />} />
                 <Route path="HumanProfile" element={<HumanProfile />} />
               </Route>
@@ -39,10 +39,13 @@ function App() {
               <Route path="/ErrorPage" element={<ErrorPage />} />
               <Route path="/NoSearchResults" element={<NoSearchResults />} />
 
-              <Route path="/AdminPage*" element={<AdminPage />}>
+              <Route path="/AdminPage/*" element={<AdminPage />}>
                 <Route path="AdminPageAuth" element={<AdminPageAuth />} />
                 <Route path="AdminPanelModule" element={<AdminPanelModule />} />
-                <Route path="AdminSearchResult" element={<AdminSearchResult />} />
+                <Route
+                  path="AdminSearchResult"
+                  element={<AdminSearchResult />}
+                />
                 <Route path="EditHumanModule" element={<EditHumanModule />} />
               </Route>
             </Routes>

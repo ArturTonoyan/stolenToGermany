@@ -24,24 +24,29 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     setFilterHumen(store.people);
   }, [store.people]);
 
+  //! при вводе данных в посик
   const funOnChange = (text: string): void => {
     setInpValue(text);
-    setFilterHumen(
-      store.people.filter((person) =>
-        Object.values(person).some(
-          (value) =>
-            value !== null &&
-            value !== undefined &&
-            value.toString().toLowerCase().includes(text.toLowerCase())
-        )
-      )
-    );
   };
 
   const clickCard = (id: string) => {
     console.log(id);
     dispacth(setSelectedPerson({ id }));
     navigate("/SearchPage/HumanProfile");
+  };
+
+  //! при нажатии на кнопку найти
+  const serchPeople = () => {
+    setFilterHumen(
+      store.people.filter((person) =>
+        Object.values(person).some(
+          (value) =>
+            value !== null &&
+            value !== undefined &&
+            value.toString().toLowerCase().includes(inpValue.toLowerCase())
+        )
+      )
+    );
   };
 
   return (
@@ -57,7 +62,7 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
             }
           />
         </div>
-        {!isActionOpen && <button>НАЙТИ</button>}
+        {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
       </div>
       {isActionOpen && (
         <div className={styles.filter}>

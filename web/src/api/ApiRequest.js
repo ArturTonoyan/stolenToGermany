@@ -29,7 +29,6 @@ export const apiGetOstarbaiter = async (param) => {
   }
 };
 
-
 //! запрос на авторизацию
 export const Auth = async (data) => {
   try {
@@ -51,7 +50,6 @@ export const OstarbaitersCreate = async (data) => {
     console.error("Error:", error);
   }
 };
-
 
 // export const CreateEducator = async (data) => {
 //   try {

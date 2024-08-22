@@ -140,7 +140,32 @@ export default {
                 localityWork: String,
             },
         });
-        if(!filters.localityWork) throw new AppErrorMissing('city')
+        if(!filters.localityWork) {
+            const camps=await Ostarbeiter.findAll({
+                where: {
+                    localityWork: { [Op.ne] : null }
+                },
+                attributes: ['localityWork']
+            })
+
+            const points=[]
+
+            for (const camp of camps) {
+                const { data }=await axios({
+                    method: 'get',
+                    url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${camp.localityWork}&format=json`,
+                    responseType: 'json'
+                })
+                const [{ ...feature  }]=data.response.GeoObjectCollection.featureMember
+                    .filter(object => object.GeoObject.metaDataProperty.GeocoderMetaData.kind==='locality')
+
+                points.push({
+                    locality: camp.localityWork,
+                    point: feature.GeoObject.Point,
+                })
+            }
+            return res.json({ camps: points })
+        }
 
         const ostarbaiters=await Ostarbeiter.findAll({
             where: {
@@ -148,7 +173,7 @@ export default {
             }
         })
 
-        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
+        if(ostarbaiters.length<1) throw new AppErrorNotExist('ostarbaiters')
 
         const {data }=await axios({
             method: 'get',

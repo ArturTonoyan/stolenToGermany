@@ -4,7 +4,7 @@ import { RootState } from "../../store/store";
 import { useEffect, useState } from "react";
 import { apiGetCamps } from "../../store/basic/camps.slice";
 import axios from "axios";
-function PathToPoint() {
+function PathToPoint(props: any) {
   const store = useSelector((state: RootState) => state.campsSlice);
   const [startCoords, setStartCoords] = useState<any>([47.221958, 39.718333]);
   const [endCoords, setEndCoords] = useState<any>([52.516363, 13.378906]);
@@ -94,20 +94,20 @@ function PathToPoint() {
         }
         className={styles.point1}
       >
-        Иншиздорф
+        {props.localityWork || "Германия"}
       </div>
       <div
         style={
           points.length > 0
             ? {
-                top: points[points.length - 1][1],
-                left: points[points.length - 1][0],
+                top: points[points.length - 1][1] + 11,
+                left: points[points.length - 1][0] - 5,
               }
             : { top: "0" }
         }
         className={styles.point2}
       >
-        Ростов
+        {props.localityDeparture || "Россия"}
       </div>
       <div
         className={

@@ -26,7 +26,8 @@ function Header() {
             className={
               hrefName === "SearchPage" ||
               hrefName === "HumanProfile" ||
-              hrefName === "PersonalArchive"
+              hrefName === "PersonalArchive" ||
+              hrefName === "SearchModule"
                 ? styles.active
                 : ""
             }

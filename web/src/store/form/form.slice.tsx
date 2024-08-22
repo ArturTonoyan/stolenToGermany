@@ -14,6 +14,7 @@ export interface Inputs {
 
 export interface formState {
   formData: Inputs;
+  resetAction: boolean;
 }
 
 const formDataNull = {
@@ -30,6 +31,7 @@ const formDataNull = {
 
 const initialState: formState = {
   formData: formDataNull,
+  resetAction: false,
 };
 
 const formSlice = createSlice({
@@ -42,9 +44,14 @@ const formSlice = createSlice({
 
     resetForm(state) {
       state.formData = formDataNull;
+      state.resetAction = true;
+    },
+
+    resetAction(state) {
+      state.resetAction = !state.resetAction;
     },
   },
 });
 
-export const { setFormData, resetForm } = formSlice.actions;
+export const { setFormData, resetForm, resetAction } = formSlice.actions;
 export default formSlice.reducer;

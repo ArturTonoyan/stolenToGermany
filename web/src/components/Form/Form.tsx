@@ -4,9 +4,10 @@ import { apiGetOstarbaiterParam } from "../../api/ApiRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilterPeople } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setFormData } from "../../store/form/form.slice";
+import { resetAction, setFormData } from "../../store/form/form.slice";
 import { RootState } from "../../store/store";
 import { openAction } from "../../store/basic/action.slice";
+import { useEffect } from "react";
 type Inputs = {
   surname: string;
   name: string;
@@ -50,6 +51,14 @@ export default function Form() {
       }
     });
   };
+
+  //! отслеживаем сброс данных
+  useEffect(() => {
+    if (store.resetAction === true) {
+      reset();
+      dispacth(resetAction());
+    }
+  }, [store.resetAction]);
 
   const {
     register,

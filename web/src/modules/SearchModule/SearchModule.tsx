@@ -4,7 +4,6 @@ import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Person,
   resetFilterPeople,
   setFilterPeople,
   setSelectedPerson,
@@ -48,12 +47,12 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     );
     dispacth(setFilterPeople({ ostarbaiters }));
   };
-
   //! сброс данных
   const funReset = () => {
     //! сброс данных формы
     dispacth(resetForm());
     dispacth(resetFilterPeople());
+    setInpValue("");
   };
 
   return (

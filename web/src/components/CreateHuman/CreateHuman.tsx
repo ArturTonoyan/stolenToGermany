@@ -19,7 +19,7 @@ type Inputs = {
   additionalFiles: File[];
 };
 
-export default function CreateHuman() {
+export default function CreateHuman(props: any) {
   const {
     register,
     handleSubmit,
@@ -44,13 +44,21 @@ export default function CreateHuman() {
       addressAfterReturning: data.addressAfterReturning,
       infoOfDeath: data.infoOfDeath,
     }
-    OstarbaitersCreate(dataTextHuman).then((response) => {
-      console.log(response);
-    })
-    // reset();
-    // setSelectedFileName("");
-    // setAdditionalFileNames([]);
-    // setDataSaved(true);
+    props.funcCreate(dataTextHuman).then((res: any) => {
+      console.log('res', res);
+      if(
+        (res[0].type === "create" || res[0].type === "edit") && res[0].status === 200
+      ){
+        reset();
+        setSelectedFileName("");
+        setAdditionalFileNames([]);
+        setDataSaved(true);
+      }else{
+        setDataNotSaved(true);
+
+      }
+  });
+  
   };
 
   const [selectedFileName, setSelectedFileName] = useState<string>("");
@@ -103,33 +111,39 @@ export default function CreateHuman() {
           <div className={styles.blockFormFirst}>
             <input
               placeholder="Фамилия"
+              defaultValue={props.data?.surname || ""}
               maxLength={50}
               {...register("name", { required: true, maxLength: 50 })}
             />
             <input
               placeholder="Отчество"
+              defaultValue={props.data?.patronymic || ""}
               maxLength={50}
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Имя"
+              defaultValue={props.data?.name || ""}
               maxLength={50}
               {...register("surname", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Год рождения"
               maxLength={50}
+              defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
               type="date"
             />
             <input
               placeholder="Профессия на момент отправки в Германию"
               maxLength={50}
+              defaultValue={props.data?.profession || ""}
               {...register("profession", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Место трудоиспользования"
               maxLength={50}
+              defaultValue={props.data?.localityWork || ""}
               {...register("localityWork", { required: false, maxLength: 50 })}
             />
           </div>
@@ -137,26 +151,31 @@ export default function CreateHuman() {
             <input
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
+              defaultValue={props.data?.localityDeparture || ""}
               {...register("localityDeparture", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
               maxLength={50}
+              defaultValue={props.data?.departure || ""}
               {...register("departure", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Дата и место репатриации"
               maxLength={50}
+              defaultValue={props.data?.infoOfRepatriation || ""}
               {...register("infoOfRepatriation", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Адрес проживания после возвращения в СССР"
               maxLength={50}
+              defaultValue = {props.data?.addressAfterReturning || ""}
               {...register("addressAfterReturning", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Дата, место и причина смерти на момент пребывания в Германии"
               maxLength={50}
+              defaultValue={props.data?.infoOfDeath || ""}
               {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input

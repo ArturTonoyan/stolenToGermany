@@ -1,10 +1,13 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Input from "../../ui/Input/Input";
 import styles from "./AdminPanelModule.module.scss";
 import Form from "../../components/Form/Form";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CreateHuman from "../../components/CreateHuman/CreateHuman";
+import { Person } from "../../store/basic/people.slice";
+import { OstarbaitersCreate } from "../../api/ApiRequest";
+import { create } from "domain";
 function AdminPanelModule() {
     const [inpValue, setInpValue] = useState<string>("");
 
@@ -13,6 +16,39 @@ function AdminPanelModule() {
     };
     const store = useSelector((state: RootState) => state.peopleSlice);
     const isActionOpen = useSelector((state: RootState) => state.actionSlice.action);
+//     const [filterHumen, setFilterHumen] = useState<Person[]>([]);
+  
+//     useEffect(() => {
+//       setFilterHumen(store.people);
+//     }, [store.people]);
+
+//      //! при нажатии на кнопку найти
+//   const serchPeople = () => {
+//     setFilterHumen(
+//       store.people.filter((person) =>
+//         Object.values(person).some(
+//           (value) =>
+//             value !== null &&
+//             value !== undefined &&
+//             value.toString().toLowerCase().includes(inpValue.toLowerCase())
+//         )
+//       )
+//     );
+//   };
+const createdHuman = (data: Person) => {
+    return OstarbaitersCreate(data).then((response) => {
+        const resp = [
+            {
+                type: "create",
+                status: response?.status,
+            }
+        ]
+        if (resp) {
+            return resp;
+        }
+    });
+};
+
   return (
     <div className={styles.AdminPanelModule}>
         <div className={styles.search}>
@@ -38,7 +74,7 @@ function AdminPanelModule() {
             </div>
             <div>
                 <h1 className={styles.title}>Внести новые данные о человеке:</h1>
-                <CreateHuman/>
+                <CreateHuman funcCreate={createdHuman}/>
             </div>
         </div>
        

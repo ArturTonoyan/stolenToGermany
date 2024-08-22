@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "../../api/ApiRequest";
 
 
-
 type Auth = {
     email: string
     password: string
@@ -23,21 +22,22 @@ function AdminAuth() {
         reset,
       } = useForm<Auth>()
 
-      const onSubmit: SubmitHandler<Auth> = (data) =>{
+      const onSubmit: SubmitHandler<Auth> = (data) => {
         const datas = {
-          email: data.email,
-          password: data.password
-        }
-        console.log('data', datas)
+            email: data.email,
+            password: data.password
+        };
         Auth(datas).then((response: any) => {
-            if(response && response.status === 200){
-              console.log("data", response)
-                navigate("/AdminPage/AdminPanelModule")
-            }else{
-                setErrorMessage(true)
+            if (response && response.status === 200) {
+                localStorage.setItem("access_token", response?.data?.token);
+                // console.log("access_token", response);
+                navigate("/AdminPage/AdminPanelModule");
+            } else {
+                setErrorMessage(true);
             }
-        })
-      }
+        });
+    };
+    
       
 
     const [ErrorMessage, setErrorMessage] = useState<boolean>(false)

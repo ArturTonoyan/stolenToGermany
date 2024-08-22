@@ -91,6 +91,6 @@ app
 
 // Handle 404 AND 500
 
-app.listen(process.env.PORT || 3000, () =>
-  console.log(`Listen on :${process.env.PORT || 3000}`)
+app.listen(process.env.PORT || 3001, () =>
+  console.log(`Listen on :${process.env.PORT || 3001}`)
 );

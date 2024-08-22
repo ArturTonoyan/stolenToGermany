@@ -39,9 +39,17 @@ const peopleSlice = createSlice({
       console.log("action.payload.id", action.payload.id);
       state.selectedPerson = action.payload.id;
     },
+
+    resetFilterPeople(state) {
+      state.filterPeople = state.people;
+    },
   },
 });
 
-export const { apiGetPeople, setFilterPeople, setSelectedPerson } =
-  peopleSlice.actions;
+export const {
+  resetFilterPeople,
+  apiGetPeople,
+  setFilterPeople,
+  setSelectedPerson,
+} = peopleSlice.actions;
 export default peopleSlice.reducer;

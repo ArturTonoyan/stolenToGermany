@@ -35,6 +35,38 @@
   }
 }
 
+@mixin Button2(
+  $width: 100%,
+  $paddingTB: 10px,
+  $paddingLR: 20px,
+  $textColor: #828282,
+  $fs: 30px,
+  $fw: 300
+) {
+  background-color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $paddingTB $paddingLR;
+  outline: none;
+  color: $textColor;
+  border: 1px solid $textColor;
+  width: $width;
+  font-size: $fs;
+  font-weight: $fw;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+    background-color: inherit;
+    transition: all 0.15s;
+  }
+  &:active {
+    opacity: 1;
+    transition: all 0.15s;
+  }
+}
+
 @mixin Input(
   $width: 100%,
   $border-radius: 0px,

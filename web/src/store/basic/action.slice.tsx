@@ -18,8 +18,12 @@ const actionSlice = createSlice({
     closeAction(state) {
       state.action = false;
     },
+
+    openAction(state) {
+      state.action = true;
+    },
   },
 });
 
-export const { openClodeAction, closeAction } = actionSlice.actions;
+export const { openAction, openClodeAction, closeAction } = actionSlice.actions;
 export default actionSlice.reducer;

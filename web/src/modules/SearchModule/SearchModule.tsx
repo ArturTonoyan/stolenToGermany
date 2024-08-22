@@ -5,12 +5,14 @@ import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Person,
+  resetFilterPeople,
   setFilterPeople,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
+import { resetForm } from "../../store/form/form.slice";
 
 interface SearchModuleProps {}
 
@@ -47,6 +49,13 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     dispacth(setFilterPeople({ ostarbaiters }));
   };
 
+  //! сброс данных
+  const funReset = () => {
+    //! сброс данных формы
+    dispacth(resetForm());
+    dispacth(resetFilterPeople());
+  };
+
   return (
     <div className={styles.SearchModule}>
       <div className={styles.topMenu}>
@@ -61,6 +70,9 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
           />
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
+        <button className={styles.reset} onClick={funReset}>
+          Сбросить
+        </button>
       </div>
       {isActionOpen && (
         <div className={styles.filter}>

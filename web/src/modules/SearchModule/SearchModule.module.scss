@@ -9,7 +9,13 @@
       width: 277px;
       margin-left: 32px;
     }
+    .reset {
+      @include Button2();
+      width: 277px;
+      margin-left: 32px;
+    }
   }
+
   .search {
     // width: 47vw;
     input {

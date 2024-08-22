@@ -12,11 +12,13 @@ export interface Person {
 
 export interface PeopleState {
   people: Person[];
+  filterPeople: Person[];
   selectedPerson: string;
 }
 
 const initialState: PeopleState = {
   people: [],
+  filterPeople: [],
   selectedPerson: "",
 };
 
@@ -26,6 +28,11 @@ const peopleSlice = createSlice({
   reducers: {
     apiGetPeople(state, action) {
       state.people = action.payload.ostarbaiters;
+      state.filterPeople = action.payload.ostarbaiters;
+    },
+
+    setFilterPeople(state, action) {
+      state.filterPeople = action.payload.ostarbaiters;
     },
 
     setSelectedPerson(state, action) {
@@ -35,5 +42,6 @@ const peopleSlice = createSlice({
   },
 });
 
-export const { apiGetPeople, setSelectedPerson } = peopleSlice.actions;
+export const { apiGetPeople, setFilterPeople, setSelectedPerson } =
+  peopleSlice.actions;
 export default peopleSlice.reducer;

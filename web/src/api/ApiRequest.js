@@ -30,15 +30,15 @@ export const apiGetOstarbaiter = async (param) => {
 };
 
 //! получаем людей по расширенному поиску
-// export const apiGetOstarbaiterParam = async (param) => {
-//   try {
-//     const response = await http.get(`${server}/ostarbaiters/${param}`);
-//     // console.log(response);
-//     return response;
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// };
+export const apiGetOstarbaiterParam = async (param) => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/${param}`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 //! запрос на авторизацию
 export const Auth = async (data) => {

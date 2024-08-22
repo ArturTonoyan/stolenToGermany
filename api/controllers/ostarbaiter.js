@@ -15,7 +15,7 @@ export default {
         date: String,
         localityWork: String,
         departure: String,
-        profession: String,
+        dateDeparture: String,
         localityDeparture: String,
       },
     });
@@ -27,10 +27,10 @@ export default {
                 ...(filters.name && { name: {[Op.like]:`%${filters.name}%`  }}),
                 ...(filters.patronymic && { patronymic: {[Op.like]:`%${filters.patronymic}%`  }}),
                 ...(filters.date && { date: {[Op.like]:`%${filters.date}%`  }}),
-                ...(filters.localityWork && { localityWork: {[Op.like]:`%${filters.localityWork}`}}),
-                ...(filters.departure && {departure: {[Op.like]:`%${filters.departure}`}}),
-                ...(filters.profession && {profession: {[Op.like]: `%${filters.profession}`}}),
-                ...(filters.localityDeparture && {localityDeparture: {[Op.like]: `%${filters.localityDeparture}`}}),
+                ...(filters.localityWork && { localityWork: {[Op.like]:`%${filters.localityWork}%`}}),
+                ...(filters.departure && {departure: {[Op.like]:`%${filters.departure}%`}}),
+                ...(filters.dateDeparture && { dateDeparture: {[Op.like]: `%${filters.dateDeparture}%`}}),
+                ...(filters.localityDeparture && {localityDeparture: {[Op.like]: `%${filters.localityDeparture}%`}}),
             },
         })
         if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')

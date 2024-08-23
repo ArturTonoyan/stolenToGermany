@@ -6,7 +6,7 @@ import Ostarbeiter from "../models/index.js";
 import { readdir } from "node:fs/promises";
 import { Op } from "sequelize";
 
-const errorCodes  = JSON.parse(fs.readFileSync('../api/config/errorCodes.json'));
+const errorCodes  = JSON.parse(fs.readFileSync('./config/errorCodes.json'));
 
 
 const  supportingDocuments= {

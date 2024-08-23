@@ -2,11 +2,15 @@ import express from "express";
 import logger from "morgan";
 import { MulterError } from "multer";
 import fs from "fs";
-const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
+const errorCodes = JSON.parse(fs.readFileSync("./config/errorCodes.json"));
 
 import cookieParser from "cookie-parser";
 import { initializeDbModels, parsnigExsel } from "./utils/db.js";
 const app = express();
+
+import 'dotenv/config'
+
+
 
 import authRoute from "./routes/auth.js";
 import ostarbaiterRoute from "./routes/ostarbaiter.js";
@@ -52,7 +56,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 // ==== on server start functions
 (async function initDb() {
     try {
-        await initializeDbModels();
+       await initializeDbModels();
         //await parsnigExsel()
     } catch (e) {
         if (app.get('env') !== 'test') {

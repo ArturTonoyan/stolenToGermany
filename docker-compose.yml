@@ -1,0 +1,8 @@
+
+services:
+  tets:
+    container_name: server
+    image: api
+    extra_hosts:
+      - "host.docker.internal:5432"
+

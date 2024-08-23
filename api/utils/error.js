@@ -1,6 +1,6 @@
 
 import fs from 'fs';
-const errorCodes  = JSON.parse(fs.readFileSync('../api/config/errorCodes.json'));
+const errorCodes  = JSON.parse(fs.readFileSync('./config/errorCodes.json'));
 import { toSnakeCase } from 'js-convert-case';
 
 const errorStatuses = {

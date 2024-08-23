@@ -1,9 +1,8 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from "bcrypt";
-import 'dotenv/config';
-const { DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
+const { DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 
 export default class Ostarbeiter extends Model {

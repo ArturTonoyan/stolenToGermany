@@ -164,16 +164,17 @@ export default {
                     point: feature.GeoObject.Point,
                 })
             }
+
             return res.json({ camps: points })
         }
 
-        const ostarbaiters=await Ostarbeiter.findAll({
+        const {count, rows }=await Ostarbeiter.findAndCountAll({
             where: {
                 localityWork: {[Op.like]:`%${filters.localityWork}` },
             }
         })
 
-        if(ostarbaiters.length<1) throw new AppErrorNotExist('ostarbaiters')
+        if(count < 1) throw new AppErrorNotExist('ostarbaiters')
 
         const {data }=await axios({
             method: 'get',
@@ -185,7 +186,8 @@ export default {
 
         res.json({
             point: feature.GeoObject.Point,
-            ostarbaiters: ostarbaiters?.map(mapOfStolen)
+            count: count,
+            ostarbaiters: rows?.map(mapOfStolen)
         })
     },
 }

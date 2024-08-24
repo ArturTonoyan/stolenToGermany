@@ -3,7 +3,7 @@ import styles from "./Header.module.scss";
 import Logo from "../Logo/Logo";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { apiOstarbaiters } from "../../api/ApiRequest";
+import { apiGetCamps, apiOstarbaiters } from "../../api/ApiRequest";
 import { apiGetPeople } from "../../store/basic/people.slice";
 
 function Header() {
@@ -19,11 +19,17 @@ function Header() {
 
   const dispacth = useDispatch();
   useEffect(() => {
+    //! записываем всех людей в редукс
     apiOstarbaiters().then((req) => {
       if (req?.status === 200) {
         dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
         console.log("req.data", req.data.ostarbaiters);
       }
+    });
+
+    //! записываем данные карты
+    apiGetCamps().then((req) => {
+      console.log("карта", req);
     });
   }, []);
 

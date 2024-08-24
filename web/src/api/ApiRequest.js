@@ -62,6 +62,17 @@ export const OstarbaitersCreate = async (data) => {
   }
 };
 
+//! получаем все метки на карте
+export const apiGetCamps = async () => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/camps`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 // export const CreateEducator = async (data) => {
 //   try {
 //     const response = await http.post(`${server}/educator/`, data);

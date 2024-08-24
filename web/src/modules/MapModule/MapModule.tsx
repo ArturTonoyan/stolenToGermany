@@ -11,7 +11,9 @@ function MapModule() {
   const store = useSelector((state: RootState) => state.campsSlice);
   const dispatch = useDispatch();
   const funShowMenu = (): void => {
-    dispatch(setModalOpen({ action: !store.selectedPoint.menuOpen }));
+    if (store.selectedPoint.id !== "") {
+      dispatch(setModalOpen({ action: !store.selectedPoint.menuOpen }));
+    }
   };
 
   return (

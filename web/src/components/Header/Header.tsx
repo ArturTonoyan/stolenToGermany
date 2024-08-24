@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiGetCamps, apiOstarbaiters } from "../../api/ApiRequest";
 import { apiGetPeople } from "../../store/basic/people.slice";
+import { setCamps } from "../../store/basic/camps.slice";
 
 function Header() {
   const { pathname } = useLocation();
@@ -30,6 +31,9 @@ function Header() {
     //! записываем данные карты
     apiGetCamps().then((req) => {
       console.log("карта", req);
+      if (req?.status === 200) {
+        dispacth(setCamps({ camps: req.data?.camps }));
+      }
     });
   }, []);
 

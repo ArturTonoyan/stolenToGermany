@@ -73,6 +73,17 @@ export const apiGetCamps = async () => {
   }
 };
 
+//! получаем людей по городу
+export const apiGetPeopleCamps = async (param) => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/camps${param}`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 // export const CreateEducator = async (data) => {
 //   try {
 //     const response = await http.post(`${server}/educator/`, data);

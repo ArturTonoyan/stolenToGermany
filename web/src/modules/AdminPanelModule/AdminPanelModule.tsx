@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CreateHuman from "../../components/CreateHuman/CreateHuman";
 import { Person } from "../../store/basic/people.slice";
-import { AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
+import { AddMorePhotoImg, AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
 import { create } from "domain";
 import { Link } from "react-router-dom";
 function AdminPanelModule() {
@@ -47,17 +47,17 @@ function AdminPanelModule() {
       const response = await OstarbaitersCreate(data);
       if (response?.status === 200) {
         const resp = await AddPhotoImg(photo);
-        return [
-          {
-            type: "create",
-            status: resp?.status,
-          },
-        ];
+        if (resp?.status === 200) {
+          const res = await AddMorePhotoImg(additionalFiles);
+          if (res?.status === 200) {
+            return { status: 200 }; // Return status 200 if all requests are successful
+          }
+        }
       }
-      return [];
+      return { status: 400 }; // Return a different status if any request fails
     } catch (error) {
       console.error("Error in createdHuman function:", error);
-      return [];
+      return { status: 500 }; // Return a server error status
     }
   };
 

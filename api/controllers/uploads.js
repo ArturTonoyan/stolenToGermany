@@ -5,7 +5,6 @@ import { AppError, AppErrorInvalid, AppErrorMissing } from "../utils/error.js";
 import Ostarbeiter from "../models/index.js";
 import { readdir } from "node:fs/promises";
 import { Op } from "sequelize";
-import { log } from "console";
 
 const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
 
@@ -101,12 +100,13 @@ export default {
     const files = req.files;
     let e = 0;
     for (const file of files) {
+    //   path.extname(originalname).toLowerCase();
+    // const decodedName = Buffer.from(originalname, 'latin1').toString('utf8');
+    // const data = decodedName.trim().split(extension).join("").split("-");
+
       const extension = path.extname(file.originalname).toLowerCase();
-      const data = file.originalname
-        .trim()
-        .split(extension)
-        .join("")
-        .split("-");
+      const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+      const data = decodedName.trim().split(extension).join("").split("-");
 
       const arrayfiles = await readdir(
         `./uploads/${data[0]}${data[1]}/${supportingDocuments[data[2]]}`

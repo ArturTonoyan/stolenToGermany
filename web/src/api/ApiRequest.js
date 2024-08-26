@@ -116,9 +116,27 @@ export const OstarbaitersEdit = async (data, id) => {
 export const AddPhotoImg = async (data) => {
   const formData = new FormData();
   formData.append("image", data);
-  console.log("Запрос улетел", data)
   try {
-    const response = await http.post(`${server}/uploads/image`, formData,{
+    const response = await http.post(`${server}/uploads/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const AddMorePhotoImg = async (files) => {
+  const formData = new FormData();
+  files.forEach(file => {
+    formData.append("files", file); // Append each file to the FormData
+  });
+  try {
+    const response = await http.post(`${server}/uploads`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

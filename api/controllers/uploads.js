@@ -23,7 +23,6 @@ const supportingDocuments = {
 
 const acceptedTypes = /jpeg|jpg|png/;
 const fileFilter = (req, { originalname }, cb) => {
-  console.log(originalname);
   const extension = path.extname(originalname).toLowerCase();
   if (acceptedTypes.test(extension)) cb(null, true);
   else cb(new AppError(errorCodes.FileExtensionNotAllowed));
@@ -31,9 +30,9 @@ const fileFilter = (req, { originalname }, cb) => {
 
 const storage = multer.diskStorage({
   destination: async (req, { originalname }, cb) => {
-    console.log(req.file);
     const extension = path.extname(originalname).toLowerCase();
-    const data = originalname.trim().split(extension).join("").split("-");
+    const decodedName = Buffer.from(originalname, 'latin1').toString('utf8');
+    const data = decodedName.trim().split(extension).join("").split("-");
     if (data.length === 2) {
       fs.mkdirSync(
         path.join(path.resolve("./uploads"), `${data[0]}${data[1]}`, "images"),
@@ -56,14 +55,9 @@ const storage = multer.diskStorage({
     }
   },
   filename: async (req, { originalname }, cb) => {
-    const extension = path.extname(originalname).toLowerCase();
-    console.log(originalname);
-    const fio = originalname
-      .trim()
-      .split(extension)
-      .join("")
-      .split("-")[0]
-      .match(/[А-ЯЁA-Z][а-яёa-z]+/g);
+      const extension = path.extname(originalname).toLowerCase();
+      const decodedName = Buffer.from(originalname, 'latin1').toString('utf8');
+      const fio = decodedName.trim().split(extension).join("").split("-")[0].match(/[А-ЯЁA-Z][а-яёa-z]+/g);
 
     const [surname, name, patronymic] = fio;
     const date = originalname.trim().split(extension).join("").split("-")[1];

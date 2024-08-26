@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../../components/Card/Card";
 import PathToPoint from "../../components/PathToPoint/PathToPoint";
 import styles from "./HumanProfile.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
@@ -10,6 +9,7 @@ import { RootState } from "../../store/store";
 
 function HumanProfile() {
   const store = useSelector((state: RootState) => state.peopleSlice);
+  const [imgUrl, setImgUrl] = useState("./../../img/notfoto.png");
 
   interface Human {
     addressAfterReturning: string;
@@ -63,6 +63,16 @@ function HumanProfile() {
     }
   }, [store.selectedPerson]);
 
+  useEffect(() => {
+    if (humanData?.img) {
+      try {
+        setImgUrl(require(`D:/GIT_File/stolenToGermany/api/${humanData?.img}`));
+      } catch (error) {
+        console.error("Ошибка при загрузке изображения:", error);
+      }
+    }
+  }, [humanData?.img]);
+
   return (
     <div className={styles.HumanProfile}>
       <div className={styles.HumanProfile__inner}>
@@ -78,7 +88,7 @@ function HumanProfile() {
             </Link>
           </div>
           <div>
-            <img src="./../../img/man.png" alt="man" />
+            <img src={imgUrl} alt="man" />
           </div>
           <div className={styles.HumanProfile__card__info}>
             <div className={styles.HumanProfile__card__info__name}>

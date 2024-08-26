@@ -93,6 +93,18 @@ export const OstarbaitersEdit = async (data, id) => {
   }
 };
 
+//! Запрос на добавление изображений Human
+export const AddPhotoImg = async (data) => {
+  try {
+    const response = await http.post(`${server}/uploads/`, data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; 
+  }
+};
+
 
 // просто слеш для 1 img to body
 // /image для архива files to body

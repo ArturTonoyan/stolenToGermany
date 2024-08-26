@@ -44,7 +44,7 @@ export default function CreateHuman(props: any) {
       addressAfterReturning: data.addressAfterReturning,
       infoOfDeath: data.infoOfDeath,
     }
-    props.funcCreate(dataTextHuman).then((res: any) => {
+    props.funcCreate(dataTextHuman, data.photo, data.additionalFiles).then((res: any) => {
       console.log('res', res);
       if(
         (res[0].type === "create" || res[0].type === "edit") && res[0].status === 200

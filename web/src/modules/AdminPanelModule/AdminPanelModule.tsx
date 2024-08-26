@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CreateHuman from "../../components/CreateHuman/CreateHuman";
 import { Person } from "../../store/basic/people.slice";
-import { OstarbaitersCreate } from "../../api/ApiRequest";
+import { AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
 import { create } from "domain";
 function AdminPanelModule() {
     const [inpValue, setInpValue] = useState<string>("");
@@ -35,16 +35,25 @@ function AdminPanelModule() {
 //       )
 //     );
 //   };
-const createdHuman = (data: Person) => {
-    return OstarbaitersCreate(data).then((response) => {
-        const resp = [
-            {
-                type: "create",
-                status: response?.status,
+const createdHuman = (data: Person, photo: File, additionalFiles: File[]) => {
+    OstarbaitersCreate(data).then((response) => {
+        if(response?.status === 200) {
+            const formData = {
+                img: photo
             }
-        ]
-        if (resp) {
-            return resp;
+            console.log("photo", photo);
+            console.log("formData", formData);
+            AddPhotoImg(formData).then((resp) => {
+                const respon = [
+                        {
+                            type: "create",
+                            status: resp?.status,
+                        }
+                    ]
+                   
+                        return respon;
+                    
+            })
         }
     });
 };

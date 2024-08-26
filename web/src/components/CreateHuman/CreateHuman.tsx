@@ -7,7 +7,8 @@ type Inputs = {
   name: string;
   surname: string;
   patronymic: string;
-  date: Date;
+  date: string;
+  dateDeparture: string;
   profession: string;
   localityWork: string;
   localityDeparture: string;
@@ -19,7 +20,7 @@ type Inputs = {
   additionalFiles: File[];
 };
 
-export default function CreateHuman() {
+export default function CreateHuman(props: any) {
   const {
     register,
     handleSubmit,
@@ -38,19 +39,28 @@ export default function CreateHuman() {
       date: data.date,
       profession: data.profession,
       localityWork: data.localityWork,
+      dateDeparture: data.dateDeparture,
       localityDeparture: data.localityDeparture,
       departure: data.departure,
       infoOfRepatriation: data.infoOfRepatriation,
       addressAfterReturning: data.addressAfterReturning,
       infoOfDeath: data.infoOfDeath,
     }
-    OstarbaitersCreate(dataTextHuman).then((response) => {
-      console.log(response);
-    })
-    // reset();
-    // setSelectedFileName("");
-    // setAdditionalFileNames([]);
-    // setDataSaved(true);
+    props.funcCreate(dataTextHuman, data.photo, data.additionalFiles).then((res: any) => {
+      console.log('res', res);
+      if(
+        (res[0].type === "create" || res[0].type === "edit") && res[0].status === 200
+      ){
+        reset();
+        setSelectedFileName("");
+        setAdditionalFileNames([]);
+        setDataSaved(true);
+      }else{
+        setDataNotSaved(true);
+
+      }
+  });
+  
   };
 
   const [selectedFileName, setSelectedFileName] = useState<string>("");
@@ -103,61 +113,77 @@ export default function CreateHuman() {
           <div className={styles.blockFormFirst}>
             <input
               placeholder="Фамилия"
+              defaultValue={props.data?.surname || ""}
               maxLength={50}
               {...register("name", { required: true, maxLength: 50 })}
             />
-            <input
-              placeholder="Отчество"
-              maxLength={50}
-              {...register("patronymic", { required: false, maxLength: 20 })}
-            />
-            <input
+             <input
               placeholder="Имя"
+              defaultValue={props.data?.name || ""}
               maxLength={50}
               {...register("surname", { required: false, maxLength: 50 })}
             />
             <input
+              placeholder="Отчество"
+              defaultValue={props.data?.patronymic || ""}
+              maxLength={50}
+              {...register("patronymic", { required: false, maxLength: 20 })}
+            />
+            <input
               placeholder="Год рождения"
               maxLength={50}
+              defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
-              type="date"
+            />
+             <input
+              placeholder="Адрес проживания до угона на принудительные работы в Германию"
+              maxLength={50}
+              defaultValue={props.data?.departure || ""}
+              {...register("departure", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Профессия на момент отправки в Германию"
               maxLength={50}
+              defaultValue={props.data?.profession || ""}
               {...register("profession", { required: false, maxLength: 50 })}
             />
             <input
-              placeholder="Место трудоиспользования"
+              placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
-              {...register("localityWork", { required: false, maxLength: 50 })}
+              defaultValue={props.data?.localityDeparture || ""}
+              {...register("localityDeparture", { required: false, maxLength: 50 })}
             />
           </div>
           <div className={styles.blockFormSecond}>
-            <input
-              placeholder="Населенный пункт откуда угнан на принудительные работы"
+          <input
+              placeholder="Дата угона"
               maxLength={50}
-              {...register("localityDeparture", { required: false, maxLength: 50 })}
+              defaultValue={props.data?.dateDeparture || ""}
+              {...register("dateDeparture", { required: false, maxLength: 50 })}
             />
-            <input
-              placeholder="Адрес проживания до угона на принудительные работы в Германию"
+             <input
+              placeholder="Место трудоиспользования в Третьем рейхе"
               maxLength={50}
-              {...register("departure", { required: false, maxLength: 20 })}
+              defaultValue={props.data?.localityWork || ""}
+              {...register("localityWork", { required: false, maxLength: 50 })}
+            />
+             <input
+              placeholder="Дата, место и причина смерти на момент пребывания в Германии"
+              maxLength={50}
+              defaultValue={props.data?.infoOfDeath || ""}
+              {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Дата и место репатриации"
               maxLength={50}
+              defaultValue={props.data?.infoOfRepatriation || ""}
               {...register("infoOfRepatriation", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Адрес проживания после возвращения в СССР"
               maxLength={50}
+              defaultValue = {props.data?.addressAfterReturning || ""}
               {...register("addressAfterReturning", { required: false, maxLength: 50 })}
-            />
-            <input
-              placeholder="Дата, место и причина смерти на момент пребывания в Германии"
-              maxLength={50}
-              {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Добавить фото"

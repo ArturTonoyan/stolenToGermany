@@ -26,7 +26,6 @@ export default {
   async registration({ body: { email, password } }, res) {
     if (!email) throw new AppErrorNotExist("email");
 
-    console.log(email, password);
     const isValid =
       atLeastOneDigit.test(password) &&
       atLeastOneLowerLetter.test(password) &&

@@ -45,22 +45,23 @@ export default function CreateHuman(props: any) {
       infoOfRepatriation: data.infoOfRepatriation,
       addressAfterReturning: data.addressAfterReturning,
       infoOfDeath: data.infoOfDeath,
-    }
-    props.funcCreate(dataTextHuman, data.photo, data.additionalFiles).then((res: any) => {
-      console.log('res', res);
-      if(
-        (res[0].type === "create" || res[0].type === "edit") && res[0].status === 200
-      ){
-        reset();
-        setSelectedFileName("");
-        setAdditionalFileNames([]);
-        setDataSaved(true);
-      }else{
-        setDataNotSaved(true);
-
-      }
-  });
-  
+    };
+    props
+      .funcCreate(dataTextHuman, data.photo, data.additionalFiles)
+      .then((res: any) => {
+        console.log("res", res);
+        if (
+          (res[0]?.type === "create" || res[0]?.type === "edit") &&
+          res[0]?.status === 200
+        ) {
+          reset();
+          setSelectedFileName("");
+          setAdditionalFileNames([]);
+          setDataSaved(true);
+        } else {
+          setDataNotSaved(true);
+        }
+      });
   };
 
   const [selectedFileName, setSelectedFileName] = useState<string>("");
@@ -80,7 +81,9 @@ export default function CreateHuman(props: any) {
     }
   };
 
-  const handleAdditionalFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAdditionalFilesChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files);
@@ -103,7 +106,9 @@ export default function CreateHuman(props: any) {
 
   const handleRemoveFile = (index: number) => {
     setAdditionalFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    setAdditionalFileNames((prevNames) => prevNames.filter((_, i) => i !== index));
+    setAdditionalFileNames((prevNames) =>
+      prevNames.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -115,13 +120,13 @@ export default function CreateHuman(props: any) {
               placeholder="Фамилия"
               defaultValue={props.data?.surname || ""}
               maxLength={50}
-              {...register("name", { required: true, maxLength: 50 })}
+              {...register("surname", { required: true, maxLength: 50 })}
             />
-             <input
+            <input
               placeholder="Имя"
               defaultValue={props.data?.name || ""}
               maxLength={50}
-              {...register("surname", { required: false, maxLength: 50 })}
+              {...register("name", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Отчество"
@@ -135,7 +140,7 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
             />
-             <input
+            <input
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
               maxLength={50}
               defaultValue={props.data?.departure || ""}
@@ -151,23 +156,26 @@ export default function CreateHuman(props: any) {
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
               defaultValue={props.data?.localityDeparture || ""}
-              {...register("localityDeparture", { required: false, maxLength: 50 })}
+              {...register("localityDeparture", {
+                required: false,
+                maxLength: 50,
+              })}
             />
           </div>
           <div className={styles.blockFormSecond}>
-          <input
+            <input
               placeholder="Дата угона"
               maxLength={50}
               defaultValue={props.data?.dateDeparture || ""}
               {...register("dateDeparture", { required: false, maxLength: 50 })}
             />
-             <input
+            <input
               placeholder="Место трудоиспользования в Третьем рейхе"
               maxLength={50}
               defaultValue={props.data?.localityWork || ""}
               {...register("localityWork", { required: false, maxLength: 50 })}
             />
-             <input
+            <input
               placeholder="Дата, место и причина смерти на момент пребывания в Германии"
               maxLength={50}
               defaultValue={props.data?.infoOfDeath || ""}
@@ -177,13 +185,19 @@ export default function CreateHuman(props: any) {
               placeholder="Дата и место репатриации"
               maxLength={50}
               defaultValue={props.data?.infoOfRepatriation || ""}
-              {...register("infoOfRepatriation", { required: false, maxLength: 50 })}
+              {...register("infoOfRepatriation", {
+                required: false,
+                maxLength: 50,
+              })}
             />
             <input
               placeholder="Адрес проживания после возвращения в СССР"
               maxLength={50}
-              defaultValue = {props.data?.addressAfterReturning || ""}
-              {...register("addressAfterReturning", { required: false, maxLength: 50 })}
+              defaultValue={props.data?.addressAfterReturning || ""}
+              {...register("addressAfterReturning", {
+                required: false,
+                maxLength: 50,
+              })}
             />
             <input
               placeholder="Добавить фото"
@@ -215,7 +229,10 @@ export default function CreateHuman(props: any) {
             <div className={styles.SelectFile__multiple}>
               <div className={styles.SelectFile__multiple__text}>
                 {additionalFileNames.map((fileName, index) => (
-                  <div key={index} className={styles.SelectFile__multiple__containerNameFile}>
+                  <div
+                    key={index}
+                    className={styles.SelectFile__multiple__containerNameFile}
+                  >
                     <p>{fileName}</p>
                     <img
                       src="./../../img/CloseArrowRed.svg"
@@ -228,10 +245,15 @@ export default function CreateHuman(props: any) {
                   </div>
                 ))}
                 {additionalFileNames.length === 0 && (
-                  <p className={styles.SelectFile__multiple__textNotData}>Личный архив файлов</p>
+                  <p className={styles.SelectFile__multiple__textNotData}>
+                    Личный архив файлов
+                  </p>
                 )}
               </div>
-              <div className={styles.SelectFile__multiple__img} onClick={handleSelectAdditionalFilesClick}>
+              <div
+                className={styles.SelectFile__multiple__img}
+                onClick={handleSelectAdditionalFilesClick}
+              >
                 <p>jpg, png, jpeg </p>
                 <img src="./../../img/file.svg" />
               </div>
@@ -242,13 +264,19 @@ export default function CreateHuman(props: any) {
             {DataSaved && (
               <div className={styles.DataSave}>
                 <p>Данные успешно сохранены*</p>
-                <img onClick={() => setDataSaved(false)} src="./../../img/CloseArrowGreen.svg" />
+                <img
+                  onClick={() => setDataSaved(false)}
+                  src="./../../img/CloseArrowGreen.svg"
+                />
               </div>
             )}
             {DataNotSaved && (
               <div className={styles.DataNotSave}>
                 <p>Данные не сохранены, проверьте заполненные поля*</p>
-                <img onClick={() => setDataNotSaved(false)} src="./../../img/CloseArrowRed.svg" />
+                <img
+                  onClick={() => setDataNotSaved(false)}
+                  src="./../../img/CloseArrowRed.svg"
+                />
               </div>
             )}
           </div>

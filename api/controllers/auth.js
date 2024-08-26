@@ -34,7 +34,6 @@ export default {
         if (!password  || !isValid) throw new AppErrorNotExist('password');
 
         const adminCheck = await Admin.findOne({ where: { email } });
-        console.log(adminCheck)
         if(adminCheck) throw new AppErrorAlreadyExists('admin')
 
         const admin=await Admin.create({ email, password })

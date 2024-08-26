@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { apiGetCamps } from "../../store/basic/camps.slice";
 
 function HumanProfilePage() {
   const store = useSelector((state: RootState) => state.campsSlice);
@@ -15,13 +14,9 @@ function HumanProfilePage() {
   const dispacth = useDispatch();
 
   useEffect(() => {
-    dispacth(apiGetCamps());
-  }, []);
-
-  useEffect(() => {
     const koor = store?.camps.find(
-      (el) => el.id === store.selectedPoint.id + ""
-    )?.coordinates;
+      (el) => el.locality === store.selectedPoint.id + ""
+    )?.point;
     setEndCoords(koor);
   }, [store?.camps]);
 

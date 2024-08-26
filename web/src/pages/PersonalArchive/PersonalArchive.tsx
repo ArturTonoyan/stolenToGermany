@@ -24,7 +24,7 @@ function PersonalArchive() {
       "./img/imgSlider/11.png",
       "./img/imgSlider/12.png",
     ]);
-  });
+  }, []);
 
   //! скролл влево
   const funScrollLeft = () => {

@@ -30,15 +30,15 @@ export const apiGetOstarbaiter = async (param) => {
 };
 
 //! получаем людей по расширенному поиску
-// export const apiGetOstarbaiterParam = async (param) => {
-//   try {
-//     const response = await http.get(`${server}/ostarbaiters/${param}`);
-//     // console.log(response);
-//     return response;
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// };
+export const apiGetOstarbaiterParam = async (param) => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/${param}`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 //! запрос на авторизацию
 export const Auth = async (data) => {
@@ -54,8 +54,6 @@ export const Auth = async (data) => {
   }
 };
 
-
-
 //! Запрос на создание human
 export const OstarbaitersCreate = async (data) => {
   try {
@@ -64,10 +62,31 @@ export const OstarbaitersCreate = async (data) => {
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw error; 
+    throw error;
   }
 };
 
+//! получаем все метки на карте
+export const apiGetCamps = async () => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/camps`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+//! получаем людей по городу
+export const apiGetPeopleCamps = async (param) => {
+  try {
+    const response = await http.get(`${server}/ostarbaiters/camps${param}`);
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 //! Запрос на удаление Human
 export const OstarbaitersDelete = async (id) => {
@@ -77,7 +96,7 @@ export const OstarbaitersDelete = async (id) => {
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -89,12 +108,17 @@ export const OstarbaitersEdit = async (data, id) => {
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw error; 
+    throw error;
   }
 };
 
 //! Запрос на добавление изображений Human
 export const AddPhotoImg = async (data) => {
+  const formData = new FormData();
+  console.log(data);
+  formData.append("image", data);
+  console.log("formData", formData);
+
   try {
     const response = await http.post(`${server}/uploads/image`, data,{
       headers: {
@@ -108,8 +132,6 @@ export const AddPhotoImg = async (data) => {
     throw error;
   }
 };
-
-
 
 // просто слеш для 1 img to body
 // /image для архива files to body

@@ -16,7 +16,7 @@
   .point1 {
     position: absolute;
     transform: translateY(-40px);
-
+    text-wrap: nowrap;
     color: var(--blue1);
     &::after {
       content: "";

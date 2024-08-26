@@ -94,7 +94,10 @@ function HumanProfile() {
             </Link>
           </div>
           <div className={styles.way}>
-            <PathToPoint />
+            <PathToPoint
+              localityDeparture={humanData?.localityDeparture}
+              localityWork={humanData?.localityWork}
+            />
           </div>
         </div>
 

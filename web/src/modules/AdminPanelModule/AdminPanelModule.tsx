@@ -37,21 +37,32 @@ function AdminPanelModule() {
 //     );
 //   };
 const createdHuman = (data: Person, photo: File, additionalFiles: File[]) => {
-    OstarbaitersCreate(data).then((response) => {
-        if (response?.status === 200) {
-            const formData = new FormData();
-            formData.append('image', photo); // Ensure the key matches the backend
+    // OstarbaitersCreate(data).then((response) => {
+    //     if (response?.status === 200) {
+    //         const formData = new FormData();
+    //         formData.append('image', photo); // Ensure the key matches the backend
 
-            AddPhotoImg(formData).then((resp) => {
-                const respon = [
-                    {
-                        type: "create",
-                        status: resp?.status,
-                    }
-                ];
-                return respon;
-            });
-        }
+    //         AddPhotoImg(formData).then((resp) => {
+    //             const respon = [
+    //                 {
+    //                     type: "create",
+    //                     status: resp?.status,
+    //                 }
+    //             ];
+    //             return respon;
+    //         });
+    //     }
+    // });
+    const formData = new FormData();
+    formData.append('image', photo);
+    AddPhotoImg(formData).then((resp) => {
+        const respon = [
+            {
+                type: "create",
+                status: resp?.status,
+            }
+        ];
+        return respon;
     });
 };
 

@@ -32,7 +32,7 @@ const fileFilter = (req, { originalname }, cb) => {
 const storage = multer.diskStorage({
     destination: async (req, { originalname }, cb) => {
         const extension = path.extname(originalname).toLowerCase();
-        console.log(originalnames)
+        console.log(originalname)
         const data=originalname.trim().split(extension).join('').split('-')
         if(data.length===2) {
                 fs.mkdirSync( path.join(path.resolve('./uploads'), `${data[0]}${data[1]}`, 'images'),{ recursive: true })

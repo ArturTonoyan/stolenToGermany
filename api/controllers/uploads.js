@@ -60,7 +60,7 @@ const storage = multer.diskStorage({
 
     const [surname, name, patronymic] = fio;
     const date = originalname.trim().split(extension).join("").split("-")[1];
-    console.log(surname, name, date);
+   
     const ostarbaiter = await Ostarbeiter.findOne({
       where: {
         ...(surname && { surname: { [Op.like]: `%${surname}%` } }),
@@ -107,7 +107,7 @@ export default {
       const extension = path.extname(file.originalname).toLowerCase();
       const decodedName = Buffer.from(file.originalname, 'latin1').toString('utf8');
       const data = decodedName.trim().split(extension).join("").split("-");
-
+      console.log("data", data)
       const arrayfiles = await readdir(
         `./uploads/${data[0]}${data[1]}/${supportingDocuments[data[2]]}`
       );

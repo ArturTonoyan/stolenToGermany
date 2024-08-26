@@ -44,22 +44,23 @@ function AdminPanelModule() {
     additionalFiles: File[]
   ) => {
     try {
-      const response = await OstarbaitersCreate(data);
-      if (response?.status === 200) {
-        const resp = await AddPhotoImg(photo);
-        if (resp?.status === 200) {
-          const res = await AddMorePhotoImg(additionalFiles);
-          if (res?.status === 200) {
-            return { status: 200 }; // Return status 200 if all requests are successful
-          }
+        const response = await OstarbaitersCreate(data);
+        if (response?.status === 200) {
+            const [resp, res] = await Promise.all([
+                AddPhotoImg(photo),
+                AddMorePhotoImg(additionalFiles)
+            ]);
+            if (resp?.status === 200 && res?.status === 200) {
+                return { status: 200 };
+            }
         }
-      }
-      return { status: 400 }; // Return a different status if any request fails
+        return { status: 400 }; 
     } catch (error) {
-      console.error("Error in createdHuman function:", error);
-      return { status: 500 }; // Return a server error status
+        console.error("Ошибка в функции createdHuman:", error);
+        return { status: 400 };
     }
-  };
+};
+
 
   return (
     <div className={styles.AdminPanelModule}>

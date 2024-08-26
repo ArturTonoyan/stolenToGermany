@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CreateHuman from "../../components/CreateHuman/CreateHuman";
 import { Person } from "../../store/basic/people.slice";
-import { AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
+import { AddMorePhotoImg, AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
 import { create } from "domain";
 import { Link } from "react-router-dom";
 function AdminPanelModule() {
@@ -44,22 +44,23 @@ function AdminPanelModule() {
     additionalFiles: File[]
   ) => {
     try {
-      const response = await OstarbaitersCreate(data);
-      if (response?.status === 200) {
-        const resp = await AddPhotoImg(photo);
-        return [
-          {
-            type: "create",
-            status: resp?.status,
-          },
-        ];
-      }
-      return [];
+        const response = await OstarbaitersCreate(data);
+        if (response?.status === 200) {
+            const [resp, res] = await Promise.all([
+                AddPhotoImg(photo),
+                AddMorePhotoImg(additionalFiles)
+            ]);
+            if (resp?.status === 200 && res?.status === 200) {
+                return { status: 200 };
+            }
+        }
+        return { status: 400 }; 
     } catch (error) {
-      console.error("Error in createdHuman function:", error);
-      return [];
+        console.error("Ошибка в функции createdHuman:", error);
+        return { status: 400 };
     }
-  };
+};
+
 
   return (
     <div className={styles.AdminPanelModule}>

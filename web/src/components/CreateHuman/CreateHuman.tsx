@@ -50,10 +50,7 @@ export default function CreateHuman(props: any) {
       .funcCreate(dataTextHuman, data.photo, data.additionalFiles)
       .then((res: any) => {
         console.log("res", res);
-        if (
-          (res[0]?.type === "create" || res[0]?.type === "edit") &&
-          res[0]?.status === 200
-        ) {
+        if (res[0]?.status === 200) {
           reset();
           setSelectedFileName("");
           setAdditionalFileNames([]);

@@ -23,7 +23,6 @@ const supportingDocuments = {
 
 const acceptedTypes = /jpeg|jpg|png/;
 const fileFilter = (req, { originalname }, cb) => {
-  console.log(originalname);
   const extension = path.extname(originalname).toLowerCase();
   if (acceptedTypes.test(extension)) cb(null, true);
   else cb(new AppError(errorCodes.FileExtensionNotAllowed));
@@ -31,8 +30,9 @@ const fileFilter = (req, { originalname }, cb) => {
 
 const storage = multer.diskStorage({
   destination: async (req, { originalname }, cb) => {
-    console.log(req.file);
     const extension = path.extname(originalname).toLowerCase();
+    console.log(extension);
+
     const data = originalname.trim().split(extension).join("").split("-");
     if (data.length === 2) {
       fs.mkdirSync(

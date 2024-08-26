@@ -31,9 +31,8 @@ const fileFilter = (req, { originalname }, cb) => {
 const storage = multer.diskStorage({
   destination: async (req, { originalname }, cb) => {
     const extension = path.extname(originalname).toLowerCase();
-    console.log(extension);
-
-    const data = originalname.trim().split(extension).join("").split("-");
+    const decodedName = Buffer.from(originalname, "latin1").toString("utf8");
+    const data = decodedName.trim().split(extension).join("").split("-");
     if (data.length === 2) {
       fs.mkdirSync(
         path.join(path.resolve("./uploads"), `${data[0]}${data[1]}`, "images"),
@@ -57,8 +56,8 @@ const storage = multer.diskStorage({
   },
   filename: async (req, { originalname }, cb) => {
     const extension = path.extname(originalname).toLowerCase();
-    console.log(originalname);
-    const fio = originalname
+    const decodedName = Buffer.from(originalname, "latin1").toString("utf8");
+    const fio = decodedName
       .trim()
       .split(extension)
       .join("")

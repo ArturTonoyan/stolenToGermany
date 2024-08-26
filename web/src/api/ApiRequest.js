@@ -115,14 +115,12 @@ export const OstarbaitersEdit = async (data, id) => {
 //! Запрос на добавление изображений Human
 export const AddPhotoImg = async (data) => {
   const formData = new FormData();
-  console.log("file", data);
-  data = encodeURIComponent(data);
   formData.append("image", data);
-
+  console.log("Запрос улетел", data);
   try {
     const response = await http.post(`${server}/uploads/image`, formData, {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "multipart/form-data",
       },
     });
     console.log(response);

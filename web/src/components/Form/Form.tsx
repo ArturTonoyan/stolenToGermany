@@ -105,10 +105,11 @@ export default function Form() {
         </div>
         <div className={styles.blockFormSecond}>
           <input
-            placeholder="Адрес проживания до угона в Германию"
-            maxLength={50}
+            className={styles.bigInp}
+            placeholder="Адрес проживания до угона на принудительные работы в Германию"
+            maxLength={150}
             defaultValue={store.formData.departure || ""}
-            {...register("departure", { maxLength: 50 })}
+            {...register("departure")}
           />
           <input
             placeholder="Дата угона на принудительные работы в Германию"

@@ -5,6 +5,7 @@ import {AppError, AppErrorInvalid, AppErrorMissing} from "../utils/error.js";
 import Ostarbeiter from "../models/index.js";
 import { readdir } from "node:fs/promises";
 import { Op } from "sequelize";
+import { log } from 'console';
 
 const errorCodes  = JSON.parse(fs.readFileSync('../api/config/errorCodes.json'));
 
@@ -31,6 +32,7 @@ const fileFilter = (req, { originalname }, cb) => {
 const storage = multer.diskStorage({
     destination: async (req, { originalname }, cb) => {
         const extension = path.extname(originalname).toLowerCase();
+        console.log(originalnames)
         const data=originalname.trim().split(extension).join('').split('-')
         if(data.length===2) {
                 fs.mkdirSync( path.join(path.resolve('./uploads'), `${data[0]}${data[1]}`, 'images'),{ recursive: true })
@@ -43,12 +45,12 @@ const storage = multer.diskStorage({
     },
     filename:  async (req,{ originalname }, cb) => {
         const extension = path.extname(originalname).toLowerCase();
+        console.log(originalname)
         const fio=originalname.trim()
             .split(extension)
             .join('')
             .split('-')[0]
             .match(/[А-ЯЁA-Z][а-яёa-z]+/g)
-
 
         const [surname, name, patronymic] = fio
         const date=originalname.trim().split(extension).join('').split('-')[1]

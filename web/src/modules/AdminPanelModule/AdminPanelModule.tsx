@@ -8,6 +8,7 @@ import CreateHuman from "../../components/CreateHuman/CreateHuman";
 import { Person } from "../../store/basic/people.slice";
 import { AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
 import { create } from "domain";
+import { Link } from "react-router-dom";
 function AdminPanelModule() {
     const [inpValue, setInpValue] = useState<string>("");
 
@@ -37,53 +38,33 @@ function AdminPanelModule() {
 //   };
 const createdHuman = (data: Person, photo: File, additionalFiles: File[]) => {
     OstarbaitersCreate(data).then((response) => {
-        if(response?.status === 200) {
-            const formData = {
-                img: photo
-            }
-            console.log("photo", photo);
-            console.log("formData", formData);
+        if (response?.status === 200) {
+            const formData = new FormData();
+            formData.append('image', photo); // Ensure the key matches the backend
+
             AddPhotoImg(formData).then((resp) => {
                 const respon = [
-                        {
-                            type: "create",
-                            status: resp?.status,
-                        }
-                    ]
-                   
-                        return respon;
-                    
-            })
+                    {
+                        type: "create",
+                        status: resp?.status,
+                    }
+                ];
+                return respon;
+            });
         }
     });
 };
 
+
   return (
     <div className={styles.AdminPanelModule}>
         <div className={styles.search}>
-            <h1>Поиск для редактирования существующей информации:</h1>
-            <div className={styles.search__inner}>
-                <Input
-                    type="text"
-                    placeholder={"Фамилия, Имя, Отчество, год рождения"}
-                    value={inpValue}
-                    funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    funOnChange(e.target.value)
-                    }
-                />
-                {!isActionOpen && <button>НАЙТИ</button>}
-              
-            </div>
-            <div>
-                {isActionOpen &&
-                    <div className={styles.filter}>
-                    <Form/>
-                    </div>
-                }
-            </div>
             <div>
                 <h1 className={styles.title}>Внести новые данные о человеке:</h1>
                 <CreateHuman funcCreate={createdHuman}/>
+                <div className={styles.Button}>
+                    <Link to="/AdminPage/AdminSearchResult"><button>Редактирование существующей информации</button></Link>
+                </div>
             </div>
         </div>
        

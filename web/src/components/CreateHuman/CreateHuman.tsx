@@ -7,7 +7,8 @@ type Inputs = {
   name: string;
   surname: string;
   patronymic: string;
-  date: Date;
+  date: string;
+  dateDeparture: string;
   profession: string;
   localityWork: string;
   localityDeparture: string;
@@ -38,6 +39,7 @@ export default function CreateHuman(props: any) {
       date: data.date,
       profession: data.profession,
       localityWork: data.localityWork,
+      dateDeparture: data.dateDeparture,
       localityDeparture: data.localityDeparture,
       departure: data.departure,
       infoOfRepatriation: data.infoOfRepatriation,
@@ -115,6 +117,12 @@ export default function CreateHuman(props: any) {
               maxLength={50}
               {...register("name", { required: true, maxLength: 50 })}
             />
+             <input
+              placeholder="Имя"
+              defaultValue={props.data?.name || ""}
+              maxLength={50}
+              {...register("surname", { required: false, maxLength: 50 })}
+            />
             <input
               placeholder="Отчество"
               defaultValue={props.data?.patronymic || ""}
@@ -122,17 +130,16 @@ export default function CreateHuman(props: any) {
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
             <input
-              placeholder="Имя"
-              defaultValue={props.data?.name || ""}
-              maxLength={50}
-              {...register("surname", { required: false, maxLength: 50 })}
-            />
-            <input
               placeholder="Год рождения"
               maxLength={50}
               defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
-              type="date"
+            />
+             <input
+              placeholder="Адрес проживания до угона на принудительные работы в Германию"
+              maxLength={50}
+              defaultValue={props.data?.departure || ""}
+              {...register("departure", { required: false, maxLength: 20 })}
             />
             <input
               placeholder="Профессия на момент отправки в Германию"
@@ -141,24 +148,30 @@ export default function CreateHuman(props: any) {
               {...register("profession", { required: false, maxLength: 50 })}
             />
             <input
-              placeholder="Место трудоиспользования"
-              maxLength={50}
-              defaultValue={props.data?.localityWork || ""}
-              {...register("localityWork", { required: false, maxLength: 50 })}
-            />
-          </div>
-          <div className={styles.blockFormSecond}>
-            <input
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
               defaultValue={props.data?.localityDeparture || ""}
               {...register("localityDeparture", { required: false, maxLength: 50 })}
             />
-            <input
-              placeholder="Адрес проживания до угона на принудительные работы в Германию"
+          </div>
+          <div className={styles.blockFormSecond}>
+          <input
+              placeholder="Дата угона"
               maxLength={50}
-              defaultValue={props.data?.departure || ""}
-              {...register("departure", { required: false, maxLength: 20 })}
+              defaultValue={props.data?.dateDeparture || ""}
+              {...register("dateDeparture", { required: false, maxLength: 50 })}
+            />
+             <input
+              placeholder="Место трудоиспользования в Третьем рейхе"
+              maxLength={50}
+              defaultValue={props.data?.localityWork || ""}
+              {...register("localityWork", { required: false, maxLength: 50 })}
+            />
+             <input
+              placeholder="Дата, место и причина смерти на момент пребывания в Германии"
+              maxLength={50}
+              defaultValue={props.data?.infoOfDeath || ""}
+              {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Дата и место репатриации"
@@ -171,12 +184,6 @@ export default function CreateHuman(props: any) {
               maxLength={50}
               defaultValue = {props.data?.addressAfterReturning || ""}
               {...register("addressAfterReturning", { required: false, maxLength: 50 })}
-            />
-            <input
-              placeholder="Дата, место и причина смерти на момент пребывания в Германии"
-              maxLength={50}
-              defaultValue={props.data?.infoOfDeath || ""}
-              {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
             <input
               placeholder="Добавить фото"

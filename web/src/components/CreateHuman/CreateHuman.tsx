@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
-import { OstarbaitersCreate } from "../../api/ApiRequest";
+import { OstarbaitersCreate, apiGetOstarbaiter } from "../../api/ApiRequest";
 import { useLocation } from "react-router-dom";
 
 type Inputs = {
@@ -27,8 +27,40 @@ export default function CreateHuman(props: any) {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<Inputs>();
+const [data, setData] = useState<any>();
 
+useEffect(() => {
+  if(props.data != undefined){
+    SetDataResp()
+  }
+ }, [props.data]);
+
+ const SetDataResp = () =>{
+  apiGetOstarbaiter(props.data.id).then((res) => {
+    setData(res && res?.data?.ostarbaiter);  
+  });
+ }
+ useEffect(() => {
+  setDatas(data)
+ },[data])
+
+ const setDatas = (date: any) =>{
+  console.log("date", date?.surname)
+  setValue("surname", date?.surname || "");
+  setValue("name", date?.name || "");
+  setValue("patronymic", date?.patronymic || "");
+  setValue("date", date?.date || "");
+  setValue("departure", date?.departure || "");
+  setValue("profession", date?.profession || "");
+  setValue("localityDeparture", date?.localityDeparture || "");
+  setValue("dateDeparture", date?.dateDeparture || "");
+  setValue("localityWork", date?.localityWork || "");
+  setValue("infoOfDeath", date?.infoOfDeath || "");
+  setValue("infoOfRepatriation", date?.infoOfRepatriation || "");
+  setValue("addressAfterReturning", date?.addressAfterReturning || "");
+ }
   const location = useLocation();
 console.log(location.pathname)
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -53,6 +85,10 @@ console.log(location.pathname)
       .funcCreate(dataTextHuman, data.photo, data.additionalFiles)
       .then((res: any) => {
         console.log("res", res);
+        if(res[0]?.status === 200 && res[0].type === "edit") {
+          reset(props.data);
+          SetDataResp()
+        }
         if (res[0]?.status === 200) {
           reset();
           setSelectedFileName("");

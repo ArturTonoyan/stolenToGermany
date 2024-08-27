@@ -52,7 +52,6 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 (async function initDb() {
   try {
     await initializeDbModels();
-    await parsnigExsel();
   } catch (e) {
     if (app.get("env") !== "test") {
       console.log(e);
@@ -63,6 +62,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 })();
 // ====
 
+//await parsnigExsel();
 app
   .use((req, res) => res.status(404).json({ type: "NOT FOUND", code: 404 }))
   // eslint-disable-next-line no-unused-vars

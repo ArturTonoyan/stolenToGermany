@@ -34,8 +34,7 @@ export default function Form() {
 
     //! записываем в стор
     dispacth(setFormData({ data }));
-
-    if (pathname.split("/").pop() !== "SearchModule") {
+    if (pathname.split("/").pop() !== "SearchModule" && pathname.split("/").pop() !== "AdminSearchResult") {
       navigate("/SearchPage/SearchModule");
       dispacth(openAction());
     }

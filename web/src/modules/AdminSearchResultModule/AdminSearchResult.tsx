@@ -3,12 +3,13 @@ import styles from "./AdminSearchResult.module.scss";
 import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { Person, apiGetPeople } from "../../store/basic/people.slice";
+import { Person, apiGetPeople, resetFilterPeople } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
 import { Link } from "react-router-dom";
 import Form from "../../components/Form/Form";
 import CardAdmin from "../../components/CardAdmin/CardAdmin";
 import { apiOstarbaiters } from "../../api/ApiRequest";
+import { resetForm } from "../../store/form/form.slice";
 
 interface SearchModuleProps {}
 
@@ -42,9 +43,7 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     });
   }, []);
 
-
-
-   //! при нажатии на кнопку найти
+//! при нажатии на кнопку найти
 const serchPeople = () => {
   setFilterHumen(
     store.people.filter((person) =>
@@ -61,7 +60,13 @@ const serchPeople = () => {
   // useEffect(() => {
   //   dispacth(apiGetPeople());
   // }, []);
-
+  const funReset = () => {
+    //! сброс данных формы
+    dispacth(resetForm());
+    dispacth(resetFilterPeople());
+    setInpValue("");
+  };
+  
   return (
     <div className={styles.SearchModule}>
       <Link to="/AdminPage/AdminPanelModule">
@@ -85,6 +90,9 @@ const serchPeople = () => {
           />
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
+        <button className={styles.reset} onClick={funReset}>
+          Сбросить
+        </button>
       </div>
       {isActionOpen && (
         <div className={styles.filter}>

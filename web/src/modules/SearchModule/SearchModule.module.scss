@@ -4,6 +4,7 @@
   .topMenu {
     display: flex;
     flex-direction: row;
+    margin-top: 160px;
     button {
       @include Button();
       width: 277px;
@@ -22,6 +23,7 @@
       display: flex;
       width: 100%;
       border: none;
+      background-color: inherit;
     }
   }
   .filter {

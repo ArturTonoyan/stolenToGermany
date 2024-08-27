@@ -16,18 +16,17 @@ function EditHumanModule() {
     });
   }, []);
 
-  const editHuman = (data: Person) => {
-    return OstarbaitersEdit(data, peopleData.id).then((response) => {
-        const resp = [
-            {
-                type: "edit",
-                status: response?.status,
-            }
-        ]
-        if (resp) {
-            return resp;
-        }
-    });
+  const editHuman = async (data: Person) => {
+    const response = await OstarbaitersEdit(data, peopleData.id);
+    const resp = [
+      {
+        type: "edit",
+        status: response?.status,
+      }
+    ];
+    if (resp) {
+      return resp;
+    }
 };
 
   return (

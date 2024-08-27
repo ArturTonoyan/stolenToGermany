@@ -19,15 +19,20 @@
             cursor: pointer;
         }
     }
-  .topMenu {
-    display: flex;
-    flex-direction: row;
-    button {
-      @include Button();
-      width: 277px;
-      margin-left: 32px;
+    .topMenu {
+      display: flex;
+      flex-direction: row;
+      button {
+        @include Button();
+        width: 277px;
+        margin-left: 32px;
+      }
+      .reset {
+        @include Button2();
+        width: 277px;
+        margin-left: 32px;
+      }
     }
-  }
   .search {
     // width: 47vw;
     input {
@@ -63,4 +68,5 @@
     text-decoration: none;
     color: #000;
   }
+ 
 }

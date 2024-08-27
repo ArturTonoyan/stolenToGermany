@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #adadad;
-  background-color: var(--background-body);
+  background-color: inherit;
   width: 949px;
   .input {
     @include Input();

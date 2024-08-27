@@ -19,9 +19,7 @@ function Card(props: any) {
   useEffect(() => {
     if (props.item?.img) {
       try {
-        setImgUrl(
-          require(`D:/GIT_File/stolenToGermany/api/${props.item?.img}`)
-        );
+        setImgUrl(require(`./../../../../api/${props.item?.img}`));
       } catch (error) {
         console.error("Ошибка при загрузке изображения:", error);
       }

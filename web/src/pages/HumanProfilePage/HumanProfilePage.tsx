@@ -11,7 +11,6 @@ function HumanProfilePage() {
   const [endCoords, setEndCoords] = useState<any>([52.516363, 13.378906]);
   const [route, setRoute] = useState<any>(null);
   const [points, setPoints] = useState<any>([]);
-  const dispacth = useDispatch();
 
   useEffect(() => {
     const koor = store?.camps.find(

@@ -66,7 +66,7 @@ function HumanProfile() {
   useEffect(() => {
     if (humanData?.img) {
       try {
-        setImgUrl(require(`D:/GIT_File/stolenToGermany/api/${humanData?.img}`));
+        setImgUrl(require(`./../../../../api/${humanData?.img}`));
       } catch (error) {
         console.error("Ошибка при загрузке изображения:", error);
       }

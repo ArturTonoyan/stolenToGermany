@@ -170,7 +170,7 @@ export default {
 
         const {count, rows }=await Ostarbeiter.findAndCountAll({
             where: {
-                localityWork: {[Op.like]:`%${filters.localityWork}` },
+                localityWork: {[Op.like]:`%${filters.localityWork}%` },
             }
         })
 

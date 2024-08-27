@@ -13,18 +13,7 @@ export default async function (ostarbaiter){
                 files.map(file => pathDirectoryFiles.push(`${path}/${directory}/${file}`))
                 result.push({[directory]: pathDirectoryFiles})
             }
-
         }))
-        /*
-        for (const directory of directories) {
-            const files=await readdir(`${path}/${directory}`)
-            const pathDirectoryFiles=[]
-            for (const file of files) {
-                  pathDirectoryFiles.push(`${path}/${directory}/${file}`)
-            }
-            result.push({[directory]: pathDirectoryFiles })
-        }*/
-
         return result
     }catch (e){
         return null

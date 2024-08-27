@@ -31,6 +31,7 @@
                  
                 }
             }
+          
             input{
                 margin: 25px 0px;
             }
@@ -160,3 +161,23 @@
        
     }
 }
+@keyframes boxShadowFade {
+    0% {
+      box-shadow: none;
+    }
+    50% {
+      box-shadow: 0 0 10px var(--RedColor); // Adjust the shadow as needed
+    }
+    100% {
+      box-shadow: none;
+    }
+  }
+  
+  .inputError {
+    border-bottom: 1px solid var(--RedColor)!important; // Change border color to red
+    color: var(--RedColor)!important; // Change text color to red
+    animation: boxShadowFade 1.5s ease-in-out forwards; // Apply the animation
+    &::placeholder {
+      color: var(--RedColor)!important; // Change placeholder color to red
+    }
+  }

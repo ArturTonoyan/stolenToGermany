@@ -19,25 +19,8 @@ function AdminPanelModule() {
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
   );
-  //     const [filterHumen, setFilterHumen] = useState<Person[]>([]);
 
-  //     useEffect(() => {
-  //       setFilterHumen(store.people);
-  //     }, [store.people]);
-
-  //      //! при нажатии на кнопку найти
-  //   const serchPeople = () => {
-  //     setFilterHumen(
-  //       store.people.filter((person) =>
-  //         Object.values(person).some(
-  //           (value) =>
-  //             value !== null &&
-  //             value !== undefined &&
-  //             value.toString().toLowerCase().includes(inpValue.toLowerCase())
-  //         )
-  //       )
-  //     );
-  //   };
+  
   const createdHuman = async (
     data: Person,
     photo: File,

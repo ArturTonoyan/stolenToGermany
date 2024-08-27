@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
 import { OstarbaitersCreate } from "../../api/ApiRequest";
+import { useLocation } from "react-router-dom";
 
 type Inputs = {
   name: string;
@@ -28,6 +29,8 @@ export default function CreateHuman(props: any) {
     reset,
   } = useForm<Inputs>();
 
+  const location = useLocation();
+console.log(location.pathname)
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     data.photo = fileData;
     data.additionalFiles = additionalFiles;
@@ -114,8 +117,9 @@ export default function CreateHuman(props: any) {
         <div className={styles.blockInput}>
           <div className={styles.blockFormFirst}>
             <input
-              placeholder="Фамилия"
+              placeholder="Фамилия*"
               defaultValue={props.data?.surname || ""}
+              className={`${errors.surname ? styles.inputError : ''}`}
               maxLength={50}
               {...register("surname", { required: true, maxLength: 50 })}
             />
@@ -132,7 +136,8 @@ export default function CreateHuman(props: any) {
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
             <input
-              placeholder="Год рождения"
+              placeholder="Год рождения*"
+              className={`${errors.date ? styles.inputError : ''}`}
               maxLength={50}
               defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
@@ -196,6 +201,8 @@ export default function CreateHuman(props: any) {
                 maxLength: 50,
               })}
             />
+            {location.pathname !== "/AdminPage/EditHumanModule" &&
+            <>
             <input
               placeholder="Добавить фото"
               maxLength={50}
@@ -255,6 +262,9 @@ export default function CreateHuman(props: any) {
                 <img src="./../../img/file.svg" />
               </div>
             </div>
+            </>
+            }
+            
             <div className={styles.SubmitButton}>
               <input type="submit" value="Сохранить" />
             </div>

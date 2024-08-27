@@ -11,6 +11,8 @@ function PersonalArchive() {
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
   const store = useSelector((state: RootState) => state.peopleSlice);
+  const server = process.env.REACT_APP_API_URL;
+
   interface Human {
     addressAfterReturning: string;
     date: string;
@@ -56,7 +58,14 @@ function PersonalArchive() {
         console.log("req", req);
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
-          setImgs(req?.data.ostarbaiter.links);
+          const links = req?.data.ostarbaiter.links;
+          const allLinks = links
+            .reduce((acc: any, curr: any) => {
+              return acc.concat(curr.employmentHistory, curr.scanPassport);
+            }, [])
+            .filter((el: any) => el !== undefined);
+          console.log("allLinks", allLinks);
+          setImgs(allLinks);
         }
       });
     }
@@ -120,8 +129,14 @@ function PersonalArchive() {
           <button onClick={funScrollLeft}>
             <ArrowLeft />
           </button>
-          <img src={imgs[selectedImg]} alt="foto" />
-          {/* <img src="./img/arhiv.png" alt="foto" /> */}
+          <img
+            src={
+              imgs[selectedImg]
+                ? `${server}/${imgs[selectedImg]}`
+                : "./img/notfoto.png"
+            }
+            alt="foto"
+          />
           <button onClick={funScrollRigth}>
             <ArrowLeft className={styles.rigth} />
           </button>
@@ -144,8 +159,8 @@ function PersonalArchive() {
             <li key={index} onClick={() => funSelectImg(index)}>
               <img className={styles.lupa} src="./img/lupa.svg" alt="l" />
               <img
-                src={require(`D:/GIT_File/stolenToGermany/api/${el}`)}
-                alt="a"
+                src={el ? `${server}/${el}` : "./img/notfoto.png"}
+                alt="foto"
               />
             </li>
           ))}

@@ -9,7 +9,8 @@ import { RootState } from "../../store/store";
 
 function HumanProfile() {
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const [imgUrl, setImgUrl] = useState("./../../img/notfoto.png");
+  const server = process.env.REACT_APP_API_URL;
+  const [showPath, setShowPath] = useState(false);
 
   interface Human {
     addressAfterReturning: string;
@@ -58,20 +59,11 @@ function HumanProfile() {
         console.log("req", req);
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
+          setShowPath(true);
         }
       });
     }
   }, [store.selectedPerson]);
-
-  useEffect(() => {
-    if (humanData?.img) {
-      try {
-        setImgUrl(require(`./../../../../api/${humanData?.img}`));
-      } catch (error) {
-        console.error("Ошибка при загрузке изображения:", error);
-      }
-    }
-  }, [humanData?.img]);
 
   return (
     <div className={styles.HumanProfile}>
@@ -88,7 +80,14 @@ function HumanProfile() {
             </Link>
           </div>
           <div>
-            <img src={imgUrl} alt="man" />
+            <img
+              src={
+                humanData?.img
+                  ? `${server}/${humanData?.img}`
+                  : "./../../img/notfoto.png"
+              }
+              alt="foto"
+            />
           </div>
           <div className={styles.HumanProfile__card__info}>
             <div className={styles.HumanProfile__card__info__name}>
@@ -96,7 +95,13 @@ function HumanProfile() {
               <p>{humanData?.name}</p>
               <p>{humanData?.patronymic}</p>
             </div>
-            <Link to="../../PersonalArchive">
+            <Link
+              to={
+                humanData.links
+                  ? "../../PersonalArchive"
+                  : "../../NoSearchResults"
+              }
+            >
               <p className={styles.HumanProfile__card__info__archiv}>
                 <span>Личный архив</span>
                 <img src="./../img/Archiv.svg" />
@@ -104,10 +109,12 @@ function HumanProfile() {
             </Link>
           </div>
           <div className={styles.way}>
-            <PathToPoint
-              localityDeparture={humanData?.localityDeparture}
-              localityWork={humanData?.localityWork}
-            />
+            {showPath && (
+              <PathToPoint
+                localityDeparture={humanData?.localityDeparture || "Москва"}
+                localityWork={humanData?.localityWork || "Берлин"}
+              />
+            )}
           </div>
         </div>
 

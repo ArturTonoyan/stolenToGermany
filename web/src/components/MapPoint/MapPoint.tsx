@@ -16,7 +16,8 @@ function MapPoint(props: any) {
 
   const getBalun = () => {
     return `<div id=${props.item.locality} class=${styles.balloon}>
-        <h3>${props.item.locality}</h3>
+        <h3>Трудовые лагеря в <br/>${props.item.locality}</h3>
+        <p style="font-size: 18px; padding: 0; margin-top: 8px "}>Найдено ${props?.count} человек<p/>
       </div>`;
   };
   // const handleBalloonClose = () => {

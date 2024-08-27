@@ -8,7 +8,11 @@ function MapPointList() {
   return (
     <div className={styles.MapPointList}>
       {store.camps.map((item) => (
-        <MapPoint key={item.locality} item={item} />
+        <MapPoint
+          key={item?.locality}
+          item={item}
+          count={store.camps?.length}
+        />
       ))}
     </div>
   );

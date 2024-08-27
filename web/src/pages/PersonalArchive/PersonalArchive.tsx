@@ -144,7 +144,7 @@ function PersonalArchive() {
             <li key={index} onClick={() => funSelectImg(index)}>
               <img className={styles.lupa} src="./img/lupa.svg" alt="l" />
               <img
-                src={require(`D:/GIT_File/stolenToGermany/api/${el}`)}
+                // src={require(`D:/GIT_File/stolenToGermany/api/${el}`)}
                 alt="a"
               />
             </li>

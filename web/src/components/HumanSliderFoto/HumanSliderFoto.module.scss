@@ -1,0 +1,80 @@
+.HumanSliderFoto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000073;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  flex-direction: row;
+
+  img {
+    display: flex;
+  }
+  // svg:nth-child(1) {
+
+  // }
+  .fotoTypeOpen_inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    img {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+  .pageArrow {
+    position: absolute;
+    top: 120px;
+    left: 150px;
+    width: 84px;
+    height: 20px;
+    cursor: pointer;
+    &:hover {
+      svg * {
+        fill: var(--blue1);
+        transition: all 0.15s linear;
+      }
+      transition: all 0.15s linear;
+    }
+    &:active {
+      svg * {
+        fill: var(--blue3);
+        transition: all 0.15s linear;
+      }
+    }
+  }
+  button {
+    background-color: #00000000;
+    border: none;
+    cursor: pointer;
+    svg * {
+      stroke: #fff;
+    }
+    &:hover {
+      background-color: #d6d6d648;
+      svg * {
+        stroke: var(--blue1);
+        transition: all 0.15s linear;
+      }
+      transition: all 0.15s linear;
+    }
+    &:active {
+      svg * {
+        stroke: var(--blue3);
+        transition: all 0.15s linear;
+      }
+    }
+    svg {
+      margin: 20px;
+      width: 29px;
+      height: 93px;
+    }
+    .rigth {
+      transform: rotate(180deg);
+    }
+  }
+}

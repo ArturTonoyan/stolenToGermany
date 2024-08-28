@@ -22,7 +22,7 @@ function PersonalArchive() {
     img: string;
     infoOfDeath: string;
     infoOfRepatriation: string;
-    links: string;
+    links: string[];
     localityDeparture: string;
     localityWork: string;
     name: string;
@@ -40,7 +40,7 @@ function PersonalArchive() {
     img: "",
     infoOfDeath: "",
     infoOfRepatriation: "",
-    links: "",
+    links: [],
     localityDeparture: "",
     localityWork: "",
     name: "",
@@ -59,12 +59,7 @@ function PersonalArchive() {
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
           const links = req?.data.ostarbaiter.links;
-          const allLinks = links
-            .reduce((acc: any, curr: any) => {
-              return acc.concat(curr.employmentHistory, curr.scanPassport);
-            }, [])
-            .filter((el: any) => el !== undefined);
-          console.log("allLinks", allLinks);
+          const allLinks = Object.values(links).flat() as string[];
           setImgs(allLinks);
         }
       });

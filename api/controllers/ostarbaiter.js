@@ -1,5 +1,6 @@
 import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
+import uplCtrl from '../controllers/uploads.js'
 import Ostarbeiter from "../models/index.js";
 import { AppErrorMissing, AppErrorNotExist } from "../utils/error.js";
 import axios from "axios";
@@ -60,6 +61,7 @@ export default {
   async delete({ params: { ostarbaiterId } }, res) {
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
     if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    uplCtrl.deleteDirectrory(ostarbaiter)
     await ostarbaiter.destroy();
     res.json({ status: "Ok" });
   },

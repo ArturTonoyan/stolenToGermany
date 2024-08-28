@@ -29,50 +29,44 @@ const fileFilter = (req, { originalname }, cb) => {
 };
 
 const storage = multer.diskStorage({
-  destination: async ({body: {surname, name, patronymic, date, types}, url}, { originalname }, cb) => {
+  destination: async ({body: {id, types}, url}, { originalname }, cb) => {
 
-    if(!surname) throw  new AppErrorMissing('surname')
-    if(!date) throw new AppErrorMissing('date')
-
-    const fullname= [surname.trim(), name?.trim(), patronymic?.trim()].join('')
+    if(!id) throw  new AppErrorMissing('id')
+    const ostarbaiter=await Ostarbeiter.findByPk(id)
+    if(!ostarbaiter) cb(new AppError(errorCodes.NotExist));
 
     if (url==='/image') {
       fs.mkdirSync(
-        path.join(path.resolve("./uploads"), `${fullname}${date}`, "images"),
+        path.join(path.resolve("./uploads"), `${id}`, "images"),
         { recursive: true }
       );
-      cb(null, `./uploads/${fullname}${date}/images`);
+      cb(null, `./uploads/${id}/images`);
     } else {
       if(types.length < 1) throw new AppErrorMissing('types')
       fs.mkdirSync(
         path.join(
           path.resolve("./uploads"),
-          `${fullname}${date}`,
+          `${id}$`,
           supportingDocuments[types[0]]
         ),
         { recursive: true }
       );
       cb(
         null,
-        `./uploads/${fullname}${date}/${supportingDocuments[types[0]]}`
+        `./uploads/${id}/${supportingDocuments[types[0]]}`
       );
     }
   },
-  filename: async ({body: { surname, name, patronymic, date }, url} , { originalname }, cb) => {
-      const extension = path.extname(originalname).toLowerCase();
-
-    const ostarbaiter = await Ostarbeiter.findOne({
-      where: {
-        ...(surname && { surname: { [Op.like]: `%${surname}%` } }),
-        ...(name && { name: { [Op.like]: `%${name}%` } }),
-        ...(patronymic && { patronymic: { [Op.like]: `%${patronymic}%` } }),
-        date,
-      },
-    });
-
+  filename: async ({body: { id }, url} , { originalname }, cb) => {
+    const extension = path.extname(originalname).toLowerCase();
+    const ostarbaiter = await Ostarbeiter.findByPk(id);
     if (!ostarbaiter) cb(new AppError(errorCodes.NotExist));
-    if (url === "/image") cb(null, ostarbaiter.id + extension);
-    else cb(null,  uuidv4() + extension);
+    else
+    {
+      if (url === "/image") cb(null, ostarbaiter.id + extension);
+      else cb(null,  uuidv4() + extension);
+    }
+
   },
 });
 
@@ -92,47 +86,40 @@ const uploaderImage = multer({
 export default {
   uploader,
   uploaderImage,
-  async afterUpload({body: {surname, name, patronymic, date, types}, file, url }, res) {
+  async afterUpload({body: {id, types}, file, url }, res) {
 
     if (url === "/image") {
       if (!file) throw new AppErrorMissing("file");
       return res.json({ status: "OK" });
     }
 
-    const fullname= [surname.trim(), name?.trim(), patronymic?.trim()].join('')
-
-    let step = 1
     for (let i=1; i<types.length; i++){
       fs.mkdirSync(
           path.join(
               path.resolve("./uploads"),
-              `${fullname}${date}`,
+              `${id}`,
               supportingDocuments[types[i]]
           ),
           { recursive: true }
       );
       fs.copyFile(
           file.path,
-          `./uploads/${fullname}${date}/${supportingDocuments[types[i]]}/`+ file.filename,
+          `./uploads/${id}/${supportingDocuments[types[i]]}/`+ file.filename,
           (err) => {
             if (err) throw err; // не удалось скопировать файл
             console.log("Файл успешно скопирован");
           }
       );
-      step++
     }
     res.json({ status: "Ok" });
   },
-
-
 
   async delete({body: { file, type, id }  }, res) {
 
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-    const fullname= [ostarbaiter?.surname.trim(), ostarbaiter?.name?.trim(), ostarbaiter?.patronymic?.trim()].join('')
     try {
-       fs.unlink(`./uploads/${fullname}${ostarbaiter?.date}/${supportingDocuments[type]}/${file}`, () => {});
+       fs.unlink(`./uploads/${id}/${supportingDocuments[type]}/${file}`, () => {});
     }catch (e) {
       throw new AppErrorInvalid('file')
     }
@@ -140,4 +127,12 @@ export default {
     res.json({ status: 'OK' });
   },
 
+   deleteDirectrory(ostarbaiter){
+    if(!ostarbaiter) throw new AppErrorMissing('ostarbaiter')
+     try {
+      fs.rm(`./uploads/${ostarbaiter.id}`, {recursive: true },() => {});
+    }catch (e) {
+      throw new AppErrorInvalid('directory')
+    }
+  }
 };

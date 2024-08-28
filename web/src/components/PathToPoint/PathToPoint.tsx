@@ -1,66 +1,58 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import styles from "./PathToPoint.module.scss";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { alternative } from "./PathToPointData";
 function PathToPoint(props: any) {
-  const store = useSelector((state: RootState) => state.campsSlice);
-  const [startCoords, setStartCoords] = useState<any>([47.221958, 39.718333]);
-  const [endCoords, setEndCoords] = useState<any>([52.516363, 13.378906]);
+  // const store = useSelector((state: RootState) => state.campsSlice);
   const [route, setRoute] = useState<any>(null);
   const [points, setPoints] = useState<any>([]);
 
-  useEffect(() => {
-    const koor = store?.camps.find(
-      (el) => el.locality === store.selectedPoint.id + ""
-    )?.point;
-    setEndCoords(koor);
-  }, [store?.camps]);
-
-  //! определение своего местоположения
-  useEffect(() => {
-    const handleGeolocationSuccess = (position: any) => {
-      const koor = [position.coords.latitude, position.coords.longitude];
-      if (koor) {
-        setStartCoords(koor);
-      }
-    };
-    const handleGeolocationError = (error: any) => {
-      console.error("Error getting location:", error);
-    };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        handleGeolocationSuccess,
-        handleGeolocationError
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
-
   const getRoute = async () => {
     try {
+      const resp1 = await axios.get(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          props.localityDeparture
+        )}&format=json&limit=1`
+      );
+      const resp2 = await axios.get(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          props.localityWork
+        )}&format=json&limit=1`
+      );
+      console.log(
+        "resp",
+        props.localityDeparture,
+        resp1.data[0].lat,
+        resp1.data[0].lon
+      );
       const response = await axios.get(
-        `https://router.project-osrm.org/route/v1/driving/${startCoords[1]},${startCoords[0]};${endCoords[1]},${endCoords[0]}?overview=false&alternatives=false&steps=true`
+        `https://router.project-osrm.org/route/v1/driving/${resp1.data[0].lon},${resp1.data[0].lat};${resp2.data[0].lon},${resp2.data[0].lat}?overview=false&alternatives=false&steps=true`
+        // `https://router.project-osrm.org/route/v1/driving/${resp2.data[0].lon},${resp2.data[0].lat};${resp1.data[0].lon},${resp1.data[0].lat}?overview=false&alternatives=false&steps=true`
       );
       setRoute(response.data);
     } catch (error) {
       console.error("Error fetching route:", error);
+      setPoints(alternative);
     }
   };
+
   useEffect(() => {
+    setRoute(null);
+    setPoints([]);
     getRoute();
-  }, [startCoords, endCoords]);
+  }, [props.localityDeparture, props.localityWork]);
 
   useEffect(() => {
     if (route) {
       const coords = route?.routes[0]?.legs[0]?.steps.map(
         (el: any) => el.intersections[0]?.location
       );
-      const minLat = Math.min(
+      const minLat = Math.max(
         ...coords.map(([, lat]: [number, number]) => lat)
       );
-      const maxLat = Math.max(
+      const maxLat = Math.min(
         ...coords.map(([, lat]: [number, number]) => lat)
       );
       const minLon = Math.min(...coords.map(([lon]: [number]) => lon));
@@ -78,8 +70,16 @@ function PathToPoint(props: any) {
       setPoints(points);
     }
   }, [route]);
+
   return (
-    <div className={styles.PathToPoint}>
+    <div
+      className={styles.PathToPoint}
+      style={
+        points.length === 0
+          ? { opacity: "0" }
+          : { opacity: "1", transition: "all 0.15s linear" }
+      }
+    >
       <div
         style={
           points.length > 0
@@ -88,7 +88,7 @@ function PathToPoint(props: any) {
         }
         className={styles.point1}
       >
-        {props.localityWork || "Германия"}
+        {props.localityDeparture}
       </div>
       <div
         style={
@@ -101,7 +101,7 @@ function PathToPoint(props: any) {
         }
         className={styles.point2}
       >
-        {props.localityDeparture || "Россия"}
+        {props.localityWork}
       </div>
       <div
         className={
@@ -116,7 +116,7 @@ function PathToPoint(props: any) {
               .join(" ")}
             style={{
               fill: "none",
-              stroke: "black",
+              stroke: "#5b6a99",
               strokeWidth: "2",
             }}
           />

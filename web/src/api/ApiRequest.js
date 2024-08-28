@@ -1,8 +1,6 @@
-//? Здесь все запросы к апи, присвоение этих данных состояниями в AssingApiData
-
 import axios from "axios";
-// const server = "https://workload.sfedu.ru";
-const server = "http://localhost:3001";
+
+const server = process.env.REACT_APP_API_URL;
 const http = axios.create({
   withCredentials: true,
 });

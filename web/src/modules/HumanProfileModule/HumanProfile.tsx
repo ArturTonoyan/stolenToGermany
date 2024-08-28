@@ -6,29 +6,15 @@ import { useEffect, useState } from "react";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import HumanInfoComponent from "../../components/HumanInfoComponent/HumanInfoComponent";
+import { humaInfo, Human, HumanInfo } from "./HumanProfileData";
+import HumanSliderFoto from "../../components/HumanSliderFoto/HumanSliderFoto";
 
 function HumanProfile() {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const server = process.env.REACT_APP_API_URL;
   const [showPath, setShowPath] = useState(false);
-
-  interface Human {
-    addressAfterReturning: string;
-    date: string;
-    dateDeparture: string;
-    departure: string;
-    id: string;
-    img: string;
-    infoOfDeath: string;
-    infoOfRepatriation: string;
-    links: string;
-    localityDeparture: string;
-    localityWork: string;
-    name: string;
-    patronymic: string;
-    profession: string;
-    surname: string;
-  }
+  const [imgOpen, setImgOpen] = useState([]);
 
   const [humanData, setHumanData] = useState<Human>({
     addressAfterReturning: "",
@@ -39,7 +25,7 @@ function HumanProfile() {
     img: "",
     infoOfDeath: "",
     infoOfRepatriation: "",
-    links: "",
+    links: {},
     localityDeparture: "",
     localityWork: "",
     name: "",
@@ -56,7 +42,7 @@ function HumanProfile() {
     }
     if (store.selectedPerson) {
       apiGetOstarbaiter(store.selectedPerson).then((req) => {
-        console.log("req", req);
+        console.log("остарбайтер", req?.data?.ostarbaiter);
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
           setShowPath(true);
@@ -65,8 +51,32 @@ function HumanProfile() {
     }
   }, [store.selectedPerson]);
 
+  //! функция определения класса у p
+  const funGetClassActive = (key: string) => {
+    if (humanData?.links && humanData?.links[key]) {
+      return styles.HumanProfile__info__link;
+    } else {
+      return "";
+    }
+  };
+
+  //! функция открывание фото по типу
+  const funOpenFoto = (key: string) => {
+    if (humanData?.links && humanData?.links[key]) {
+      setImgOpen(humanData?.links[key]);
+    }
+  };
+
+  //! закрыть фото
+  const funClousFoto = () => {
+    setImgOpen([]);
+  };
+
   return (
     <div className={styles.HumanProfile}>
+      {imgOpen.length !== 0 && (
+        <HumanSliderFoto imgOpen={imgOpen} funClousFoto={funClousFoto} />
+      )}
       <div className={styles.HumanProfile__inner}>
         <div className={styles.HumanProfile__card}>
           <img
@@ -119,49 +129,15 @@ function HumanProfile() {
         </div>
 
         <div className={styles.HumanProfile__info}>
-          <p className={styles.HumanProfile__info__link}>
-            Год рождения — <span>{humanData?.date}</span>
-          </p>
-          <p>
-            Профессия на момент отправки в Германию —{" "}
-            <span>{humanData?.profession}</span>
-          </p>
-          <p className={styles.HumanProfile__info__link}>
-            Адрес проживания до угона на принудительные работы в Германию —{" "}
-            <span>
-              {humanData?.addressAfterReturning || "информация отсутсвует"}
-            </span>
-          </p>
-          <p>
-            Дата угона на принудительные работы в Германию —{" "}
-            <span>{humanData?.dateDeparture || "информация отсутсвует"}</span>
-          </p>
-          <p className={styles.HumanProfile__info__link}>
-            Населенный пункт откуда угнан на принудительные работы —{" "}
-            <span>
-              {humanData?.localityDeparture || "информация отсутсвует"}
-            </span>
-          </p>
-          <p>
-            Место трудоиспользования на принудительных работах в Германии —{" "}
-            <span>{humanData?.localityWork || "информация отсутсвует"}</span>
-          </p>
-          <p className={styles.HumanProfile__info__link}>
-            Дата, место и причина смерти на момент пребывания в Германии —{" "}
-            <span>{humanData?.infoOfDeath || "информация отсутсвует"}</span>
-          </p>
-          <p className={styles.HumanProfile__info__link}>
-            Дата и место репатриации —{" "}
-            <span>
-              {humanData?.infoOfRepatriation || "информация отсутсвует"}
-            </span>
-          </p>
-          <p className={styles.HumanProfile__info__link}>
-            Адрес проживания после возвращения в СССР —{" "}
-            <span>
-              {humanData?.addressAfterReturning || "информация отсутсвует"}
-            </span>
-          </p>
+          {humaInfo.map((item: HumanInfo) => (
+            <HumanInfoComponent
+              funOpenFoto={funOpenFoto}
+              funGetClassActive={funGetClassActive}
+              type={item.type}
+              text={item.text}
+              data={humanData[item.dataKey] || "информация отсутсвует"}
+            />
+          ))}
         </div>
       </div>
     </div>

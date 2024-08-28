@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import CreateHuman from "../../../components/CreateHuman/CreateHuman";
 import { Person } from "../../../store/basic/people.slice";
-import { AddMorePhotoImg, AddPhotoImg, OstarbaitersCreate } from "../../../api/ApiRequest";
+import { OstarbaitersCreate } from "../../../api/ApiRequest";
 import { create } from "domain";
 import { Link } from "react-router-dom";
 function AdminPanelModule() {
@@ -29,13 +29,7 @@ function AdminPanelModule() {
     try {
         const response = await OstarbaitersCreate(data);
         if (response?.status === 200) {
-            const [resp, res] = await Promise.all([
-                AddPhotoImg(photo),
-                AddMorePhotoImg(additionalFiles)
-            ]);
-            if (resp?.status === 200 && res?.status === 200) {
                 return { status: 200 };
-            }
         }
         return { status: 400 }; 
     } catch (error) {

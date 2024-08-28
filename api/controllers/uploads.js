@@ -29,13 +29,15 @@ const fileFilter = (req, { originalname }, cb) => {
 };
 
 const storage = multer.diskStorage({
-  destination: async ({body: {id, types}, url}, { originalname }, cb) => {
-
+  destination: async ({body: {id, types}, url},{ originalname }, cb) => {
+    
+    console.log(types[0]);
+    console.log(supportingDocuments[types[0]])
     if(!id) throw  new AppErrorMissing('id')
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) cb(new AppError(errorCodes.NotExist));
 
-    if (url==='/image') {
+    if (1) {
       fs.mkdirSync(
         path.join(path.resolve("./uploads"), `${id}`, "images"),
         { recursive: true }
@@ -43,10 +45,11 @@ const storage = multer.diskStorage({
       cb(null, `./uploads/${id}/images`);
     } else {
       if(types.length < 1) throw new AppErrorMissing('types')
+     
       fs.mkdirSync(
         path.join(
           path.resolve("./uploads"),
-          `${id}$`,
+          id,
           supportingDocuments[types[0]]
         ),
         { recursive: true }
@@ -59,7 +62,9 @@ const storage = multer.diskStorage({
   },
   filename: async ({body: { id }, url} , { originalname }, cb) => {
     const extension = path.extname(originalname).toLowerCase();
+    console.log(id);
     const ostarbaiter = await Ostarbeiter.findByPk(id);
+    console.log(11);
     if (!ostarbaiter) cb(new AppError(errorCodes.NotExist));
     else
     {
@@ -67,6 +72,7 @@ const storage = multer.diskStorage({
       else cb(null,  uuidv4() + extension);
     }
 
+    
   },
 });
 
@@ -88,6 +94,8 @@ export default {
   uploaderImage,
   async afterUpload({body: {id, types}, file, url }, res) {
 
+    console.log(3433);
+    console.log("id", id)
     if (url === "/image") {
       if (!file) throw new AppErrorMissing("file");
       return res.json({ status: "OK" });

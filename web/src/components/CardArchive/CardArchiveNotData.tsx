@@ -2,6 +2,9 @@ import styles from "./CardArchiveNotData.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pluse.svg";
 import { ReactComponent as ArrowSmall } from "./../../imgs/ArrowSmall.svg";
 import { useState, useRef } from "react";
+import { AddPhoto } from "../../api/ApiRequest";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 function CardArchiveNotData(props: any) {
     const [activeCreate, setActiveCreate] = useState<boolean>(false);
@@ -35,16 +38,25 @@ function CardArchiveNotData(props: any) {
             prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option]
         );
     };
-
+const store = useSelector((state: RootState) => state.peopleSlice);
     const handleSave = () => {
-        const selectedIds = selectedOptions.map((_, index) => index + 1);
-        const data = {
-            file: selectedFile,
-            options: selectedIds,
-            id: props.dataHuman?.id
-        }
-        console.log("data", data);
+        const selectedIds: number[] = selectedOptions.map(option => options.indexOf(option)).filter(index => index !== -1).sort((a, b) => a - b);
+        const formData = new FormData();
+        
+        selectedIds.forEach((id, index) => {
+            formData.append(`types[${index}]`, `${id}`); // Используем "types[]" для передачи массива
+        });
+        
+        formData.append("id", store.selectedPerson as any);
+        formData.append("file", selectedFile as Blob);
+        console.log("formData", formData);
+
+        AddPhoto(formData).then((resp) => {
+            console.log("resp", resp);
+        })
     };
+    
+    
 
     const handleFileInputClick = () => {
         if (fileInputRef.current) {

@@ -52,6 +52,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 (async function initDb() {
   try {
     await initializeDbModels();
+    await parsnigExsel()
   } catch (e) {
     if (app.get("env") !== "test") {
       console.log(e);

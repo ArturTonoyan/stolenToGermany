@@ -18,7 +18,7 @@
 #     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
 # This output file may be truncated or incomplete.
 #
-#  Out of Memory Error (os_windows.cpp:3825), pid=17344, tid=7260
+#  Out of Memory Error (os_windows.cpp:3825), pid=17824, tid=22724
 #
 # JRE version:  (17.0.10+1) (build )
 # Java VM: OpenJDK 64-Bit Server VM (17.0.10+1-b1087.21, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
@@ -30,13 +30,13 @@
 Command Line: git4idea.http.GitAskPassApp Username for 'https://github.com': 
 
 Host: Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz, 4 cores, 15G,  Windows 10 , 64 bit Build 19041 (10.0.19041.4717)
-Time: Tue Aug 27 17:53:01 2024 RTZ 2 (s 10 , 64 bit Build 19041 (10.0.19041.4717) elapsed time: 0.011869 seconds (0d 0h 0m 0s)
+Time: Wed Aug 28 14:23:29 2024 RTZ 2 (s 10 , 64 bit Build 19041 (10.0.19041.4717) elapsed time: 0.014319 seconds (0d 0h 0m 0s)
 
 ---------------  T H R E A D  ---------------
 
-Current thread (0x000001b6c7b21b80):  JavaThread "Unknown thread" [_thread_in_vm, id=7260, stack(0x0000009344d00000,0x0000009344e00000)]
+Current thread (0x0000019b8bdbef80):  JavaThread "Unknown thread" [_thread_in_vm, id=22724, stack(0x0000005c5dd00000,0x0000005c5de00000)]
 
-Stack: [0x0000009344d00000,0x0000009344e00000]
+Stack: [0x0000005c5dd00000,0x0000005c5de00000]
 Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
 V  [jvm.dll+0x688ac9]
 V  [jvm.dll+0x84220a]
@@ -71,16 +71,16 @@ _java_thread_list=0x00007ffee6f7ef58, length=0, elements={
 Java Threads: ( => current thread )
 
 Other Threads:
-  0x000001b6c7b89990 GCTaskThread "GC Thread#0" [stack: 0x0000009344e00000,0x0000009344f00000] [id=9464]
-  0x000001b6c7b9a6b0 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000009344f00000,0x0000009345000000] [id=12040]
-  0x000001b6c7b9b0d0 ConcurrentGCThread "G1 Conc#0" [stack: 0x0000009345000000,0x0000009345100000] [id=14564]
+  0x0000019b8be2adf0 GCTaskThread "GC Thread#0" [stack: 0x0000005c5de00000,0x0000005c5df00000] [id=11084]
+  0x0000019b8be3bb10 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000005c5df00000,0x0000005c5e000000] [id=22780]
+  0x0000019b8be3dce0 ConcurrentGCThread "G1 Conc#0" [stack: 0x0000005c5e000000,0x0000005c5e100000] [id=588]
 
 [error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffee6733187]
 
 VM state: not at safepoint (not fully initialized)
 
 VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
-[0x000001b6c7b1fe60] Heap_lock - owner thread: 0x000001b6c7b21b80
+[0x0000019b8bdb9b80] Heap_lock - owner thread: 0x0000019b8bdbef80
 
 Heap address: 0x0000000702200000, size: 4062 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
 
@@ -98,17 +98,17 @@ Heap:
 
 Heap Regions: E=young(eden), S=young(survivor), O=old, HS=humongous(starts), HC=humongous(continues), CS=collection set, F=free, OA=open archive, CA=closed archive, TAMS=top-at-mark-start (previous, next)
 
-Card table byte_map: [0x000001b6daa90000,0x000001b6db280000] _byte_map_base: 0x000001b6d727f000
+Card table byte_map: [0x0000019ba0b50000,0x0000019ba1340000] _byte_map_base: 0x0000019b9d33f000
 
-Marking Bits (Prev, Next): (CMBitMap*) 0x000001b6c7b89fb0, (CMBitMap*) 0x000001b6c7b89ff0
- Prev Bits: [0x000001b6dba70000, 0x000001b6df9e8000)
- Next Bits: [0x000001b6df9f0000, 0x000001b6e3968000)
+Marking Bits (Prev, Next): (CMBitMap*) 0x0000019b8be2b410, (CMBitMap*) 0x0000019b8be2b450
+ Prev Bits: [0x0000019ba1b30000, 0x0000019ba5aa8000)
+ Next Bits: [0x0000019ba5ab0000, 0x0000019ba9a28000)
 
 GC Heap History (0 events):
 No events
 
 Dll operation events (1 events):
-Event: 0.007 Loaded shared library C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\java.dll
+Event: 0.008 Loaded shared library C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\java.dll
 
 Deoptimization events (0 events):
 No events
@@ -130,13 +130,13 @@ No events
 
 
 Dynamic libraries:
-0x00007ff668fe0000 - 0x00007ff668fea000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\java.exe
+0x00007ff6f0ea0000 - 0x00007ff6f0eaa000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\java.exe
 0x00007fff315b0000 - 0x00007fff317a8000 	C:\WINDOWS\SYSTEM32\ntdll.dll
 0x00007fff31470000 - 0x00007fff31531000 	C:\WINDOWS\System32\KERNEL32.DLL
 0x00007fff2f2e0000 - 0x00007fff2f5dd000 	C:\WINDOWS\System32\KERNELBASE.dll
 0x00007fff2f170000 - 0x00007fff2f270000 	C:\WINDOWS\System32\ucrtbase.dll
-0x00007fff21c40000 - 0x00007fff21c5b000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\VCRUNTIME140.dll
 0x00007fff274a0000 - 0x00007fff274b7000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\jli.dll
+0x00007fff035a0000 - 0x00007fff035bb000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\VCRUNTIME140.dll
 0x00007fff2f6b0000 - 0x00007fff2f84d000 	C:\WINDOWS\System32\USER32.dll
 0x00007fff1b160000 - 0x00007fff1b3fa000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.4355_none_60b8b9eb71f62e16\COMCTL32.dll
 0x00007fff2ef60000 - 0x00007fff2ef82000 	C:\WINDOWS\System32\win32u.dll
@@ -145,8 +145,8 @@ Dynamic libraries:
 0x00007fff2ec60000 - 0x00007fff2ed77000 	C:\WINDOWS\System32\gdi32full.dll
 0x00007fff2f040000 - 0x00007fff2f0dd000 	C:\WINDOWS\System32\msvcp_win.dll
 0x00007fff31090000 - 0x00007fff310bf000 	C:\WINDOWS\System32\IMM32.DLL
-0x00007fff2b960000 - 0x00007fff2b96c000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\vcruntime140_1.dll
-0x00007ffefad60000 - 0x00007ffefaded000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\msvcp140.dll
+0x00007fff2b970000 - 0x00007fff2b97c000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\vcruntime140_1.dll
+0x00007ffee9e20000 - 0x00007ffee9ead000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\msvcp140.dll
 0x00007ffee6440000 - 0x00007ffee70c3000 	C:\Program Files\JetBrains\WebStorm 2023.3.5\jbr\bin\server\jvm.dll
 0x00007fff30bd0000 - 0x00007fff30c80000 	C:\WINDOWS\System32\ADVAPI32.dll
 0x00007fff30b30000 - 0x00007fff30bd0000 	C:\WINDOWS\System32\sechost.dll
@@ -154,8 +154,8 @@ Dynamic libraries:
 0x00007fff2eee0000 - 0x00007fff2ef07000 	C:\WINDOWS\System32\bcrypt.dll
 0x00007fff2eab0000 - 0x00007fff2eafb000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
 0x00007fff023a0000 - 0x00007fff023a9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
-0x00007fff19e70000 - 0x00007fff19e97000 	C:\WINDOWS\SYSTEM32\WINMM.dll
 0x00007fff308b0000 - 0x00007fff3091b000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007fff19e70000 - 0x00007fff19e97000 	C:\WINDOWS\SYSTEM32\WINMM.dll
 0x00007fff27b60000 - 0x00007fff27b6a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
 0x00007fff2ea90000 - 0x00007fff2eaa2000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
 0x00007fff2d430000 - 0x00007fff2d442000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
@@ -229,15 +229,15 @@ Classloader memory used:
 
 OS:
  Windows 10 , 64 bit Build 19041 (10.0.19041.4717)
-OS uptime: 5 days 1:49 hours
+OS uptime: 5 days 22:19 hours
 Hyper-V role detected
 
 CPU: total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 78 stepping 3 microcode 0xe2, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, rtm, adx, fma, vzeroupper, clflush, clflushopt, hv
 Processor Information for all 4 processors :
   Max Mhz: 2501, Current Mhz: 2501, Mhz Limit: 2501
 
-Memory: 4k page, system-wide physical 16242M (2635M free)
-TotalPageFile size 16242M (AvailPageFile size 159M)
+Memory: 4k page, system-wide physical 16242M (2971M free)
+TotalPageFile size 16242M (AvailPageFile size 167M)
 current process WorkingSet (physical memory assigned to process): 10M, peak: 10M
 current process commit charge ("private bytes"): 52M, peak: 305M
 

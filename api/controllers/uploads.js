@@ -114,8 +114,6 @@ export default {
     res.json({ status: "Ok" });
   },
 
-
-
   async delete({body: { file, type, id }  }, res) {
 
     const ostarbaiter=await Ostarbeiter.findByPk(id)
@@ -137,5 +135,4 @@ export default {
       throw new AppErrorInvalid('directory')
     }
   }
-
 };

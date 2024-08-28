@@ -2,8 +2,7 @@ import { readdir } from 'node:fs/promises';
 
 export default async function (ostarbaiter){
     const result=[]
-    const fullname= [ostarbaiter.surname.trim(), ostarbaiter?.name?.trim(), ostarbaiter?.patronymic?.trim()].join('')
-    const path=`uploads/${fullname + ostarbaiter.date}`
+    const path=`uploads/${ostarbaiter.id}`
     try {
         const directories = await readdir(path);
         await Promise.all(directories.map(async directory => {

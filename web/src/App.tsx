@@ -12,11 +12,12 @@ import Footer from "./components/Footer/Footer";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import NoSearchResults from "./pages/NoSearchResults/NoSearchResults";
 import AdminPage from "./pages/AdminPage/AdminPage";
-import AdminPanelModule from "./modules/AdminPanelModule/AdminPanelModule";
-import AdminPageAuth from "./modules/AdminPageAuth/AdminPageAuth";
+import AdminPanelModule from "./modules/AdminModule/AdminPanelModule/AdminPanelModule";
+import AdminPageAuth from "./modules/AdminModule/AdminPageAuth/AdminPageAuth";
 import PersonalArchive from "./pages/PersonalArchive/PersonalArchive";
-import AdminSearchResult from "./modules/AdminSearchResultModule/AdminSearchResult";
+import AdminSearchResult from "./modules/AdminModule/AdminSearchResultModule/AdminSearchResult";
 import EditHumanModule from "./modules/EditHumanModule/EditHumanModule";
+import AdminPageEditArchiveModule from "./modules/AdminModule/AdminPageEditArchiveModule/AdminPageEditArchiveModule";
 
 function App() {
   // const navigate = useNavigate();
@@ -42,11 +43,9 @@ function App() {
               <Route path="/AdminPage/*" element={<AdminPage />}>
                 <Route path="AdminPageAuth" element={<AdminPageAuth />} />
                 <Route path="AdminPanelModule" element={<AdminPanelModule />} />
-                <Route
-                  path="AdminSearchResult"
-                  element={<AdminSearchResult />}
-                />
+                <Route path="AdminSearchResult" element={<AdminSearchResult />}/>
                 <Route path="EditHumanModule" element={<EditHumanModule />} />
+                <Route path="AdminPageEditArchiveModule" element={<AdminPageEditArchiveModule />} />
               </Route>
             </Routes>
           </div>

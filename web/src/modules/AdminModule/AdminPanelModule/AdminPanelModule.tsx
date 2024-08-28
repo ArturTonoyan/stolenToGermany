@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import Input from "../../ui/Input/Input";
+import Input from "../../../ui/Input/Input";
 import styles from "./AdminPanelModule.module.scss";
-import Form from "../../components/Form/Form";
+import Form from "../../../components/Form/Form";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import CreateHuman from "../../components/CreateHuman/CreateHuman";
-import { Person } from "../../store/basic/people.slice";
-import { AddMorePhotoImg, AddPhotoImg, OstarbaitersCreate } from "../../api/ApiRequest";
+import { RootState } from "../../../store/store";
+import CreateHuman from "../../../components/CreateHuman/CreateHuman";
+import { Person } from "../../../store/basic/people.slice";
+import { AddMorePhotoImg, AddPhotoImg, OstarbaitersCreate } from "../../../api/ApiRequest";
 import { create } from "domain";
 import { Link } from "react-router-dom";
 function AdminPanelModule() {
@@ -51,11 +51,6 @@ function AdminPanelModule() {
         <div>
           <h1 className={styles.title}>Внести новые данные о человеке:</h1>
           <CreateHuman funcCreate={createdHuman} />
-          <div className={styles.Button}>
-            <Link to="/AdminPage/AdminSearchResult">
-              <button>Редактирование существующей информации</button>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

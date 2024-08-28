@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./AdminSearchResult.module.scss";
-import Input from "../../ui/Input/Input";
-import Card from "../../components/Card/Card";
+import Input from "../../../ui/Input/Input";
+import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { Person, apiGetPeople, resetFilterPeople } from "../../store/basic/people.slice";
-import { RootState } from "../../store/store";
+import { Person, apiGetPeople, resetFilterPeople } from "../../../store/basic/people.slice";
+import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
-import Form from "../../components/Form/Form";
-import CardAdmin from "../../components/CardAdmin/CardAdmin";
-import { apiOstarbaiters } from "../../api/ApiRequest";
-import { resetForm } from "../../store/form/form.slice";
+import Form from "../../../components/Form/Form";
+import CardAdmin from "../../../components/CardAdmin/CardAdmin";
+import { apiOstarbaiters } from "../../../api/ApiRequest";
+import { resetForm } from "../../../store/form/form.slice";
 
 interface SearchModuleProps {}
 

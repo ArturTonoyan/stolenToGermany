@@ -45,6 +45,18 @@
                     @include Button();
                 }
             }
+            .Button{
+                display: flex;
+         
+                a{
+                    text-decoration: none;
+                }
+                button{
+                    margin-top: -22px;
+                    @include Button();
+                    width: 741px!important;
+                }
+            }
             .SelectFile{
                 display: flex;
                 position: relative;
@@ -158,7 +170,24 @@
                 }
             }
         }
-       
+    }
+    .archive{
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        font-family: "Playfair";
+        a{
+            font-size: 26px;
+            font-weight: 500;
+            line-height: 52px;
+            text-align: left;
+            text-decoration: none;
+            color: #828282;
+            transition: 0.1s linear all;
+            &:hover{
+                opacity: 0.6;
+            }
+        }
     }
 }
 @keyframes boxShadowFade {

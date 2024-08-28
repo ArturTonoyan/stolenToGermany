@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
 import { OstarbaitersCreate, apiGetOstarbaiter } from "../../api/ApiRequest";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 type Inputs = {
   name: string;
@@ -17,8 +19,6 @@ type Inputs = {
   infoOfRepatriation: string;
   addressAfterReturning: string;
   infoOfDeath: string;
-  photo: File;
-  additionalFiles: File[];
 };
 
 export default function CreateHuman(props: any) {
@@ -32,22 +32,23 @@ export default function CreateHuman(props: any) {
 const [data, setData] = useState<any>();
 
 useEffect(() => {
-  if(props.data != undefined){
+  if(store.selectedPerson != undefined){
     SetDataResp()
   }
- }, [props.data]);
+ }, []);
 
+const store = useSelector((state: RootState) => state.peopleSlice);
  const SetDataResp = () =>{
-  apiGetOstarbaiter(props.data.id).then((res) => {
+  apiGetOstarbaiter(store.selectedPerson).then((res) => {
     setData(res && res?.data?.ostarbaiter);  
   });
  }
+
  useEffect(() => {
   setDatas(data)
  },[data])
 
  const setDatas = (date: any) =>{
-  console.log("date", date?.surname)
   setValue("surname", date?.surname || "");
   setValue("name", date?.name || "");
   setValue("patronymic", date?.patronymic || "");
@@ -62,90 +63,27 @@ useEffect(() => {
   setValue("addressAfterReturning", date?.addressAfterReturning || "");
  }
   const location = useLocation();
-console.log(location.pathname)
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    data.photo = fileData;
-    data.additionalFiles = additionalFiles;
-    console.log(data);
-    const dataTextHuman = {
-      name: data.name,
-      surname: data.surname,
-      patronymic: data.patronymic,
-      date: data.date,
-      profession: data.profession,
-      localityWork: data.localityWork,
-      dateDeparture: data.dateDeparture,
-      localityDeparture: data.localityDeparture,
-      departure: data.departure,
-      infoOfRepatriation: data.infoOfRepatriation,
-      addressAfterReturning: data.addressAfterReturning,
-      infoOfDeath: data.infoOfDeath,
-    };
+   
     props
-      .funcCreate(dataTextHuman, data.photo, data.additionalFiles)
+      .funcCreate(data)
       .then((res: any) => {
-        console.log("res", res);
         if(res[0]?.status === 200 && res[0].type === "edit") {
           reset(props.data);
           SetDataResp()
         }
         if (res[0]?.status === 200) {
           reset();
-          setSelectedFileName("");
-          setAdditionalFileNames([]);
+        
           setDataSaved(true);
         } else {
           setDataNotSaved(true);
         }
       });
   };
-
-  const [selectedFileName, setSelectedFileName] = useState<string>("");
-  const [additionalFileNames, setAdditionalFileNames] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const additionalFilesInputRef = useRef<HTMLInputElement>(null);
-  const [fileData, setFileData] = useState<File>({} as File);
-  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      setFileData(file);
-      setSelectedFileName(file.name);
-    }
-  };
-
-  const handleAdditionalFilesChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      setAdditionalFiles(fileArray);
-      setAdditionalFileNames(fileArray.map((file) => file.name));
-    }
-  };
-
-  const handleSelectFileClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleSelectAdditionalFilesClick = () => {
-    if (additionalFilesInputRef.current) {
-      additionalFilesInputRef.current.click();
-    }
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setAdditionalFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    setAdditionalFileNames((prevNames) =>
-      prevNames.filter((_, i) => i !== index)
-    );
-  };
 
   return (
     <div className={styles.CreateHuman}>
@@ -237,73 +175,30 @@ console.log(location.pathname)
                 maxLength: 50,
               })}
             />
-            {location.pathname !== "/AdminPage/EditHumanModule" &&
-            <>
-            <input
-              placeholder="Добавить фото"
-              maxLength={50}
-              value={selectedFileName}
-              readOnly
-              onClick={handleSelectFileClick} // Trigger file input click on input click
-            />
-            <div className={styles.SelectFile} onClick={handleSelectFileClick}>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                ref={fileInputRef} // Reference to the file input element
-                style={{ display: "none" }} // Hide the file input
-                title=""
-              />
-              <div className={styles.SelectFile__img}>
-                <p>jpg, png</p>
-                <img src="./../../img/file.svg" />
+            {location.pathname === "/AdminPage/EditHumanModule" && (  
+              <>
+              <div className={styles.archive}>
+                <div>
+                  <Link to="/AdminPage/AdminPageEditArchiveModule"><p>Редактировать личный архив <img src="./../img/Files.svg"/></p></Link>
+                </div>
               </div>
-            </div>
-            <input
-              type="file"
-              multiple
-              onChange={handleAdditionalFilesChange}
-              ref={additionalFilesInputRef}
-              style={{ display: "none" }}
-            />
-            <div className={styles.SelectFile__multiple}>
-              <div className={styles.SelectFile__multiple__text}>
-                {additionalFileNames.map((fileName, index) => (
-                  <div
-                    key={index}
-                    className={styles.SelectFile__multiple__containerNameFile}
-                  >
-                    <p>{fileName}</p>
-                    <img
-                      src="./../../img/CloseArrowRed.svg"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the parent click event
-                        handleRemoveFile(index);
-                      }}
-                      alt="Remove file"
-                    />
-                  </div>
-                ))}
-                {additionalFileNames.length === 0 && (
-                  <p className={styles.SelectFile__multiple__textNotData}>
-                    Личный архив файлов
-                  </p>
-                )}
-              </div>
-              <div
-                className={styles.SelectFile__multiple__img}
-                onClick={handleSelectAdditionalFilesClick}
-              >
-                <p>jpg, png, jpeg </p>
-                <img src="./../../img/file.svg" />
-              </div>
-            </div>
-            </>
+              </>
+            )
+           
             }
             
             <div className={styles.SubmitButton}>
               <input type="submit" value="Сохранить" />
             </div>
+            {location.pathname !== "/AdminPage/EditHumanModule" && (
+               <>
+                <div className={styles.Button}>
+                <Link to="/AdminPage/AdminSearchResult">
+                  <button>Редактирование существующей информации</button>
+                </Link>
+              </div>
+               </>
+            )}
             {DataSaved && (
               <div className={styles.DataSave}>
                 <p>Данные успешно сохранены*</p>

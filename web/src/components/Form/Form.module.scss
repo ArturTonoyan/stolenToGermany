@@ -23,6 +23,7 @@ form {
         border: none;
         @include Input();
         border-bottom: 1px solid var(--border);
+        
       }
       .bigInp {
         padding-bottom: 35px;

@@ -49,7 +49,7 @@ const routeEdit = (ids: string) => {
     <div className={styles.CardAdmin}>
       <div className={styles.CardAdminImg}>
         <DeleteIMG  className={styles.CarrdDelite} onClick={()=>setActivDeleteCard(true)}/>
-        <Link to="/SearchPage/HumanProfile"><img src="./../../img/man.png" alt="man" /></Link>
+        <Link to="/SearchPage/HumanProfile"><img src="./../../img/man.png" alt="man" /></Link> 
         <EditIMG  onClick={()=>routeEdit(props.item.id)} className={styles.CarrdEdit} />
     </div>
       <div className={styles.cardText}>

@@ -63,6 +63,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 })();
 // ====
 
+//await parsnigExsel();
 app
   .use((req, res) => res.status(404).json({ type: "NOT FOUND", code: 404 }))
   // eslint-disable-next-line no-unused-vars

@@ -11,6 +11,7 @@ router.use(asyncRoute(verify.general));
 router
     .route('/')
     .post(uploadsCtrl.uploader, asyncRoute(uploadsCtrl.afterUpload))
+    .delete(asyncRoute(uploadsCtrl.delete))
 
 router
     .route('/image')

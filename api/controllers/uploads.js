@@ -5,6 +5,7 @@ import {AppError, AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../u
 import Ostarbeiter from "../models/index.js";
 import { Op } from "sequelize";
 import {v4 as uuidv4} from "uuid";
+import {readdir} from "node:fs/promises";
 
 const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
 
@@ -30,23 +31,29 @@ const fileFilter = (req, { originalname }, cb) => {
 
 const storage = multer.diskStorage({
   destination: async ({body: {id, types}, url},{ originalname }, cb) => {
-    
-    console.log(types[0]);
-    console.log(supportingDocuments[types[0]])
+    //types.sort((a,b)=> a-b)
     if(!id) throw  new AppErrorMissing('id')
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) cb(new AppError(errorCodes.NotExist));
+    if(types.length < 1) throw new AppErrorMissing('types')
+   /*if(supportingDocuments[types[0]] === supportingDocuments[0]){
+     try{
+      if(await fs.stat(`./uploads/${ostarbaiter?.id}/images`)){
+          console.log(2)
+      }
+      const nameFile= (await readdir(`./uploads/${ostarbaiter?.id}/images`))[0]
+         console.log(nameFile)
+         if(nameFile) {
+             console.log(4)
+             fs.unlink(`./uploads/${ostarbaiter?.id}/images/${nameFile}`, () => {});
+         }
+     }catch (e){
+         console.log(22)
+       cb(new AppError(e.message));
+     }
+   }*/
 
-    if (1) {
-      fs.mkdirSync(
-        path.join(path.resolve("./uploads"), `${id}`, "images"),
-        { recursive: true }
-      );
-      cb(null, `./uploads/${id}/images`);
-    } else {
-      if(types.length < 1) throw new AppErrorMissing('types')
-     
-      fs.mkdirSync(
+    fs.mkdirSync(
         path.join(
           path.resolve("./uploads"),
           id,
@@ -54,25 +61,17 @@ const storage = multer.diskStorage({
         ),
         { recursive: true }
       );
+
       cb(
         null,
         `./uploads/${id}/${supportingDocuments[types[0]]}`
       );
-    }
   },
-  filename: async ({body: { id }, url} , { originalname }, cb) => {
+  filename: async ({body: { id, types }, url} , { originalname }, cb) => {
     const extension = path.extname(originalname).toLowerCase();
-    console.log(id);
     const ostarbaiter = await Ostarbeiter.findByPk(id);
-    console.log(11);
     if (!ostarbaiter) cb(new AppError(errorCodes.NotExist));
-    else
-    {
-      if (url === "/image") cb(null, ostarbaiter.id + extension);
-      else cb(null,  uuidv4() + extension);
-    }
-
-    
+    else cb(null,  uuidv4() + extension);
   },
 });
 
@@ -83,24 +82,9 @@ const uploader = multer({
 }).single("file");
 
 
-const uploaderImage = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 3145728 },
-}).single("image");
-
 export default {
   uploader,
-  uploaderImage,
   async afterUpload({body: {id, types}, file, url }, res) {
-
-    console.log(3433);
-    console.log("id", id)
-    if (url === "/image") {
-      if (!file) throw new AppErrorMissing("file");
-      return res.json({ status: "OK" });
-    }
-
     for (let i=1; i<types.length; i++){
       fs.mkdirSync(
           path.join(
@@ -123,7 +107,6 @@ export default {
   },
 
   async delete({body: { file, type, id }  }, res) {
-
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
     try {
@@ -131,7 +114,6 @@ export default {
     }catch (e) {
       throw new AppErrorInvalid('file')
     }
-
     res.json({ status: 'OK' });
   },
 

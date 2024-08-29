@@ -13,12 +13,4 @@ router
     .post(uploadsCtrl.uploader, asyncRoute(uploadsCtrl.afterUpload))
     .delete(asyncRoute(uploadsCtrl.delete))
 
-router
-    .route('/image')
-    .post(uploadsCtrl.uploaderImage, asyncRoute(uploadsCtrl.afterUpload))
-
-
-
-
-
 export default router;

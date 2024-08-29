@@ -113,7 +113,6 @@ export const OstarbaitersEdit = async (data, id) => {
 //! Запрос на добавление изображений Human
 export const AddPhoto = async (data) => {
   try {
-    
     const response = await http.post(`${server}/uploads`, data);
     console.log(response);
     return response;
@@ -142,6 +141,17 @@ export const AddMorePhotoImg = async (files) => {
   }
 };
 
+//! запрос на удаление нагрузки
+export const apiDeleteFotoAdmin = async (data) => {
+  console.log("data фотки", ...data);
+  try {
+    const response = await http.delete(`${server}/uploads${data}`);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 // просто слеш для 1 img to body
 // /image для архива files to body
 
@@ -161,22 +171,6 @@ export const AddMorePhotoImg = async (files) => {
 //   console.log("Добавление преподавателя ", data);
 //   try {
 //     const response = await http.patch(`${server}/workload/faculty`, data);
-//     console.log("response ", response);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     //throw error;
-//   }
-// };
-
-// //! запрос на удаление нагрузки
-// export const deleteWorkload = async (data) => {
-//   console.log("Нагрузки удалены ", data);
-//   try {
-//     const response = await http.delete(
-//       `${server}/workload/deleteSeveralWorkloads`,
-//       { data: data }
-//     );
 //     console.log("response ", response);
 //     return response.data;
 //   } catch (error) {

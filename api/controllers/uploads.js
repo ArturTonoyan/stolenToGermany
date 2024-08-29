@@ -31,27 +31,23 @@ const fileFilter = (req, { originalname }, cb) => {
 
 const storage = multer.diskStorage({
   destination: async ({body: {id, types}, url},{ originalname }, cb) => {
-    //types.sort((a,b)=> a-b)
+    types.sort((a,b)=> a-b)
     if(!id) throw  new AppErrorMissing('id')
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) cb(new AppError(errorCodes.NotExist));
     if(types.length < 1) throw new AppErrorMissing('types')
-   /*if(supportingDocuments[types[0]] === supportingDocuments[0]){
+    if(supportingDocuments[types[0]] === supportingDocuments[0]){
      try{
-      if(await fs.stat(`./uploads/${ostarbaiter?.id}/images`)){
-          console.log(2)
+      if(fs.existsSync(`./uploads/${ostarbaiter?.id}/images`)){
+          const nameFile= (await readdir(`./uploads/${ostarbaiter?.id}/images`))[0]
+          if(nameFile) {
+              fs.unlink(`./uploads/${ostarbaiter?.id}/images/${nameFile}`, () => {});
+          }
       }
-      const nameFile= (await readdir(`./uploads/${ostarbaiter?.id}/images`))[0]
-         console.log(nameFile)
-         if(nameFile) {
-             console.log(4)
-             fs.unlink(`./uploads/${ostarbaiter?.id}/images/${nameFile}`, () => {});
-         }
      }catch (e){
-         console.log(22)
        cb(new AppError(e.message));
      }
-   }*/
+   }
 
     fs.mkdirSync(
         path.join(

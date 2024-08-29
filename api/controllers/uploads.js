@@ -102,11 +102,19 @@ export default {
     res.json({ status: "Ok" });
   },
 
-  async delete({body: { file, type, id }  }, res) {
+  async delete({query: { file, type, id }  }, res) {
     const ostarbaiter=await Ostarbeiter.findByPk(id)
     if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
     try {
-       fs.unlink(`./uploads/${id}/${supportingDocuments[type]}/${file}`, () => {});
+        fs.unlink(`./uploads/${id}/${supportingDocuments[type]}/${file}`, () => {});
+       if(fs.existsSync(`./uploads/${id}/${supportingDocuments[type]}`)) {
+           await fs.readdir(`./uploads/${id}/${supportingDocuments[type]}`, (err,files)=> {
+               if(!files.length > 0)
+               {
+                   fs.rm(`./uploads/${id}/${supportingDocuments[type]}`, {recursive: true }, ()=>{})
+               }
+           })
+       }
     }catch (e) {
       throw new AppErrorInvalid('file')
     }

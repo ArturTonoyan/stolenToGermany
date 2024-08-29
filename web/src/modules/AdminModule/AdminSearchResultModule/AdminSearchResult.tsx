@@ -3,7 +3,11 @@ import styles from "./AdminSearchResult.module.scss";
 import Input from "../../../ui/Input/Input";
 import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { Person, apiGetPeople, resetFilterPeople } from "../../../store/basic/people.slice";
+import {
+  Person,
+  apiGetPeople,
+  resetFilterPeople,
+} from "../../../store/basic/people.slice";
 import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
 import Form from "../../../components/Form/Form";
@@ -29,8 +33,7 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
   }, [store.people]);
   useEffect(() => {
     console.log("filterHumen", filterHumen);
-  },[filterHumen])
-
+  }, [filterHumen]);
 
   const dispacth = useDispatch();
 
@@ -43,19 +46,19 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     });
   }, []);
 
-//! при нажатии на кнопку найти
-const serchPeople = () => {
-  setFilterHumen(
-    store.people.filter((person) =>
-      Object.values(person).some(
-        (value) =>
-          value !== null &&
-          value !== undefined &&
-          value.toString().toLowerCase().includes(inpValue.toLowerCase())
+  //! при нажатии на кнопку найти
+  const serchPeople = () => {
+    setFilterHumen(
+      store.people.filter((person) =>
+        Object.values(person).some(
+          (value) =>
+            value !== null &&
+            value !== undefined &&
+            value.toString().toLowerCase().includes(inpValue.toLowerCase())
+        )
       )
-    )
-  );
-};
+    );
+  };
   // const dispacth = useDispatch();
   // useEffect(() => {
   //   dispacth(apiGetPeople());
@@ -65,8 +68,9 @@ const serchPeople = () => {
     dispacth(resetForm());
     dispacth(resetFilterPeople());
     setInpValue("");
+    setFilterHumen(store.people);
   };
-  
+
   return (
     <div className={styles.SearchModule}>
       <Link to="/AdminPage/AdminPanelModule">
@@ -101,7 +105,7 @@ const serchPeople = () => {
       )}
       <div className={styles.container}>
         {filterHumen.map((item) => (
-          <CardAdmin key={item.id} item={item} serchPeople={serchPeople}/>
+          <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
       </div>
     </div>

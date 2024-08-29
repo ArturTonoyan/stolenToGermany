@@ -25,14 +25,14 @@ function HumanSliderFoto(props: any) {
   return (
     <div className={styles.HumanSliderFoto}>
       <button onClick={funScrollLeft}>
-        <ArrowLeft />
+        {props.imgOpen.length > 1 && <ArrowLeft />}
       </button>
       <div className={styles.fotoTypeOpen_inner}>
         <img src={`${server}/${props.imgOpen[selectedImg]}`} alt="foto" />
         <img onClick={props.funClousFoto} src="./../img/x.svg" alt="img" />
       </div>
       <button onClick={funScrollRigth}>
-        <ArrowLeft className={styles.rigth} />
+        {props.imgOpen.length > 1 && <ArrowLeft className={styles.rigth} />}
       </button>
     </div>
   );

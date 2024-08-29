@@ -29,61 +29,60 @@ export default function CreateHuman(props: any) {
     reset,
     setValue,
   } = useForm<Inputs>();
-const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>();
 
-useEffect(() => {
-  if(store.selectedPerson != undefined){
-    SetDataResp()
-  }
- }, []);
+  useEffect(() => {
+    if (
+      store.selectedPerson != undefined &&
+      location.pathname !== "/AdminPage/AdminPanelModule"
+    ) {
+      SetDataResp();
+    }
+  }, []);
 
-const store = useSelector((state: RootState) => state.peopleSlice);
- const SetDataResp = () =>{
-  apiGetOstarbaiter(store.selectedPerson).then((res) => {
-    setData(res && res?.data?.ostarbaiter);  
-  });
- }
+  const store = useSelector((state: RootState) => state.peopleSlice);
+  const SetDataResp = () => {
+    apiGetOstarbaiter(store.selectedPerson).then((res) => {
+      setData(res && res?.data?.ostarbaiter);
+    });
+  };
 
- useEffect(() => {
-  setDatas(data)
- },[data])
+  useEffect(() => {
+    setDatas(data);
+  }, [data]);
 
- const setDatas = (date: any) =>{
-  setValue("surname", date?.surname || "");
-  setValue("name", date?.name || "");
-  setValue("patronymic", date?.patronymic || "");
-  setValue("date", date?.date || "");
-  setValue("departure", date?.departure || "");
-  setValue("profession", date?.profession || "");
-  setValue("localityDeparture", date?.localityDeparture || "");
-  setValue("dateDeparture", date?.dateDeparture || "");
-  setValue("localityWork", date?.localityWork || "");
-  setValue("infoOfDeath", date?.infoOfDeath || "");
-  setValue("infoOfRepatriation", date?.infoOfRepatriation || "");
-  setValue("addressAfterReturning", date?.addressAfterReturning || "");
- }
+  const setDatas = (date: any) => {
+    setValue("surname", date?.surname || "");
+    setValue("name", date?.name || "");
+    setValue("patronymic", date?.patronymic || "");
+    setValue("date", date?.date || "");
+    setValue("departure", date?.departure || "");
+    setValue("profession", date?.profession || "");
+    setValue("localityDeparture", date?.localityDeparture || "");
+    setValue("dateDeparture", date?.dateDeparture || "");
+    setValue("localityWork", date?.localityWork || "");
+    setValue("infoOfDeath", date?.infoOfDeath || "");
+    setValue("infoOfRepatriation", date?.infoOfRepatriation || "");
+    setValue("addressAfterReturning", date?.addressAfterReturning || "");
+  };
   const location = useLocation();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-   
-    props
-      .funcCreate(data)
-      .then((res: any) => {
-        if(res[0]?.status === 200 && res[0].type === "edit") {
-          reset(props.data);
-          SetDataResp()
-        }
-        if (res[0]?.status === 200) {
-          reset();
-        
-          setDataSaved(true);
-        } else {
-          setDataNotSaved(true);
-        }
-      });
+    props.funcCreate(data).then((res: any) => {
+      if (res?.status === 200 && res.type === "edit") {
+        reset(props.data);
+        SetDataResp();
+      }
+      if (res?.status === 200) {
+        reset();
+
+        setDataSaved(true);
+      } else {
+        setDataNotSaved(true);
+      }
+    });
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
-
 
   return (
     <div className={styles.CreateHuman}>
@@ -93,7 +92,7 @@ const store = useSelector((state: RootState) => state.peopleSlice);
             <input
               placeholder="Фамилия*"
               defaultValue={props.data?.surname || ""}
-              className={`${errors.surname ? styles.inputError : ''}`}
+              className={`${errors.surname ? styles.inputError : ""}`}
               maxLength={50}
               {...register("surname", { required: true, maxLength: 50 })}
             />
@@ -111,12 +110,13 @@ const store = useSelector((state: RootState) => state.peopleSlice);
             />
             <input
               placeholder="Год рождения*"
-              className={`${errors.date ? styles.inputError : ''}`}
+              className={`${errors.date ? styles.inputError : ""}`}
               maxLength={50}
               defaultValue={props.data?.date || ""}
               {...register("date", { required: true, maxLength: 50 })}
             />
             <input
+              className={styles.biginp}
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
               maxLength={50}
               defaultValue={props.data?.departure || ""}
@@ -175,29 +175,32 @@ const store = useSelector((state: RootState) => state.peopleSlice);
                 maxLength: 50,
               })}
             />
-            {location.pathname === "/AdminPage/EditHumanModule" && (  
+            {location.pathname === "/AdminPage/EditHumanModule" && (
               <>
-              <div className={styles.archive}>
-                <div>
-                  <Link to="/AdminPage/AdminPageEditArchiveModule"><p>Редактировать личный архив <img src="./../img/Files.svg"/></p></Link>
+                <div className={styles.archive}>
+                  <div>
+                    <Link to="/AdminPage/AdminPageEditArchiveModule">
+                      <p>
+                        Редактировать личный архив{" "}
+                        <img src="./../img/Files.svg" />
+                      </p>
+                    </Link>
+                  </div>
                 </div>
-              </div>
               </>
-            )
-           
-            }
-            
+            )}
+
             <div className={styles.SubmitButton}>
               <input type="submit" value="Сохранить" />
             </div>
             {location.pathname !== "/AdminPage/EditHumanModule" && (
-               <>
+              <>
                 <div className={styles.Button}>
-                <Link to="/AdminPage/AdminSearchResult">
-                  <button>Редактирование существующей информации</button>
-                </Link>
-              </div>
-               </>
+                  <Link to="/AdminPage/AdminSearchResult">
+                    <button>Редактирование существующей информации</button>
+                  </Link>
+                </div>
+              </>
             )}
             {DataSaved && (
               <div className={styles.DataSave}>

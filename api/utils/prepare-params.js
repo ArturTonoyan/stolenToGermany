@@ -71,18 +71,15 @@ export default (
             const filterEntries = Object.entries(allowedFilters);
 
             for (const [key, parser] of filterEntries) {
+                console.log(key, parser)
                 if (rest[key] !== undefined) {
-                    if(typeof rest[key]=== "string" ) filters[key] = parser ? parser(rest[key])[0].toUpperCase() +
-                        parser(rest[key]).slice(1) :
-                        rest[key][0].toUpperCase + rest[key].slice(1);
-
-                    else filters[key] = parser ? parser(rest[key]) : rest[key];
-
+                   [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                    filters[key] = parser ? [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                        : rest[key];
                 }
             }
         }
     }
-
     if (limit == null) limit = defaultLimit;
     if (page == null) page = defaultPage;
 
@@ -92,5 +89,6 @@ export default (
     if (isNaN(page) || page < 1) throw new AppErrorInvalid('page');
     if (isNaN(limit) || 1 > limit || limit > 100) throw new AppErrorInvalid('limit');
 
+    console.log(filters)
     return { page, limit, search, sort: sortRules, filters };
 };

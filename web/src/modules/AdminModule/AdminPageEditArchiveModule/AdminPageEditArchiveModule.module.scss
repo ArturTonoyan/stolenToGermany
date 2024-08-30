@@ -1,8 +1,12 @@
-.AdminPageEditArchiveModule{
-    .AdminPageEditArchiveModuleInner{
-        margin-top: 140px;
-        h1{
-            font-weight: 500;
-        }
+.AdminPageEditArchiveModule {
+  .AdminPageEditArchiveModuleInner {
+    margin-top: 140px;
+    h1 {
+      font-weight: 500;
     }
+  }
+  .cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

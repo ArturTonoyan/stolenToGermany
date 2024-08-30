@@ -1,14 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import Input from "../../../ui/Input/Input";
+import { useState } from "react";
 import styles from "./AdminPanelModule.module.scss";
-import Form from "../../../components/Form/Form";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import CreateHuman from "../../../components/CreateHuman/CreateHuman";
 import { Person } from "../../../store/basic/people.slice";
 import { OstarbaitersCreate } from "../../../api/ApiRequest";
-import { create } from "domain";
-import { Link } from "react-router-dom";
 function AdminPanelModule() {
   const [inpValue, setInpValue] = useState<string>("");
 
@@ -20,24 +16,22 @@ function AdminPanelModule() {
     (state: RootState) => state.actionSlice.action
   );
 
-  
   const createdHuman = async (
     data: Person,
     photo: File,
     additionalFiles: File[]
   ) => {
     try {
-        const response = await OstarbaitersCreate(data);
-        if (response?.status === 200) {
-                return { status: 200 };
-        }
-        return { status: 400 }; 
+      const response = await OstarbaitersCreate(data);
+      if (response?.status === 200) {
+        return { status: 200 };
+      }
+      return { status: 400 };
     } catch (error) {
-        console.error("Ошибка в функции createdHuman:", error);
-        return { status: 400 };
+      console.error("Ошибка в функции createdHuman:", error);
+      return { status: 400 };
     }
-};
-
+  };
 
   return (
     <div className={styles.AdminPanelModule}>

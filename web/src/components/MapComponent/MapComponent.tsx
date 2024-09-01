@@ -10,7 +10,7 @@ function MapComponent() {
         height={"100%"}
         state={{
           center: [52.516363, 13.378906],
-          zoom: 13,
+          zoom: 7,
         }}
       >
         <GeolocationControl options={{ float: "left" }} />

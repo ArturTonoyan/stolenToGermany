@@ -1,0 +1,32 @@
+@import "./../../styles/mixins.scss";
+.CardHumanFotoAdmin {
+  width: 277px;
+  height: 489px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .fotoContainer {
+    display: flex;
+    position: relative;
+  }
+  .blakBox {
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.68);
+    width: 100%;
+    color: #fff;
+    padding: 6px 16px;
+    box-sizing: border-box;
+  }
+  img {
+    width: 277px;
+    height: 400px;
+    pointer-events: none;
+  }
+  .btn {
+    button {
+      @include Button2;
+    }
+  }
+}

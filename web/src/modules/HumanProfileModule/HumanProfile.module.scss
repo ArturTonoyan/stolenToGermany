@@ -1,6 +1,7 @@
 .HumanProfile {
   width: 100%;
   color: black;
+
   .HumanProfile__card {
     display: flex;
     img {
@@ -97,17 +98,6 @@
       &:hover {
         cursor: pointer;
         opacity: 0.6;
-      }
-    }
-    p {
-      margin: 0;
-      font-family: Playfair Display;
-      font-size: 22px;
-      font-weight: 500;
-      line-height: 44px;
-      text-align: left;
-      span {
-        font-weight: 600;
       }
     }
   }

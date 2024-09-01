@@ -1,5 +1,6 @@
 import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
+import uplCtrl from '../controllers/uploads.js'
 import Ostarbeiter from "../models/index.js";
 import { AppErrorMissing, AppErrorNotExist } from "../utils/error.js";
 import axios from "axios";
@@ -15,39 +16,52 @@ export default {
         date: String,
         localityWork: String,
         departure: String,
-        profession: String,
+        dateDeparture: String,
         localityDeparture: String,
       },
     });
 
-        const ostarbaiters=await Ostarbeiter.findAll({
-            order: ['surname', 'name', 'patronymic'],
-            where: {
-                ...(filters.surname && { surname: {[Op.like]:`%${filters.surname}%`  }}),
-                ...(filters.name && { name: {[Op.like]:`%${filters.name}%`  }}),
-                ...(filters.patronymic && { patronymic: {[Op.like]:`%${filters.patronymic}%`  }}),
-                ...(filters.date && { date: {[Op.like]:`%${filters.date}%`  }}),
-                ...(filters.localityWork && { localityWork: {[Op.like]:`%${filters.localityWork}`}}),
-                ...(filters.departure && {departure: {[Op.like]:`%${filters.departure}`}}),
-                ...(filters.profession && {profession: {[Op.like]: `%${filters.profession}`}}),
-                ...(filters.localityDeparture && {localityDeparture: {[Op.like]: `%${filters.localityDeparture}`}}),
-            },
-        })
-        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
+    const ostarbaiters = await Ostarbeiter.findAll({
+      order: ["surname", "name", "patronymic"],
+      where: {
+        ...(filters.surname && {
+          surname: { [Op.like]: `%${filters.surname}%` },
+        }),
+        ...(filters.name && { name: { [Op.like]: `%${filters.name}%` } }),
+        ...(filters.patronymic && {
+          patronymic: { [Op.like]: `%${filters.patronymic}%` },
+        }),
+        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
+        ...(filters.localityWork && {
+          localityWork: { [Op.like]: `%${filters.localityWork}%` },
+        }),
+        ...(filters.departure && {
+          departure: { [Op.like]: `%${filters.departure}%` },
+        }),
+        ...(filters.dateDeparture && {
+          dateDeparture: { [Op.like]: `%${filters.dateDeparture}%` },
+        }),
+        ...(filters.localityDeparture && {
+          localityDeparture: { [Op.like]: `%${filters.localityDeparture}%` },
+        }),
+      },
+    });
+    if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
 
-        const mapOstarbaiters=[]
-        for (const ostarbaiter of ostarbaiters){
-            mapOstarbaiters.push(await mapShort(ostarbaiter))
-        }
+    const mapOstarbaiters = [];
+    for (const ostarbaiter of ostarbaiters) {
+      mapOstarbaiters.push(await mapShort(ostarbaiter));
+    }
 
-        res.json({
-            ostarbaiters: mapOstarbaiters
-        })
-    },
+    res.json({
+      ostarbaiters: mapOstarbaiters,
+    });
+  },
 
   async delete({ params: { ostarbaiterId } }, res) {
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
     if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    uplCtrl.deleteDirectrory(ostarbaiter)
     await ostarbaiter.destroy();
     res.json({ status: "Ok" });
   },
@@ -130,37 +144,76 @@ export default {
       infoOfDeath: infoOfDeath,
     });
 
-        res.json({status: 'Ok'})
+    res.json({ status: "Ok" });
+  },
 
-    },
+  async stolenInCamps({ query }, res) {
+    const { filters } = prepareParams(query, {
+      allowedFilters: {
+        localityWork: String,
+      },
+    });
+    if (!filters.localityWork) {
+      const camps = await Ostarbeiter.findAll({
+        where: {
+          localityWork: { [Op.ne]: null },
+        },
+        attributes: ["localityWork"],
+      });
 
-    async stolenInCamps( { query }, res){
-        const {  filters } = prepareParams(query, {
-            allowedFilters: {
-                localityWork: String,
-            },
-        });
-        if(!filters.localityWork) throw new AppErrorMissing('city')
+      const points = [];
 
-        const ostarbaiters=await Ostarbeiter.findAll({
-            where: {
-                localityWork: {[Op.like]:`%${filters.localityWork}` },
-            }
-        })
+      try {
+        for (const camp of camps) {
+          if (camp?.localityWork) {
+            const { data } = await axios({
+              method: "get",
+              url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${camp.localityWork}&format=json`,
+              responseType: "json",
+            });
+            const [{ ...feature }] =
+              data.response.GeoObjectCollection.featureMember.filter(
+                (object) =>
+                  object.GeoObject.metaDataProperty.GeocoderMetaData.kind ===
+                  "locality"
+              );
+            points.push({
+              locality: camp.localityWork,
+              point: feature.GeoObject.Point,
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
 
-        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
+      console.log(points);
+      return res.json({ camps: points });
+    }
 
-        const {data }=await axios({
-            method: 'get',
-            url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
-            responseType: 'json'
-        })
-        const [{ ...feature  }]=data.response.GeoObjectCollection.featureMember
-            .filter(object => object.GeoObject.metaDataProperty.GeocoderMetaData.kind==='locality')
+    const { count, rows } = await Ostarbeiter.findAndCountAll({
+      where: {
+        localityWork: { [Op.like]: `%${filters.localityWork}%` },
+      },
+    });
 
-        res.json({
-            point: feature.GeoObject.Point,
-            ostarbaiters: ostarbaiters?.map(mapOfStolen)
-        })
-    },
-}
+    if (count < 1) throw new AppErrorNotExist("ostarbaiters");
+
+    const { data } = await axios({
+      method: "get",
+      url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
+      responseType: "json",
+    });
+    const [{ ...feature }] =
+      data.response.GeoObjectCollection.featureMember.filter(
+        (object) =>
+          object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality"
+      );
+
+    res.json({
+      point: feature.GeoObject.Point,
+      count: count,
+      ostarbaiters: rows?.map(mapOfStolen),
+    });
+  },
+};

@@ -2,7 +2,7 @@ import express from "express";
 import logger from "morgan";
 import { MulterError } from "multer";
 import fs from "fs";
-const errorCodes = JSON.parse(fs.readFileSync("./config/errorCodes.json"));
+const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
 
 import cookieParser from "cookie-parser";
 import { initializeDbModels, parsnigExsel } from "./utils/db.js";
@@ -43,11 +43,11 @@ if (app.get("env") === "production") {
     })
   );
 }
+app.use(corsMiddleware);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(corsMiddleware)
 app.use("/auth", authRoute);
 app.use("/ostarbaiters", ostarbaiterRoute);
 app.use("/uploads", express.static("./uploads"), uploadsRoute);
@@ -55,17 +55,17 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 
 // ==== on server start functions
 (async function initDb() {
-    try {
-       await initializeDbModels();
-        //await parsnigExsel()
-    } catch (e) {
-        if (app.get('env') !== 'test') {
-            console.log(e);
-            console.log('COULD NOT CONNECT TO THE DB, retrying in 5 seconds');
-        }
-        setTimeout(initDb, 5000);
+  try {
+    await initializeDbModels();
+    await parsnigExsel()
+  } catch (e) {
+    if (app.get("env") !== "test") {
+      console.log(e);
+      console.log("COULD NOT CONNECT TO THE DB, retrying in 5 seconds");
     }
-  })();
+    setTimeout(initDb, 5000);
+  }
+})();
 // ====
 
 app
@@ -95,6 +95,6 @@ app
 
 // Handle 404 AND 500
 
-app.listen(process.env.PORT || 3000, () =>
-  console.log(`Listen on :${process.env.PORT || 3000}`)
+app.listen(process.env.PORT || 3001, () =>
+  console.log(`Listen on :${process.env.PORT || 3001}`)
 );

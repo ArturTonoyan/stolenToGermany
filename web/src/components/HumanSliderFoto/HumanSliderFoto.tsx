@@ -24,16 +24,27 @@ function HumanSliderFoto(props: any) {
   console.log("props.imgOpen", props.imgOpen);
   return (
     <div className={styles.HumanSliderFoto}>
-      <button onClick={funScrollLeft}>
-        <ArrowLeft />
-      </button>
-      <div className={styles.fotoTypeOpen_inner}>
-        <img src={`${server}/${props.imgOpen[selectedImg]}`} alt="foto" />
-        <img onClick={props.funClousFoto} src="./../img/x.svg" alt="img" />
+      <div className={styles.top}>
+        <button onClick={funScrollLeft}>
+          {props.imgOpen.length > 1 && <ArrowLeft />}
+        </button>
+        <div className={styles.fotoTypeOpen_inner}>
+          <img src={`${server}/${props.imgOpen[selectedImg]}`} alt="foto" />
+          <img onClick={props.funClousFoto} src="./../img/x.svg" alt="img" />
+        </div>
+        <button onClick={funScrollRigth}>
+          {props.imgOpen.length > 1 && <ArrowLeft className={styles.rigth} />}
+        </button>
       </div>
-      <button onClick={funScrollRigth}>
-        <ArrowLeft className={styles.rigth} />
-      </button>
+      <div className={styles.listPoints}>
+        {props.imgOpen.map((_: any, index: number) => (
+          <div
+            className={
+              index === selectedImg ? styles.pointActive : styles.point
+            }
+          ></div>
+        ))}
+      </div>
     </div>
   );
 }

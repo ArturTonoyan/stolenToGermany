@@ -80,7 +80,7 @@
           margin-bottom: 20px;
           li {
             font-size: 18px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
 
             .textOption {
               position: relative;
@@ -138,7 +138,7 @@
         .fileUploadContainerStreat {
           display: flex;
           .fileUploadContainer {
-            top: 5px;
+            right: -15px;
             position: relative;
             .fileUploadContainerblock {
               width: 304px;
@@ -166,6 +166,15 @@
           //     top: 14px;
           //     left: 10px;
           // }
+        }
+        .fileContainerStreat {
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          flex-direction: row;
+          .fileUploadContainerblock {
+            margin-left: 10px;
+          }
         }
       }
     }

@@ -7,7 +7,7 @@ import { apiGetCamps, apiOstarbaiters } from "../../api/ApiRequest";
 import { apiGetPeople } from "../../store/basic/people.slice";
 import { setCamps } from "../../store/basic/camps.slice";
 
-function Header() {
+function Header(props: any) {
   const { pathname } = useLocation();
   const [hrefName, setHrefName] = useState("");
   useEffect(() => {
@@ -21,20 +21,10 @@ function Header() {
   const dispacth = useDispatch();
   useEffect(() => {
     //! записываем всех людей в редукс
-    apiOstarbaiters().then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-        console.log("req.data", req.data.ostarbaiters);
-      }
-    });
+    props.funUpdatePeople();
 
     //! записываем данные карты
-    apiGetCamps().then((req) => {
-      console.log("карта", req);
-      if (req?.status === 200) {
-        dispacth(setCamps({ camps: req.data?.camps }));
-      }
-    });
+    props.funUpdateCamps();
   }, []);
 
   return (

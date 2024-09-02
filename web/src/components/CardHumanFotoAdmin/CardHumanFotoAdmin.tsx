@@ -16,6 +16,9 @@ function CardHumanFotoAdmin(props: any) {
     }`;
     apiDeleteFotoAdmin(qery).then((res) => {
       console.log("удалть фото", res);
+      if (res?.status === 200) {
+        props.apiGetData();
+      }
     });
   };
   return (

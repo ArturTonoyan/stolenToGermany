@@ -10,11 +10,14 @@ function AdminPageEditArchiveModule(props: any) {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const [data, setData] = useState<any>({});
 
-  useEffect(() => {
+  const apiGetData = () => {
     console.log("store", store.selectedPerson);
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
       setData(res && res?.data?.ostarbaiter);
     });
+  };
+  useEffect(() => {
+    apiGetData();
   }, []);
   useEffect(() => {
     console.log("data", data);
@@ -83,6 +86,7 @@ function AdminPageEditArchiveModule(props: any) {
         <div className={styles.cardContainer}>
           {data?.img && (
             <CardHumanFotoAdmin
+              apiGetData={apiGetData}
               img={data?.img}
               text={"Фото профиля"}
               idHuman={data?.id}
@@ -93,6 +97,7 @@ function AdminPageEditArchiveModule(props: any) {
             Object.keys(data?.links).map((item: any) =>
               data?.links[item].map((el: any) => (
                 <CardHumanFotoAdmin
+                  apiGetData={apiGetData}
                   img={el}
                   idHuman={data?.id}
                   text={humaInfo.find((el) => el.type === item)?.text}
@@ -100,7 +105,7 @@ function AdminPageEditArchiveModule(props: any) {
                 />
               ))
             )}
-          <CardArchiveNotData dataHuman={data} />
+          <CardArchiveNotData dataHuman={data} apiGetData={apiGetData} />
         </div>
       </div>
     </div>

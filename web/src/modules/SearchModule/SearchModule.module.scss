@@ -4,18 +4,26 @@
   .topMenu {
     display: flex;
     flex-direction: row;
+    margin-top: 160px;
     button {
       @include Button();
       width: 277px;
       margin-left: 32px;
     }
+    .reset {
+      @include Button2();
+      width: 277px;
+      margin-left: 32px;
+    }
   }
+
   .search {
     // width: 47vw;
     input {
       display: flex;
       width: 100%;
       border: none;
+      background-color: inherit;
     }
   }
   .filter {

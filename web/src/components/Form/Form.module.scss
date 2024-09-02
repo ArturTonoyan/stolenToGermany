@@ -1,41 +1,47 @@
 @import "./../../styles/mixins.scss";
 @import "./../../styles/colors.scss";
 
-form{
-    .blockInput{
-        display: flex;
-        width: 949px;
-        .blockFormFirst{
-            display: block;
-            width: 250px;
-            margin-right: 102px;
-            input{
-                border: none;
-                @include Input();
-                border-bottom: 1px solid var(--border);
-              
-            }
-        }
-        .blockFormSecond{
-            display: block;
-            width: 597px;
-            input{
-                border: none;
-                @include Input();
-                border-bottom: 1px solid var(--border);
-               
-             
-            }
-        }
-        input{
-            margin: 25px 0px;
-        }
+form {
+  .blockInput {
+    display: flex;
+    width: 949px;
+    .blockFormFirst {
+      display: block;
+      width: 250px;
+      margin-right: 102px;
+      input {
+        border: none;
+        @include Input();
+        border-bottom: 1px solid var(--border);
+      }
     }
-    .SubmitButton{
-        width: 949px;
-        input{
-            width: 100%;
-            @include Button();
-        }
+    .blockFormSecond {
+      display: flex;
+      flex-direction: column;
+      width: 597px;
+      input {
+        border: none;
+        @include Input();
+        border-bottom: 1px solid var(--border);
+        
+      }
+      .bigInp {
+        padding-bottom: 35px;
+        padding-right: 140px;
+      }
     }
+    input {
+      margin: 25px 0px;
+    }
+    .bigInp {
+      margin-bottom: 8px;
+    }
+  }
+  .SubmitButton {
+    width: 949px;
+    input {
+      width: 100%;
+      @include Button();
+    }
+  }
 }

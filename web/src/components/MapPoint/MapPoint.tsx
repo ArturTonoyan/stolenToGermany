@@ -9,14 +9,15 @@ function MapPoint(props: any) {
   // const store = useSelector((state: RootState) => state.campsSlice);
 
   const funClickPoint = () => {
-    const id = props.item.id || "";
+    const id = props.item.locality || "";
     dispatch(setSelectedPoint({ id }));
     dispatch(setModalOpen({ action: true }));
   };
 
   const getBalun = () => {
-    return `<div id=${props.item.id} class=${styles.balloon}>
-        <h3>${props.item.name}</h3>
+    return `<div id=${props.item.locality} class=${styles.balloon}>
+        <h3>Трудовые лагеря в <br/>${props.item.locality}</h3>
+        <p style="font-size: 18px; padding: 0; margin-top: 8px "}>Найдено ${props?.count} человек<p/>
       </div>`;
   };
   // const handleBalloonClose = () => {
@@ -28,7 +29,7 @@ function MapPoint(props: any) {
         onClick={funClickPoint}
         // onBalloonClose={handleBalloonClose}
         modules={["geoObject.addon.balloon"]}
-        defaultGeometry={props.item?.coordinates}
+        defaultGeometry={props.item?.point}
         properties={{
           balloonContentBody: getBalun(),
         }}

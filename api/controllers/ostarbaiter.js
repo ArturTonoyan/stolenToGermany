@@ -1,115 +1,221 @@
-
-import map, {mapOfStolen, mapShort} from '../utils/mappers/ostarbaiter.js'
+import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
+import uplCtrl from "../controllers/uploads.js";
 import Ostarbeiter from "../models/index.js";
-import {AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
-import axios from 'axios'
-import { Op} from "sequelize";
+import { AppErrorMissing, AppErrorNotExist } from "../utils/error.js";
+import axios from "axios";
+import { Op } from "sequelize";
 
 export default {
-    async get({ query }, res){
-        const {  filters } = prepareParams(query, {
-            allowedFilters: {
-                surname: String,
-                name: String,
-                patronymic: String,
-                date: String,
-                address:String,
-                departureDate: String,
-                departure: String,
-                arrival: String,
-            },
-        });
+  async get({ query }, res) {
+    const { filters } = prepareParams(query, {
+      allowedFilters: {
+        surname: String,
+        name: String,
+        patronymic: String,
+        date: String,
+        localityWork: String,
+        departure: String,
+        dateDeparture: String,
+        localityDeparture: String,
+      },
+    });
 
-        const fulname=[filters.surname, filters.name, filters.patronymic].filter(c=>c).join(' ')
-        const ostarbaiters=await Ostarbeiter.findAll({
-            order: ['fio'],
-            where: {
-                ...(fulname && { fio: {[Op.like]:`%${fulname}`  }}),
-                ...(filters.date && { date: new Date(filters.date)}),
-                ...(filters.address && { address: {[Op.like]:`%${filters.address}`}}),
-                ...(filters.departureDate && {departureDate: new Date(filters.departureDate)}),
-                ...(filters.departure && {departure: {[Op.like]:`%${filters.departure}`}}),
-                ...(filters.arrival && {arrival: {[Op.like]: `%${filters.arrival}`}}),
-            },
-        })
-        if(!ostarbaiters) throw new AppErrorNotExist('ostarbaiters')
+    console.log(filters.surname, 1);
+    const ostarbaiters = await Ostarbeiter.findAll({
+      order: ["surname", "name", "patronymic"],
+      where: {
+        ...(filters.surname && {
+          surname: { [Op.like]: `%${filters.surname}%` },
+        }),
+        ...(filters.name && { name: { [Op.like]: `%${filters.name}%` } }),
+        ...(filters.patronymic && {
+          patronymic: { [Op.like]: `%${filters.patronymic}%` },
+        }),
+        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
+        ...(filters.localityWork && {
+          localityWork: { [Op.like]: `%${filters.localityWork}%` },
+        }),
+        ...(filters.departure && {
+          departure: { [Op.like]: `%${filters.departure}%` },
+        }),
+        ...(filters.dateDeparture && {
+          dateDeparture: { [Op.like]: `%${filters.dateDeparture}%` },
+        }),
+        ...(filters.localityDeparture && {
+          localityDeparture: { [Op.like]: `%${filters.localityDeparture}%` },
+        }),
+      },
+    });
 
-        res.json({
-            ostarbaiters: ostarbaiters.map(mapShort)
-        })
+    if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
+
+    const mapOstarbaiters = [];
+    for (const ostarbaiter of ostarbaiters) {
+      mapOstarbaiters.push(await mapShort(ostarbaiter));
+    }
+
+    res.json({
+      ostarbaiters: mapOstarbaiters,
+    });
+  },
+
+  async delete({ params: { ostarbaiterId } }, res) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    uplCtrl.deleteDirectrory(ostarbaiter);
+    await ostarbaiter.destroy();
+    res.json({ status: "Ok" });
+  },
+
+  async getById({ params: { ostarbaiterId } }, res) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
+    res.json({ ostarbaiter: await map(ostarbaiter) });
+  },
+
+  async update(
+    {
+      params: { ostarbaiterId },
+      body: {
+        name,
+        surname,
+        patronymic,
+        date,
+        profession,
+        localityWork,
+        localityDeparture,
+        departure,
+        infoOfRepatriation,
+        addressAfterReturning,
+        infoOfDeath,
+      },
     },
+    res
+  ) {
+    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
-    async delete({ params: { ostarbaiterId } }, res){
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-        await ostarbaiter.destroy();
-        res.json({ status: 'Ok' })
+    await ostarbaiter.update({
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      date: date,
+      profession: profession,
+      localityWork: localityWork,
+      localityDeparture: localityDeparture,
+      departure: departure,
+      infoOfRepatriation: infoOfRepatriation,
+      addressAfterReturning: addressAfterReturning,
+      infoOfDeath: infoOfDeath,
+    });
+    res.json({ status: "Ok" });
+  },
+
+  async create(
+    {
+      body: {
+        name,
+        surname,
+        patronymic,
+        date,
+        profession,
+        localityWork,
+        localityDeparture,
+        departure,
+        infoOfRepatriation,
+        addressAfterReturning,
+        infoOfDeath,
+      },
     },
+    res
+  ) {
+    if (!surname) throw new AppErrorMissing("surname");
+    if (!date) throw new AppErrorMissing("date");
+    await Ostarbeiter.create({
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      date: date,
+      profession: profession,
+      localityWork: localityWork,
+      localityDeparture: localityDeparture,
+      departure: departure,
+      infoOfRepatriation: infoOfRepatriation,
+      addressAfterReturning: addressAfterReturning,
+      infoOfDeath: infoOfDeath,
+    });
 
-    async getById({ params: { ostarbaiterId } }, res){
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
-        res.json({ostarbaiter:  await map(ostarbaiter)})
-    },
+    res.json({ status: "Ok" });
+  },
 
-    async update({params: { ostarbaiterId }, body: {date, profession,arrival, departure, address, repatr, addressAfter, infoDeath  }},res){
+  async stolenInCamps({ query }, res) {
+    const { filters } = prepareParams(query, {
+      allowedFilters: {
+        localityWork: String,
+      },
+    });
+    if (!filters.localityWork) {
+      const camps = await Ostarbeiter.findAll({
+        where: {
+          localityWork: { [Op.ne]: null },
+        },
+        attributes: ["localityWork"],
+      });
 
+      const points = [];
 
-        const ostarbaiter=await Ostarbeiter.findByPk(ostarbaiterId)
-        if(!ostarbaiter) throw new AppErrorNotExist('ostarbaiter')
+      try {
+        for (const camp of camps) {
+          if (camp?.localityWork) {
+            const { data } = await axios({
+              method: "get",
+              url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${camp.localityWork}&format=json`,
+              responseType: "json",
+            });
+            const [{ ...feature }] =
+              data.response.GeoObjectCollection.featureMember.filter(
+                (object) =>
+                  object.GeoObject.metaDataProperty.GeocoderMetaData.kind ===
+                  "locality"
+              );
+            points.push({
+              locality: camp.localityWork,
+              point: feature.GeoObject.Point,
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
 
-        await ostarbaiter.update({
-            date: date,
-            profession: profession,
-            arrival: arrival,
-            departure: departure,
-            address: address,
-        })
-        res.json({status: 'Ok'})
-    },
+      console.log(points);
+      return res.json({ camps: points });
+    }
 
-    async create({body: { name, surname, patronymic, date, profession, arrival, departure, address, repatr, addressAfter, infoDeath  } },res){
-        if(!name) throw new AppErrorMissing('name');
-        if(!surname) throw new AppErrorMissing('surname')
-        const fulname=[surname, name, patronymic].filter(c=>c).join(' ')
-        const ostarbaiter=await Ostarbeiter.create({
-            fio: fulname,
-            date: date,
-            profession: profession,
-            arrival: arrival,
-            departure: departure,
-            address: address,
-        })
+    const { count, rows } = await Ostarbeiter.findAndCountAll({
+      where: {
+        localityWork: { [Op.like]: `%${filters.localityWork}%` },
+      },
+    });
 
-        res.json({status: 'Ok'})
+    if (count < 1) throw new AppErrorNotExist("ostarbaiters");
 
-    },
+    const { data } = await axios({
+      method: "get",
+      url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
+      responseType: "json",
+    });
+    const [{ ...feature }] =
+      data.response.GeoObjectCollection.featureMember.filter(
+        (object) =>
+          object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality"
+      );
 
-    async stolenInCamps( { query }, res){
-        const {  filters } = prepareParams(query, {
-            allowedFilters: {
-                city: String,
-            },
-        });
-        if(!filters.city) throw new AppErrorMissing('city')
-        const ostarbaiters=await Ostarbeiter.findAll({
-            where: {
-                arrival: filters.city,
-            }
-        })
-
-        const {data }=await axios({
-            method: 'get',
-            url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.city}&format=json`,
-            responseType: 'json'
-        })
-        const [{ ...feature  }]=data.response.GeoObjectCollection.featureMember
-            .filter(object => object.GeoObject.metaDataProperty.GeocoderMetaData.kind==='locality')
-
-        res.json({
-            point: feature.GeoObject.Point,
-            ostarbaiters: ostarbaiters?.map(mapOfStolen)
-        })
-    },
-}
+    res.json({
+      point: feature.GeoObject.Point,
+      count: count,
+      ostarbaiters: rows?.map(mapOfStolen),
+    });
+  },
+};

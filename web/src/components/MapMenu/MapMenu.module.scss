@@ -2,12 +2,15 @@
 @import "./../../styles/colors.scss";
 
 .MapMenu {
+  margin-top: 48px;
   width: 30vw;
   height: 80vh;
   background-color: #fff;
   padding: 24px 32px;
   box-sizing: border-box;
   .openButton {
+    margin-top: 48px;
+
     display: flex;
     justify-content: center;
     align-items: center;

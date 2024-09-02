@@ -1,6 +1,5 @@
 import  { sequelize } from '../models/index.js'
-import Ostarbeiter from "../models/index.js";
-import { Admin }   from "../models/index.js";
+import Ostarbeiter, { Admin } from "../models/index.js";
 import ExcelJS from 'exceljs';
 import { v4 as uuidv4 } from 'uuid';
 import 'dotenv/config';
@@ -11,29 +10,52 @@ export async function initializeDbModels() {
     await Admin.sync({ alter: true });
     if (process.env.NODE_ENV !== 'test') console.log('models initialized');
 }
+
+async function checkTableExists(tableName) {
+    const queryInterface = sequelize.getQueryInterface();
+    const tableExists = await queryInterface.showAllTables();
+    return tableExists.includes(tableName);
+}
+
+
+
 export async function parsnigExsel(){
+    try {
+        if(await checkTableExists(Ostarbeiter.tableName) && !(await Ostarbeiter.findAll()).length) {
+            const workbook = new ExcelJS.Workbook();
+            await workbook.xlsx.readFile('../api/uploads/sample.xlsx');
+            const worksheet = await workbook.getWorksheet('Таганрог')
+            const data = []
+            worksheet.eachRow(function (row, rowNumber) {
+                const [, ,
+                    surname, name, patronymic, date, departure, profession, dateDeparture,
+                    localityDeparture, localityWork, infoOfDeath, infoOfRepatriation, addressAfterReturning, note
+                ] = row.values
 
-    const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile('../api/uploads/ostarbiters.xlsx');
-    const worksheet=await workbook.getWorksheet('д10')
-    const data=[]
-    await Ostarbeiter.truncate();
-    worksheet.eachRow(function(row, rowNumber) {
-        const [,
-            fio, date, placeBirthday, partyMembership, nationality,
-            profession , departure, arrival, filtrationPoint, address, footnote, note
-        ]=row.values
-
-        if(rowNumber!==1)
-        {
-            data.push(
-                {
-                    id:uuidv4(),  fio, date: new Date(date), placeBirthday, partyMembership, nationality,
-                    profession , departure, arrival, filtrationPoint, address, footnote, note
-                })
+                if (rowNumber !== 1) {
+                    data.push(
+                        {
+                            id: uuidv4(),
+                            surname,
+                            name,
+                            patronymic,
+                            date,
+                            departure,
+                            profession,
+                            dateDeparture,
+                            localityDeparture,
+                            localityWork,
+                            infoOfDeath,
+                            infoOfRepatriation,
+                            addressAfterReturning,
+                            note
+                        })
+                }
+            })
+            await Ostarbeiter.bulkCreate(data)
         }
-    })
-
-   await Ostarbeiter.bulkCreate(data)
+    }catch (e) {
+        console.log(e)
+    }
 }
 

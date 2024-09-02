@@ -1,6 +1,6 @@
 
-@import "./../../styles/colors.scss";
-@import "./../../styles/mixins.scss";
+@import "./../../../styles/colors.scss";
+@import "./../../../styles/mixins.scss";
 
 .AdminPanelModule{
     h1{
@@ -28,6 +28,19 @@
         }
     }
     .title{
-        margin-top: 64px!important;
+        margin-top: 164px!important;
+    }
+    .Button{
+        display: flex;
+        justify-content: end;
+        width: 1582px!important;
+        a{
+            text-decoration: none;
+        }
+        button{
+            margin-top: -22px;
+            @include Button();
+            width: 741px!important;
+        }
     }
 }

@@ -1,16 +1,21 @@
 .HumanProfile {
   width: 100%;
   color: black;
+
   .HumanProfile__card {
     display: flex;
     img {
       width: 432px;
       height: 552px;
       margin-right: 32px;
+      @media (max-width: 1650px) {
+        width: 332px;
+        height: 452px;
+      }
     }
     .way {
       display: flex;
-      margin-left: 150px;
+      margin-left: 7%;
     }
     margin-left: 200px;
     margin-top: 220px;
@@ -20,9 +25,14 @@
       color: #000;
     }
     .HumanProfile__card__info {
-      width: 325px;
+      width: auto;
+
+      @media (max-width: 1650px) {
+        width: auto;
+        padding-right: 10px;
+      }
       .HumanProfile__card__info__name {
-        font-family: Playfair Display;
+        font-family: "Playfair Display";
         font-size: 60px;
         font-weight: 500;
         line-height: 75px;
@@ -32,11 +42,16 @@
           border-bottom: 2px solid #3d4970;
           margin: 0;
         }
+        @media (max-width: 1650px) {
+          font-size: 52px;
+          line-height: 70px;
+        }
       }
+
       .HumanProfile__card__info__archiv {
         transition: 0.1s linear all;
         span {
-          font-family: Playfair Display;
+          font-family: "Playfair Display";
           font-size: 26px;
           font-weight: 500;
           line-height: 52px;
@@ -97,17 +112,6 @@
       &:hover {
         cursor: pointer;
         opacity: 0.6;
-      }
-    }
-    p {
-      margin: 0;
-      font-family: Playfair Display;
-      font-size: 22px;
-      font-weight: 500;
-      line-height: 44px;
-      text-align: left;
-      span {
-        font-weight: 600;
       }
     }
   }

@@ -75,6 +75,7 @@ function CardArchiveNotData(props: any) {
         setSelectedOptions([]);
         setSelectedFile(null);
         setFileName("");
+        props.funUpdatePeople();
       }
     });
   };

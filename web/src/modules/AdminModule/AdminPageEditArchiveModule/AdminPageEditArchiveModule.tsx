@@ -102,10 +102,15 @@ function AdminPageEditArchiveModule(props: any) {
                   idHuman={data?.id}
                   text={humaInfo.find((el) => el.type === item)?.text}
                   id={humaInfo.find((el) => el.type === item)?.id}
+                  funUpdatePeople={props.funUpdatePeople}
                 />
               ))
             )}
-          <CardArchiveNotData dataHuman={data} apiGetData={apiGetData} />
+          <CardArchiveNotData
+            dataHuman={data}
+            apiGetData={apiGetData}
+            funUpdatePeople={props.funUpdatePeople}
+          />
         </div>
       </div>
     </div>

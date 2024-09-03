@@ -80,7 +80,10 @@ function App() {
           <Route path="/ErrorPage" element={<ErrorPage />} />
           <Route path="/NoSearchResults" element={<NoSearchResults />} />
 
-          <Route path="/AdminPage/*" element={<AdminPage />}>
+          <Route
+            path="/AdminPage/*"
+            element={<AdminPage loc={location.pathname} />}
+          >
             <Route path="AdminPageAuth" element={<AdminPageAuth />} />
             <Route path="AdminPanelModule" element={<AdminPanelModule />} />
             <Route path="AdminSearchResult" element={<AdminSearchResult />} />

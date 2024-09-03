@@ -28,6 +28,7 @@ export default function CreateHuman(props: any) {
     formState: { errors },
     reset,
     setValue,
+    
   } = useForm<Inputs>();
   const [data, setData] = useState<any>();
 
@@ -108,13 +109,24 @@ export default function CreateHuman(props: any) {
               maxLength={50}
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
-            <input
-              placeholder="Год рождения*"
-              className={`${errors.date ? styles.inputError : ""}`}
-              maxLength={50}
-              defaultValue={props.data?.date || ""}
-              {...register("date", { required: true, maxLength: 50 })}
-            />
+           <input
+            placeholder="Год рождения*"
+            className={`${errors.date ? styles.inputError : ""}`}
+            type="number"
+            defaultValue={props.data?.date || ""}
+            onInput={(e) => {
+              const input = e.target as HTMLInputElement;
+              if (input.value.length > 4) {
+                input.value = input.value.slice(0, 4);
+              }
+            }}
+            {...register("date", { 
+              required: true, 
+              pattern: /^[0-9]{4}$/ // Ensures only 4 digits are allowed
+            })}
+          />
+
+
             <input
               className={styles.biginp}
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
@@ -141,9 +153,18 @@ export default function CreateHuman(props: any) {
           <div className={styles.blockFormSecond}>
             <input
               placeholder="Дата угона"
-              maxLength={50}
+              maxLength={4}
+              type="number"
+              onInput={(e) => {
+                const input = e.target as HTMLInputElement;
+                if (input.value.length > 4) {
+                  input.value = input.value.slice(0, 4);
+                }
+              }}
               defaultValue={props.data?.dateDeparture || ""}
-              {...register("dateDeparture", { required: false, maxLength: 50 })}
+              {...register("dateDeparture", {  required: false, 
+                maxLength: 4, 
+                pattern: /^[0-9]{4}$/})}
             />
             <input
               placeholder="Место трудоиспользования в Третьем рейхе"

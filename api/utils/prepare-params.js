@@ -72,12 +72,9 @@ export default (
 
             for (const [key, parser] of filterEntries) {
                 if (rest[key] !== undefined) {
-                    if(typeof rest[key]=== "string" ) filters[key] = parser ? parser(rest[key])[0].toUpperCase() +
-                        parser(rest[key]).slice(1) :
-                        rest[key][0].toUpperCase + rest[key].slice(1);
-
-                    else filters[key] = parser ? parser(rest[key]) : rest[key];
-
+                   [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                    filters[key] = parser ? [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                        : rest[key];
                 }
             }
         }

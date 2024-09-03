@@ -55,7 +55,7 @@ function CardAdmin(props: any) {
             className={styles.CarrdDelite}
             onClick={() => setActivDeleteCard(true)}
           />
-          <Link to="/SearchPage/HumanProfile">
+          <Link to="../../AdminPage/HumanProfile">
             <img
               src={
                 props.item?.img

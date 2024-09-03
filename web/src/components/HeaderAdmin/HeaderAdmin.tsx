@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import styles from "./Header.module.scss";
+import styles from "./HeaderAdmin.module.scss";
 import Logo from "../Logo/Logo";
 import { Link, useLocation } from "react-router-dom";
 
-function Header(props: any) {
+function HeaderAdmin(props: any) {
   const { pathname } = useLocation();
   const [hrefName, setHrefName] = useState("");
   useEffect(() => {
@@ -23,35 +23,18 @@ function Header(props: any) {
   }, []);
 
   return (
-    <header className={styles.Header}>
+    <header className={styles.HeaderAdmin}>
       <div className={styles.headerInner}>
         <Logo />
         <ul>
           <li className={hrefName === "" ? styles.active : ""}>
             <Link to="/">Главная</Link>
           </li>
-          <li
-            className={
-              hrefName === "SearchPage" ||
-              hrefName === "HumanProfile" ||
-              hrefName === "PersonalArchive" ||
-              hrefName === "SearchModule"
-                ? styles.active
-                : ""
-            }
-          >
-            <Link to="SearchPage/SearchModule">Поиск</Link>
+          <li className={hrefName === "AdminSearchResult" ? styles.active : ""}>
+            <Link to="AdminPage/AdminSearchResult">Поиск</Link>
           </li>
-          <li className={hrefName === "MapPage" ? styles.active : ""}>
-            <Link to="MapPage">Карта</Link>
-          </li>
-          <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="/" onClick={handleLinkClick}>
-              О проекте
-            </Link>
-          </li>
-          <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="/AdminPage/AdminPageAuth">Админка</Link>
+          <li className={hrefName === "AdminPanelModule" ? styles.active : ""}>
+            <Link to="AdminPage/AdminPanelModule">Добавить человека</Link>
           </li>
         </ul>
       </div>
@@ -59,4 +42,4 @@ function Header(props: any) {
   );
 }
 
-export default Header;
+export default HeaderAdmin;

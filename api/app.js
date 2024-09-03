@@ -8,6 +8,10 @@ import cookieParser from "cookie-parser";
 import { initializeDbModels, parsnigExsel } from "./utils/db.js";
 const app = express();
 
+import 'dotenv/config'
+
+
+
 import authRoute from "./routes/auth.js";
 import ostarbaiterRoute from "./routes/ostarbaiter.js";
 import uploadsRoute from "./routes/uploads.js";
@@ -48,6 +52,7 @@ app.use("/auth", authRoute);
 app.use("/ostarbaiters", ostarbaiterRoute);
 app.use("/uploads", express.static("./uploads"), uploadsRoute);
 
+
 // ==== on server start functions
 (async function initDb() {
   try {
@@ -63,7 +68,6 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
 })();
 // ====
 
-//await parsnigExsel();
 app
   .use((req, res) => res.status(404).json({ type: "NOT FOUND", code: 404 }))
   // eslint-disable-next-line no-unused-vars

@@ -1,9 +1,8 @@
-import path from "path";
-import multer from "multer";
-import fs from "fs";
-import {AppError, AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
+import path from 'path'
+import multer from 'multer'
+import fs from "fs"
+import {AppError, AppErrorInvalid, AppErrorMissing} from "../utils/error.js";
 import Ostarbeiter from "../models/index.js";
-import { Op } from "sequelize";
 import {v4 as uuidv4} from "uuid";
 import {readdir} from "node:fs/promises";
 

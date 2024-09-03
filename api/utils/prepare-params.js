@@ -1,4 +1,4 @@
-import { AppErrorInvalid, AppErrorInvalidReplaceMessage } from "./error.js";
+import { AppErrorInvalid, AppErrorInvalidReplaceMessage } from './error.js';
 
 /**
  *
@@ -15,95 +15,80 @@ import { AppErrorInvalid, AppErrorInvalidReplaceMessage } from "./error.js";
  * @returns {{search: string, limit: number, page: number, sort: Array|{ type: string, field: string }, filters: null}}
  */
 export default (
-  { page, limit, search, sort, ...rest },
-  {
-    allowedFilters = null,
-    allowedSortFields = null,
-    defaultPage = 1,
-    defaultLimit = 25,
-  } = {}
+    { page, limit, search, sort, ...rest },
+    { allowedFilters = null, allowedSortFields = null, defaultPage = 1, defaultLimit = 25 } = {}
 ) => {
-  let sortRules = null;
+    let sortRules = null;
 
-  if (sort) {
-    if (allowedSortFields) {
-      const requestedSortFields = sort.trim().split(",");
+    if (sort) {
+        if (allowedSortFields) {
+            const requestedSortFields = sort.trim().split(',');
 
-      const resultSortRules = [];
+            const resultSortRules = [];
 
-      for (const requestedField of requestedSortFields) {
-        const result = /^([-+]?)(\w+)$/.exec(requestedField);
+            for (const requestedField of requestedSortFields) {
+                const result = /^([-+]?)(\w+)$/.exec(requestedField);
 
-        if (!result) {
-          throw new AppErrorInvalid("sort format");
+                if (!result) {
+                    throw new AppErrorInvalid('sort format');
+                }
+
+                const [, dir, field] = result;
+
+                if (!allowedSortFields[field]) {
+                    throw new AppErrorInvalidReplaceMessage(`Sorting by ${field} is not allowed`, null, 'INVALID_SORTING_FIELD');
+                }
+
+                resultSortRules.push(...allowedSortFields[field](dir === '-' ? 'DESC' : 'ASC'));
+            }
+
+            if (resultSortRules.length) {
+                sortRules = resultSortRules;
+            }
+        } else {
+            try {
+                sortRules = JSON.parse(sort);
+            } catch (e) {
+                throw new AppErrorInvalid('sort');
+            }
         }
-
-        const [, dir, field] = result;
-
-        if (!allowedSortFields[field]) {
-          throw new AppErrorInvalidReplaceMessage(
-            `Sorting by ${field} is not allowed`,
-            null,
-            "INVALID_SORTING_FIELD"
-          );
-        }
-
-        resultSortRules.push(
-          ...allowedSortFields[field](dir === "-" ? "DESC" : "ASC")
-        );
-      }
-
-      if (resultSortRules.length) {
-        sortRules = resultSortRules;
-      }
-    } else {
-      try {
-        sortRules = JSON.parse(sort);
-      } catch (e) {
-        throw new AppErrorInvalid("sort");
-      }
     }
-  }
 
-  let filters = null;
+    let filters = null;
 
-  if (allowedFilters) {
-    filters = {};
+    if (allowedFilters) {
+        filters = {};
 
-    if (allowedFilters instanceof Array) {
-      // if allowedFilters is array of allowed param names
-      for (const key of allowedFilters) {
-        if (rest[key] !== undefined) {
-          filters[key] = rest[key];
+        if (allowedFilters instanceof Array) {
+            // if allowedFilters is array of allowed param names
+            for (const key of allowedFilters) {
+                if (rest[key] !== undefined) {
+                    filters[key] = rest[key];
+                }
+            }
+        } else {
+            // if allowedFilters is an object where keys are allowed param names and values are the corresponding parser functions
+            const filterEntries = Object.entries(allowedFilters);
+
+            for (const [key, parser] of filterEntries) {
+                console.log(key, parser)
+                if (rest[key] !== undefined) {
+                   [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                    filters[key] = parser ? [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                        : rest[key];
+                }
+            }
         }
-      }
-    } else {
-      // if allowedFilters is an object where keys are allowed param names and values are the corresponding parser functions
-      const filterEntries = Object.entries(allowedFilters);
-
-      for (const [key, parser] of filterEntries) {
-        if (rest[key] !== undefined) {
-          if (typeof rest[key] === "string") {
-            let t = [...rest[key]];
-            t[0] = t[0].toUpperCase();
-            filters[key] = t;
-            filters[key] = filters[key].join("");
-          }
-        }
-      }
     }
-  }
+    if (limit == null) limit = defaultLimit;
+    if (page == null) page = defaultPage;
 
-  if (limit == null) limit = defaultLimit;
-  if (page == null) page = defaultPage;
+    limit = +limit;
+    page = +page;
 
-  limit = +limit;
-  page = +page;
+    if (isNaN(page) || page < 1) throw new AppErrorInvalid('page');
+    if (isNaN(limit) || 1 > limit || limit > 100) throw new AppErrorInvalid('limit');
 
-  if (isNaN(page) || page < 1) throw new AppErrorInvalid("page");
-  if (isNaN(limit) || 1 > limit || limit > 100)
-    throw new AppErrorInvalid("limit");
-
-  console.log(filters);
-  return { page, limit, search, sort: sortRules, filters };
+    console.log(filters)
+    return { page, limit, search, sort: sortRules, filters };
 };

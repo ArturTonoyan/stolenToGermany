@@ -2,7 +2,7 @@ import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
 import uplCtrl from "../controllers/uploads.js";
 import Ostarbeiter from "../models/index.js";
-import { AppErrorMissing, AppErrorNotExist } from "../utils/error.js";
+import {AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
 import axios from "axios";
 import { Op } from "sequelize";
 
@@ -21,27 +21,29 @@ export default {
       },
     });
 
+    console.log(filters)
     const ostarbaiters = await Ostarbeiter.findAll({
       order: ["surname", "name", "patronymic"],
       where: {
         ...(filters.surname && {
           surname: { [Op.like]: `%${filters.surname}%` },
         }),
-        ...(filters.name && { name: { [Op.like]: `%${filters.name}%` } }),
+        ...(filters.name && { name: { [Op.like]: `%${filters.name}` } }),
         ...(filters.patronymic && {
-          patronymic: { [Op.like]: `%${filters.patronymic}%` },
+          patronymic: { [Op.like]: `%${filters.patronymic}` },
         }),
+        ...(filters.date && { date: {[Op.like]: `%${filters.date}`}}),
         ...(filters.localityWork && {
-          localityWork: { [Op.like]: `%${filters.localityWork}%` },
+          localityWork: { [Op.like]: `%${filters.localityWork}` },
         }),
         ...(filters.departure && {
-          departure: { [Op.like]: `%${filters.departure}%` },
+          departure: { [Op.like]: `%${filters.departure}` },
         }),
         ...(filters.dateDeparture && {
-          dateDeparture: { [Op.like]: `%${filters.dateDeparture}%` },
+          dateDeparture: { [Op.like]: `%${filters.dateDeparture}` },
         }),
         ...(filters.localityDeparture && {
-          localityDeparture: { [Op.like]: `%${filters.localityDeparture}%` },
+          localityDeparture: { [Op.like]: `%${filters.localityDeparture}` },
         }),
       },
     });
@@ -81,6 +83,7 @@ export default {
         patronymic,
         date,
         profession,
+        dateDeparture,
         localityWork,
         localityDeparture,
         departure,
@@ -91,6 +94,9 @@ export default {
     },
     res
   ) {
+
+    console.log(dateDeparture)
+
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
     if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
@@ -100,6 +106,7 @@ export default {
       patronymic: patronymic,
       date: date,
       profession: profession,
+      dateDeparture: dateDeparture,
       localityWork: localityWork,
       localityDeparture: localityDeparture,
       departure: departure,
@@ -118,6 +125,7 @@ export default {
         patronymic,
         date,
         profession,
+        dateDeparture,
         localityWork,
         localityDeparture,
         departure,
@@ -136,6 +144,7 @@ export default {
       patronymic: patronymic,
       date: date,
       profession: profession,
+      dateDeparture: dateDeparture,
       localityWork: localityWork,
       localityDeparture: localityDeparture,
       departure: departure,
@@ -162,7 +171,6 @@ export default {
       });
 
       const points = [];
-
       try {
         for (const camp of camps) {
           if (camp?.localityWork) {
@@ -171,23 +179,21 @@ export default {
               url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${camp.localityWork}&format=json`,
               responseType: "json",
             });
-            const [{ ...feature }] =
-              data.response.GeoObjectCollection.featureMember.filter(
-                (object) =>
-                  object.GeoObject.metaDataProperty.GeocoderMetaData.kind ===
-                  "locality"
-              );
-            points.push({
-              locality: camp.localityWork,
-              point: feature.GeoObject.Point,
-            });
+
+            const responseData= data.response.GeoObjectCollection?.featureMember?.
+            filter((object) => object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality")
+            if(responseData.length > 0) {
+             points.push({
+                locality: camp.localityWork,
+                point: Object(...responseData).GeoObject.Point,
+              });
+            }
           }
         }
       } catch (e) {
         console.log(e);
       }
 
-      console.log(points);
       return res.json({ camps: points });
     }
 
@@ -204,14 +210,11 @@ export default {
       url: `https://geocode-maps.yandex.ru/1.x/?apikey=488d7b02-e389-4817-b4e8-2a9729c0dce0&geocode=${filters.localityWork}&format=json`,
       responseType: "json",
     });
-    const [{ ...feature }] =
-      data.response.GeoObjectCollection.featureMember.filter(
-        (object) =>
-          object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality"
-      );
-
+    const responseData= data.response.GeoObjectCollection?.featureMember?.
+    filter((object) => object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality")
+    if(responseData.length < 0) throw new AppErrorInvalid('localityWork')
     res.json({
-      point: feature.GeoObject.Point,
+      point:  Object(...responseData).GeoObject.Point,
       count: count,
       ostarbaiters: rows?.map(mapOfStolen),
     });

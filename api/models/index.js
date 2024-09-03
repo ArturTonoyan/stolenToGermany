@@ -3,8 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import 'dotenv/config'
 const { DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME } = process.env;
-
-console.log(DB_USER);
 export default class Ostarbeiter extends Model {
   static initialize(sequelize) {
     Ostarbeiter.init(

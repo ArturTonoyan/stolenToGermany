@@ -1,17 +1,27 @@
 import styles from "./CardArchiveNotData.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pluse.svg";
 import { ReactComponent as ArrowSmall } from "./../../imgs/ArrowSmall.svg";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AddPhoto } from "../../api/ApiRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 function CardArchiveNotData(props: any) {
   const [activeCreate, setActiveCreate] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [fileName, setFileName] = useState("");
-  const fileInputRef = useRef<HTMLInputElement | null>(null); // Create a ref for the file input
+  const [error, setError] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [errorFile, setErrorFile] = useState<string | null>("")
+  const navigate = useNavigate();
+  useEffect(() => { 
+    if (store.selectedPerson === "" || store.selectedPerson === null) {
+      navigate("/AdminPage/AdminSearchResult")
+    } 
+  }, []);
+
 
   const options = [
     "Фото профиля",
@@ -25,23 +35,22 @@ function CardArchiveNotData(props: any) {
     "Дата и место репатриацииe",
     "Адрес проживания после возвращения в СССР ",
   ];
-  //   const options = [
-  //     "Фото профиля",
-  // "Год рождения",
-  //     "Удостоверение личности",
-  //     "Населенный пункт откуда угнан на принудительные работы",
-  //     "Адрес проживания до угона на принудительные работы в Германию",
-  //     "Дата, место и причина смерти на момент пребывания в Германии",
-  //     "Дата и место репатриации",
-  //     "Адрес проживания после возвращения в СССР",
-  //   ];
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setFileName(file.name);
-      setSelectedFile(file);
-      console.log("Uploaded File Type:", file.type); // Log the file type
+      if (file.size > 3 * 1024 * 1024) { // Check if file size exceeds 3MB
+        setErrorFile("Слишком большой файл")
+        setSelectedFile(null);
+        setFileName("");
+      }else if(!file){
+        setErrorFile("Загрузите файл")
+        setSelectedFile(null);
+        setFileName("");
+      } else {
+        setErrorFile("")
+        setFileName(file.name);
+        setSelectedFile(file);
+      }
     }
   };
 
@@ -52,24 +61,34 @@ function CardArchiveNotData(props: any) {
         : [...prev, option]
     );
   };
+
   const store = useSelector((state: RootState) => state.peopleSlice);
+
+
+  const checkSelected = () =>{
+      setError(false);
+  }
   const handleSave = () => {
-    const selectedIds: number[] = selectedOptions
+    if (selectedOptions.length === 0) {
+      setError(true);
+      return;
+    }else if(!selectedFile){
+      setErrorFile("Загрузите файл!")
+    }else{
+      const selectedIds: number[] = selectedOptions
       .map((option) => options.indexOf(option))
       .filter((index) => index !== -1)
       .sort((a, b) => a - b);
     const formData = new FormData();
 
     selectedIds.forEach((id, index) => {
-      formData.append(`types[${index}]`, `${id}`); // Используем "types[]" для передачи массива
+      formData.append(`types[${index}]`, `${id}`);
     });
 
     formData.append("id", store.selectedPerson as any);
     formData.append("file", selectedFile as Blob);
-    console.log("formData", formData);
 
     AddPhoto(formData).then((resp) => {
-      console.log("resp", resp);
       if (resp?.status === 200) {
         props.apiGetData();
         setSelectedOptions([]);
@@ -78,11 +97,14 @@ function CardArchiveNotData(props: any) {
         props.funUpdatePeople();
       }
     });
+  }
+
+   
   };
 
   const handleFileInputClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // Trigger the hidden file input
+      fileInputRef.current.click();
     }
   };
 
@@ -105,20 +127,23 @@ function CardArchiveNotData(props: any) {
             </div>
             <div className={styles.TypeAddList}>
               <p>Выберите пункты списка:</p>
-              <ul>
-                {options.map((option) => (
+              <ul className={error ? styles.errorList : ''}>
+              {options.map((option) => (
                   <li key={option}>
-                    <label className={styles.customCheckbox}>
-                      <img src="./../img/complete.svg" alt="Complete" />
-                      <input
-                        type="checkbox"
-                        checked={selectedOptions.includes(option)}
-                        onChange={() => handleOptionChange(option)}
-                      />
-                      <span className={styles.textOption}>{option}</span>
-                    </label>
+                      <label className={styles.customCheckbox}>
+                          <img src="./../img/complete.svg" alt="Complete" />
+                          <input
+                              type="checkbox"
+                              checked={selectedOptions.includes(option)}
+                              onChange={() => { handleOptionChange(option); checkSelected(); }}
+                          />
+                          <span className={`${styles.textOption} ${error && !selectedOptions.includes(option) ? styles.errorLi : ''}`}>
+                              {option}
+                          </span>
+                      </label>
                   </li>
-                ))}
+              ))}
+
               </ul>
               <div className={styles.fileContainerStreat}>
                 <p>Выберите фото:</p>
@@ -131,22 +156,24 @@ function CardArchiveNotData(props: any) {
                       {" "}
                     </div>
                     <input
-                      placeholder="Ничего не выбранно"
+                      placeholder="Ничего не выбранно(.jpg, .jpeg, .png)"
                       value={fileName}
-                      className={styles.fileUpload}
+                      className={`${styles.fileUpload} ${error && !selectedFile ? styles.errorInput : ''}`}
                       disabled
                     />
                     <input
                       type="file"
+                      accept=".jpg, .jpeg, .png"
                       onChange={handleFileChange}
                       className={styles.fileUploadSecret}
-                      ref={fileInputRef} // Attach the ref to the hidden input
+                      ref={fileInputRef}
                     />
+
                   </label>
-                  {/* <img className={styles.fileDeleteImg} src="./../img/CloseArrowRed.svg" alt="Complete"/> */}
+                  {errorFile != "" && <p className={styles.errorFile}>{errorFile}</p>}
+
                 </div>
               </div>
-
               <button onClick={handleSave}>Сохранить</button>
             </div>
           </div>

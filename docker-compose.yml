@@ -44,7 +44,7 @@ services:
   nginx:
     depends_on:
       - app
-      - db
+      - web
     image: nginx:latest
     ports:
       - '80:80'

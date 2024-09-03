@@ -6,16 +6,14 @@ function CardHumanFotoAdmin(props: any) {
   const funDeleteFoto = () => {
     const imgUrl = props.img.split("/");
 
-    // let formData = new FormData();
-    // formData.append("id", props.idHuman as any);
-    // formData.append("file", imgUrl[imgUrl.length - 1] as any);
-    // formData.append("type", props.id as any);
-
     const qery = `?id=${props.idHuman}&file=${imgUrl[imgUrl.length - 1]}&type=${
       props.id
     }`;
     apiDeleteFotoAdmin(qery).then((res) => {
-      console.log("удалть фото", res);
+      if (res?.status === 200) {
+        props.apiGetData();
+        props.funUpdatePeople();
+      }
     });
   };
   return (

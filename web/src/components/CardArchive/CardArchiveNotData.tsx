@@ -70,6 +70,13 @@ function CardArchiveNotData(props: any) {
 
     AddPhoto(formData).then((resp) => {
       console.log("resp", resp);
+      if (resp?.status === 200) {
+        props.apiGetData();
+        setSelectedOptions([]);
+        setSelectedFile(null);
+        setFileName("");
+        props.funUpdatePeople();
+      }
     });
   };
 
@@ -113,30 +120,33 @@ function CardArchiveNotData(props: any) {
                   </li>
                 ))}
               </ul>
-              <p>Выберите фото:</p>
-              <div className={styles.fileUploadContainerStreat}>
-                <label className={styles.fileUploadContainer}>
-                  <div
-                    onClick={handleFileInputClick}
-                    className={styles.fileUploadContainerblock}
-                  >
-                    {" "}
-                  </div>
-                  <input
-                    placeholder="Ничего не выбранно"
-                    value={fileName}
-                    className={styles.fileUpload}
-                    disabled
-                  />
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    className={styles.fileUploadSecret}
-                    ref={fileInputRef} // Attach the ref to the hidden input
-                  />
-                </label>
-                {/* <img className={styles.fileDeleteImg} src="./../img/CloseArrowRed.svg" alt="Complete"/> */}
+              <div className={styles.fileContainerStreat}>
+                <p>Выберите фото:</p>
+                <div className={styles.fileUploadContainerStreat}>
+                  <label className={styles.fileUploadContainer}>
+                    <div
+                      onClick={handleFileInputClick}
+                      className={styles.fileUploadContainerblock}
+                    >
+                      {" "}
+                    </div>
+                    <input
+                      placeholder="Ничего не выбранно"
+                      value={fileName}
+                      className={styles.fileUpload}
+                      disabled
+                    />
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className={styles.fileUploadSecret}
+                      ref={fileInputRef} // Attach the ref to the hidden input
+                    />
+                  </label>
+                  {/* <img className={styles.fileDeleteImg} src="./../img/CloseArrowRed.svg" alt="Complete"/> */}
+                </div>
               </div>
+
               <button onClick={handleSave}>Сохранить</button>
             </div>
           </div>

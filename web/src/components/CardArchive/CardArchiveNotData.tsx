@@ -1,10 +1,11 @@
 import styles from "./CardArchiveNotData.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pluse.svg";
 import { ReactComponent as ArrowSmall } from "./../../imgs/ArrowSmall.svg";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AddPhoto } from "../../api/ApiRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 function CardArchiveNotData(props: any) {
   const [activeCreate, setActiveCreate] = useState<boolean>(false);
@@ -14,6 +15,13 @@ function CardArchiveNotData(props: any) {
   const [error, setError] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [errorFile, setErrorFile] = useState<string | null>("")
+  const navigate = useNavigate();
+  useEffect(() => { 
+    if (store.selectedPerson === "" || store.selectedPerson === null) {
+      navigate("/AdminPage/AdminSearchResult")
+    } 
+  }, []);
+
 
   const options = [
     "Фото профиля",
@@ -65,10 +73,9 @@ function CardArchiveNotData(props: any) {
       setError(true);
       return;
     }else if(!selectedFile){
-      setErrorFile("")
-    }
-
-    const selectedIds: number[] = selectedOptions
+      setErrorFile("Загрузите файл!")
+    }else{
+      const selectedIds: number[] = selectedOptions
       .map((option) => options.indexOf(option))
       .filter((index) => index !== -1)
       .sort((a, b) => a - b);
@@ -90,6 +97,9 @@ function CardArchiveNotData(props: any) {
         props.funUpdatePeople();
       }
     });
+  }
+
+   
   };
 
   const handleFileInputClick = () => {
@@ -118,19 +128,22 @@ function CardArchiveNotData(props: any) {
             <div className={styles.TypeAddList}>
               <p>Выберите пункты списка:</p>
               <ul className={error ? styles.errorList : ''}>
-                {options.map((option) => (
-                  <li style={error && !selectedOptions.includes(option) ? { color: 'red' } : {}} key={option}>
-                    <label className={styles.customCheckbox}>
-                      <img src="./../img/complete.svg" alt="Complete" />
-                      <input
-                        type="checkbox"
-                        checked={selectedOptions.includes(option)}
-                        onChange={() => {handleOptionChange(option); checkSelected()}}
-                      />
-                      <span className={styles.textOption}>{option}</span>
-                    </label>
+              {options.map((option) => (
+                  <li key={option}>
+                      <label className={styles.customCheckbox}>
+                          <img src="./../img/complete.svg" alt="Complete" />
+                          <input
+                              type="checkbox"
+                              checked={selectedOptions.includes(option)}
+                              onChange={() => { handleOptionChange(option); checkSelected(); }}
+                          />
+                          <span className={`${styles.textOption} ${error && !selectedOptions.includes(option) ? styles.errorLi : ''}`}>
+                              {option}
+                          </span>
+                      </label>
                   </li>
-                ))}
+              ))}
+
               </ul>
               <div className={styles.fileContainerStreat}>
                 <p>Выберите фото:</p>
@@ -143,19 +156,22 @@ function CardArchiveNotData(props: any) {
                       {" "}
                     </div>
                     <input
-                      placeholder="Ничего не выбранно"
+                      placeholder="Ничего не выбранно(.jpg, .jpeg, .png)"
                       value={fileName}
                       className={`${styles.fileUpload} ${error && !selectedFile ? styles.errorInput : ''}`}
                       disabled
                     />
-                    {errorFile && <p className={styles.errorFile}>Файл слишком большой</p>}
                     <input
                       type="file"
+                      accept=".jpg, .jpeg, .png"
                       onChange={handleFileChange}
                       className={styles.fileUploadSecret}
                       ref={fileInputRef}
                     />
+
                   </label>
+                  {errorFile != "" && <p className={styles.errorFile}>{errorFile}</p>}
+
                 </div>
               </div>
               <button onClick={handleSave}>Сохранить</button>

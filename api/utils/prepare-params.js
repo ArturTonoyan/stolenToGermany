@@ -72,7 +72,7 @@ export default (
 
             for (const [key, parser] of filterEntries) {
                 if (rest[key] !== undefined) {
-                    filters[key] = parser ? [...parser(rest[key])[0].toUpperCase(),...parser(rest[key]).slice(1).toLowerCase()].join('')
+                        filters[key] = parser && rest[key].length > 0 ? [...parser(rest[key])[0]?.toUpperCase(),...parser(rest[key]).slice(1)?.toLowerCase()].join('')
                         : rest[key];
                 }
             }

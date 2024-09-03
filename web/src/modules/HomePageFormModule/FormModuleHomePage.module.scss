@@ -1,5 +1,13 @@
-.FormModuleHomePage{
-    .FormModuleHomePage__Tile{
-        width: 1090px;
+.FormModuleHomePage {
+  .FormModuleHomePage__Tile {
+    width: 60vw;
+    h1 {
+      @media (max-width: 1200px) {
+        font-size: 28px;
+      }
+      @media (max-width: 930px) {
+        font-size: 22px;
+      }
     }
+  }
 }

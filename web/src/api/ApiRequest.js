@@ -86,6 +86,16 @@ export const apiGetPeopleCamps = async (param) => {
   }
 };
 
+//! проверка авторизации
+export const apiCheckAuthorization = async () => {
+  try {
+    const response = await http.get(`${server}/auth/checkAuthorization`);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 //! Запрос на удаление Human
 export const OstarbaitersDelete = async (id) => {
   try {

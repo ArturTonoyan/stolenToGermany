@@ -44,4 +44,8 @@ export default {
 
     res.json({ student: admin, token });
   },
+  async checkAuthorization({ user },res){
+      if(!user) throw new AppErrorInvalid('token')
+      res.json({status: 'Ok'})
+  }
 };

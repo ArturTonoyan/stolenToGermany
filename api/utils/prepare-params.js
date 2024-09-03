@@ -80,9 +80,14 @@ export default (
       const filterEntries = Object.entries(allowedFilters);
 
             for (const [key, parser] of filterEntries) {
-                if (rest[key] !== undefined) {
-                        filters[key] = parser && rest[key].length > 0 ? [...parser(rest[key])[0]?.toUpperCase(),...parser(rest[key]).slice(1)?.toLowerCase()].join('')
-                        : rest[key];
+                if (rest[key] !== undefined ) {
+                    if(parser && rest[key].length > 0){
+                       /* const regex = /\b(?:г\.|город)\s+(\w+)/i;
+                        const match = rest[key].match(regex);
+                        console.log(match)*/
+                        filters[key] =  [...parser(rest[key])[0]?.toUpperCase(),...parser(rest[key]).slice(1)?.toLowerCase()].join('')
+                    }
+                    else  filters[key]= rest[key]
                 }
             }
         }

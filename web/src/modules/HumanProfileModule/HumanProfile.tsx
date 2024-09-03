@@ -10,7 +10,7 @@ import HumanInfoComponent from "../../components/HumanInfoComponent/HumanInfoCom
 import { humaInfo, Human, HumanInfo } from "./HumanProfileData";
 import HumanSliderFoto from "../../components/HumanSliderFoto/HumanSliderFoto";
 
-function HumanProfile() {
+function HumanProfile(props: any) {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const server = process.env.REACT_APP_API_URL;
   const [showPath, setShowPath] = useState(false);
@@ -85,7 +85,13 @@ function HumanProfile() {
             alt="Bg"
           />
           <div className={styles.pageArrow}>
-            <Link to="./../SearchModule">
+            <Link
+              to={
+                props.loc?.includes("AdminPage")
+                  ? "../../AdminPage/AdminSearchResult"
+                  : "./../SearchModule"
+              }
+            >
               <PageArrow />
             </Link>
           </div>

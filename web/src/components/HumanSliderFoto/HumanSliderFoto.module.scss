@@ -50,6 +50,9 @@
     img {
       cursor: pointer;
     }
+    img:nth-child(1) {
+      width: 500px;
+    }
     img:nth-child(2) {
       position: absolute;
       right: -50px;

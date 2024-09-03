@@ -1,10 +1,9 @@
 import styles from "./styles/App.module.scss";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
-import { Provider, useDispatch } from "react-redux";
-import store from "./store/store";
+import { useDispatch } from "react-redux";
 import MapPage from "./pages/MapPage/MapPage";
 import SearchModule from "./modules/SearchModule/SearchModule";
 import HumanProfile from "./modules/HumanProfileModule/HumanProfile";
@@ -21,12 +20,16 @@ import AdminPageEditArchiveModule from "./modules/AdminModule/AdminPageEditArchi
 import { apiGetCamps, apiOstarbaiters } from "./api/ApiRequest";
 import { apiGetPeople } from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
+import { useEffect } from "react";
+import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
 
 function App() {
-  // const navigate = useNavigate();
-  // const location = navigate()
-  console.log("window.location.pathname", window.location.pathname);
+  const location = useLocation();
   const dispacth = useDispatch();
+
+  useEffect(() => {
+    console.log("current path", location.pathname);
+  }, [location.pathname]);
 
   const funUpdatePeople = () => {
     //! записываем всех людей в редукс
@@ -48,43 +51,56 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <main className={styles.App}>
+    <main className={styles.App}>
+      {location.pathname.includes("/AdminPage") &&
+      !location.pathname.includes("/AdminPageAuth") ? (
+        <HeaderAdmin
+          funUpdatePeople={funUpdatePeople}
+          funUpdateCamps={funUpdateCamps}
+        />
+      ) : (
         <Header
           funUpdatePeople={funUpdatePeople}
           funUpdateCamps={funUpdateCamps}
         />
-        <div className={styles.mainpage}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/SearchPage/*" element={<SearchPage />}>
-              <Route path="SearchModule" element={<SearchModule />} />
-              <Route path="HumanProfile" element={<HumanProfile />} />
-            </Route>
-            <Route path="/PersonalArchive" element={<PersonalArchive />} />
-            <Route path="/MapPage" element={<MapPage />} />
-            <Route path="/ErrorPage" element={<ErrorPage />} />
-            <Route path="/NoSearchResults" element={<NoSearchResults />} />
+      )}
 
-            <Route path="/AdminPage/*" element={<AdminPage />}>
-              <Route path="AdminPageAuth" element={<AdminPageAuth />} />
-              <Route path="AdminPanelModule" element={<AdminPanelModule />} />
-              <Route path="AdminSearchResult" element={<AdminSearchResult />} />
-              <Route path="EditHumanModule" element={<EditHumanModule />} />
-              <Route
-                path="AdminPageEditArchiveModule"
-                element={
-                  <AdminPageEditArchiveModule
-                    funUpdatePeople={funUpdatePeople}
-                  />
-                }
-              />
-            </Route>
-          </Routes>
-        </div>
-        <Footer />
-      </main>
-    </BrowserRouter>
+      <div className={styles.mainpage}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/SearchPage/*" element={<SearchPage />}>
+            <Route path="SearchModule" element={<SearchModule />} />
+            <Route
+              path="HumanProfile"
+              element={<HumanProfile loc={location.pathname} />}
+            />
+          </Route>
+          <Route path="/PersonalArchive" element={<PersonalArchive />} />
+          <Route path="/MapPage" element={<MapPage />} />
+          <Route path="/ErrorPage" element={<ErrorPage />} />
+          <Route path="/NoSearchResults" element={<NoSearchResults />} />
+
+          <Route path="/AdminPage/*" element={<AdminPage />}>
+            <Route path="AdminPageAuth" element={<AdminPageAuth />} />
+            <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+            <Route path="AdminSearchResult" element={<AdminSearchResult />} />
+            <Route path="EditHumanModule" element={<EditHumanModule />} />
+            <Route
+              path="HumanProfile"
+              element={<HumanProfile loc={location.pathname} />}
+            />
+
+            <Route
+              path="AdminPageEditArchiveModule"
+              element={
+                <AdminPageEditArchiveModule funUpdatePeople={funUpdatePeople} />
+              }
+            />
+          </Route>
+        </Routes>
+      </div>
+      <Footer />
+    </main>
   );
 }
 

@@ -18,12 +18,12 @@ function EditHumanModule() {
 
   const editHuman = async (data: Person) => {
     const response = await OstarbaitersEdit(data, peopleData.id);
-    const resp = [
+    const resp = 
       {
         type: "edit",
         status: response?.status,
       }
-    ];
+    
     if (resp) {
       return resp;
     }

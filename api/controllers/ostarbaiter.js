@@ -21,7 +21,6 @@ export default {
       },
     });
 
-    console.log(filters.surname, 1);
     const ostarbaiters = await Ostarbeiter.findAll({
       order: ["surname", "name", "patronymic"],
       where: {
@@ -32,7 +31,6 @@ export default {
         ...(filters.patronymic && {
           patronymic: { [Op.like]: `%${filters.patronymic}%` },
         }),
-        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
         ...(filters.localityWork && {
           localityWork: { [Op.like]: `%${filters.localityWork}%` },
         }),

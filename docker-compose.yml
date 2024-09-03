@@ -9,10 +9,10 @@ services:
       - "${DOCKER_PATH}/api/node_modules"
     env_file:
       - .env
-    expose:
-      - '3001:3001'
+    ports:
+      - '3001:3001'  # Изменено с expose на ports для доступа извне
     depends_on:
-        - db
+      - db
     restart: unless-stopped
 
   web:
@@ -25,10 +25,10 @@ services:
       - "./web:${DOCKER_PATH}/web"
       - "${DOCKER_PATH}/web/node_modules"
     ports:
-      - "3000:3000"
+      - "3000:3001"
     restart: unless-stopped
     depends_on:
-        - app
+      - app
 
   db:
     image: postgres:16-alpine
@@ -37,14 +37,14 @@ services:
       - POSTGRES_PASSWORD=${DB_PWD}
     volumes:
       - ./postgres:/var/lib/postgresql/data
-    expose:
-      - '5432'
+    ports:
+      - '5432:5432'  # Изменено с expose на ports для доступа извне
     restart: always
 
   nginx:
     depends_on:
       - app
-      - db
+      - web
     image: nginx:latest
     ports:
       - '80:80'
@@ -52,5 +52,3 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/var/www/static
     restart: always
-
-

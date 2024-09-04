@@ -21,29 +21,30 @@ export default {
       },
     });
 
-    console.log(filters)
     const ostarbaiters = await Ostarbeiter.findAll({
       order: ["surname", "name", "patronymic"],
       where: {
         ...(filters.surname && {
-          surname: { [Op.like]: `%${filters.surname}%` },
+          surname: { [Op.iLike]: `%${filters.surname}%` },
         }),
-        ...(filters.name && { name: { [Op.like]: `%${filters.name}` } }),
+        ...(filters.name &&
+            { name: { [Op.iLike]: `%${filters.name}%` }
+        }),
         ...(filters.patronymic && {
-          patronymic: { [Op.like]: `%${filters.patronymic}` },
+          patronymic: { [Op.iLike]: `%${filters.patronymic}%` },
         }),
-        ...(filters.date && { date: {[Op.like]: `%${filters.date}`}}),
+        ...(filters.date && { date: {[Op.like]: `%${filters.date}%`}}),
         ...(filters.localityWork && {
-          localityWork: { [Op.like]: `%${filters.localityWork}` },
+          localityWork: { [Op.iLike]: `%${filters.localityWork}%` },
         }),
         ...(filters.departure && {
-          departure: { [Op.like]: `%${filters.departure}` },
+          departure: { [Op.iLike]: `%${filters.departure}%` },
         }),
         ...(filters.dateDeparture && {
-          dateDeparture: { [Op.like]: `%${filters.dateDeparture}` },
+          dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
         }),
         ...(filters.localityDeparture && {
-          localityDeparture: { [Op.like]: `%${filters.localityDeparture}` },
+          localityDeparture: { [Op.iLike]: `%${filters.localityDeparture}%` },
         }),
       },
     });

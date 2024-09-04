@@ -78,14 +78,10 @@ export default (
     } else {
       // if allowedFilters is an object where keys are allowed param names and values are the corresponding parser functions
       const filterEntries = Object.entries(allowedFilters);
-
             for (const [key, parser] of filterEntries) {
                 if (rest[key] !== undefined ) {
                     if(parser && rest[key].length > 0){
-                       /* const regex = /\b(?:г\.|город)\s+(\w+)/i;
-                        const match = rest[key].match(regex);
-                        console.log(match)*/
-                        filters[key] =  [...parser(rest[key])[0]?.toUpperCase(),...parser(rest[key]).slice(1)?.toLowerCase()].join('')
+                        filters[key] =  parser(rest[key]).trim()
                     }
                     else  filters[key]= rest[key]
                 }

@@ -48,16 +48,20 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    setFilterHumen(
-      store.people.filter((person) =>
-        Object.values(person).some(
-          (value) =>
-            value !== null &&
-            value !== undefined &&
-            value.toString().toLowerCase().includes(inpValue.toLowerCase())
+    const ostarbaiters = store.people.filter((person: any) =>
+      Object.keys(person)
+        .filter((key) => key !== "id" && key !== "img")
+        .some(
+          (key) =>
+            person[key] !== null &&
+            person[key] !== undefined &&
+            person[key]
+              .toString()
+              .toLowerCase()
+              .includes(inpValue.trim().toLowerCase())
         )
-      )
     );
+    setFilterHumen(ostarbaiters);
   };
   // const dispacth = useDispatch();
   // useEffect(() => {
@@ -84,29 +88,38 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
       <h1>Поиск для редактирования существующей информации:</h1>
       <div className={styles.topMenu}>
         <div className={styles.search}>
-          <Input
-            type="text"
-            placeholder={"Фамилия, Имя, Отчество, год рождения"}
-            value={inpValue}
-            funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-              funOnChange(e.target.value)
-            }
-          />
+          {!isActionOpen && (
+            <Input
+              type="text"
+              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              value={inpValue}
+              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+                funOnChange(e.target.value)
+              }
+            />
+          )}
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
-        <button className={styles.reset} onClick={funReset}>
-          Сбросить
-        </button>
+        {!isActionOpen && (
+          <button className={styles.reset} onClick={funReset}>
+            Сбросить
+          </button>
+        )}
       </div>
       {isActionOpen && (
         <div className={styles.filter}>
-          <Form />
+          <Form isActionOpen={isActionOpen} funReset={funReset} />
         </div>
       )}
       <div className={styles.container}>
         {filterHumen.map((item) => (
           <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
+        {filterHumen?.length === 0 && (
+          <div className={styles.notFound}>
+            Информации по введенным данным не найдено
+          </div>
+        )}
       </div>
     </div>
   );

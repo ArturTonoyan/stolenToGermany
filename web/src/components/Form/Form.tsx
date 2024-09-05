@@ -6,7 +6,7 @@ import { setFilterPeople } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetAction, setFormData } from "../../store/form/form.slice";
 import { RootState } from "../../store/store";
-import { openAction } from "../../store/basic/action.slice";
+import { openAction, openClodeAction } from "../../store/basic/action.slice";
 import { useEffect } from "react";
 type Inputs = {
   surname: string;
@@ -20,7 +20,7 @@ type Inputs = {
   dateDeparture: string;
 };
 
-export default function Form() {
+export default function Form(props: any) {
   const store = useSelector((state: RootState) => state.formSlice);
 
   //! функция отправки запроса
@@ -34,7 +34,10 @@ export default function Form() {
 
     //! записываем в стор
     dispacth(setFormData({ data }));
-    if (pathname.split("/").pop() !== "SearchModule" && pathname.split("/").pop() !== "AdminSearchResult") {
+    if (
+      pathname.split("/").pop() !== "SearchModule" &&
+      pathname.split("/").pop() !== "AdminSearchResult"
+    ) {
       navigate("/SearchPage/SearchModule");
       dispacth(openAction());
     }
@@ -67,6 +70,12 @@ export default function Form() {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => appealApi(data);
 
+  const dispatch = useDispatch();
+
+  const handleImgClick = () => {
+    dispatch(openClodeAction()); // Dispatch the openAction to update the state to true when the image is clicked
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* {errors.lastName && errors.lastName.type === "maxLength" && (
@@ -76,6 +85,18 @@ export default function Form() {
       <span>Поле обязательно к заполнению</span>
       )} */}
       <div className={styles.blockInput}>
+        {!props.isFunction && (
+          <img
+            onClick={handleImgClick}
+            src={
+              !props.isActionOpen
+                ? "./../../img/param.svg"
+                : "../../img/Close.svg"
+            }
+            alt="filter"
+          />
+        )}
+
         <div className={styles.blockFormFirst}>
           <input
             placeholder="Фамилия"
@@ -132,6 +153,11 @@ export default function Form() {
       </div>
       <div className={styles.SubmitButton}>
         <input type="submit" value="Найти" />
+        {!props.isFunction && (
+          <button className={styles.reset} onClick={props.funReset}>
+            Сбросить
+          </button>
+        )}
       </div>
     </form>
   );

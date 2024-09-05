@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { apiGetPeopleCamps } from "../../api/ApiRequest";
 import { setSelectedPerson } from "../../store/basic/people.slice";
 import { useNavigate } from "react-router-dom";
+import { setMapPeopleCount } from "../../store/basic/camps.slice";
 
 function MapMenu(props: any) {
   const [ostarbairet, setSetostarbairet] = useState<any>([]);
@@ -20,8 +21,13 @@ function MapMenu(props: any) {
       const param = `?localityWork=${city}`;
       apiGetPeopleCamps(param).then((req) => {
         if (req?.status === 200) {
-          console.log("req люди", req.data?.ostarbaiters);
+          console.log("req люди", req.data);
           setSetostarbairet(req.data?.ostarbaiters);
+          dispatch(
+            setMapPeopleCount({
+              count: req.data?.count || req.data?.ostarbaiters.length,
+            })
+          );
         }
       });
     }

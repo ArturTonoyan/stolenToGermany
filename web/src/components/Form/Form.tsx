@@ -85,15 +85,18 @@ export default function Form(props: any) {
       <span>Поле обязательно к заполнению</span>
       )} */}
       <div className={styles.blockInput}>
-        <img
-          onClick={handleImgClick}
-          src={
-            !props.isActionOpen
-              ? "./../../img/param.svg"
-              : "../../img/Close.svg"
-          }
-          alt="filter"
-        />
+        {!props.isFunction && (
+          <img
+            onClick={handleImgClick}
+            src={
+              !props.isActionOpen
+                ? "./../../img/param.svg"
+                : "../../img/Close.svg"
+            }
+            alt="filter"
+          />
+        )}
+
         <div className={styles.blockFormFirst}>
           <input
             placeholder="Фамилия"
@@ -150,9 +153,11 @@ export default function Form(props: any) {
       </div>
       <div className={styles.SubmitButton}>
         <input type="submit" value="Найти" />
-        <button className={styles.reset} onClick={props.funReset}>
-          Сбросить
-        </button>
+        {!props.isFunction && (
+          <button className={styles.reset} onClick={props.funReset}>
+            Сбросить
+          </button>
+        )}
       </div>
     </form>
   );

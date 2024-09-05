@@ -8,6 +8,7 @@ export interface Camps {
 export interface SelectedPoint {
   id: string;
   menuOpen: boolean;
+  count: number;
 }
 
 export interface CampsState {
@@ -17,7 +18,7 @@ export interface CampsState {
 
 const initialState: CampsState = {
   camps: [],
-  selectedPoint: { id: "", menuOpen: false },
+  selectedPoint: { id: "", menuOpen: false, count: 0 },
 };
 
 const campsSlice = createSlice({
@@ -43,6 +44,11 @@ const campsSlice = createSlice({
       state.selectedPoint.id = id;
     },
 
+    setMapPeopleCount(state, actions) {
+      const { count } = actions.payload;
+      state.selectedPoint.count = count;
+    },
+
     setModalOpen(state, actions) {
       const { action } = actions.payload;
       state.selectedPoint.menuOpen = action;
@@ -50,5 +56,6 @@ const campsSlice = createSlice({
   },
 });
 
-export const { setSelectedPoint, setModalOpen, setCamps } = campsSlice.actions;
+export const { setMapPeopleCount, setSelectedPoint, setModalOpen, setCamps } =
+  campsSlice.actions;
 export default campsSlice.reducer;

@@ -46,7 +46,14 @@
     margin-top: 32px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: left;
+  }
+  .notFound {
+    margin-top: 100px;
+    font-family: "Playfair Display";
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 66px;
   }
   a {
     outline: none;

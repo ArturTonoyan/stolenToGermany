@@ -48,16 +48,20 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    setFilterHumen(
-      store.people.filter((person) =>
-        Object.values(person).some(
-          (value) =>
-            value !== null &&
-            value !== undefined &&
-            value.toString().toLowerCase().includes(inpValue.toLowerCase())
+    const ostarbaiters = store.people.filter((person: any) =>
+      Object.keys(person)
+        .filter((key) => key !== "id" && key !== "img")
+        .some(
+          (key) =>
+            person[key] !== null &&
+            person[key] !== undefined &&
+            person[key]
+              .toString()
+              .toLowerCase()
+              .includes(inpValue.trim().toLowerCase())
         )
-      )
     );
+    setFilterHumen(ostarbaiters);
   };
   // const dispacth = useDispatch();
   // useEffect(() => {
@@ -111,6 +115,11 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
         {filterHumen.map((item) => (
           <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
+        {filterHumen?.length === 0 && (
+          <div className={styles.notFound}>
+            Информации по введенным данным не найдено
+          </div>
+        )}
       </div>
     </div>
   );

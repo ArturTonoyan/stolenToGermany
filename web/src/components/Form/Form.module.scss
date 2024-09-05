@@ -2,6 +2,7 @@
 @import "./../../styles/colors.scss";
 
 form {
+  
   .blockInput {
     display: flex;
     width: 56vw;
@@ -27,6 +28,12 @@ form {
       .bigInp {
         padding-bottom: 35px;
         padding-right: 140px;
+        &:first-child {
+          margin-top: 0px;
+          position: relative;
+         top: 8px;
+        }
+        margin-bottom: 33px;
       }
     }
     input {

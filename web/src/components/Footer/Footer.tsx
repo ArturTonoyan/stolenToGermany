@@ -36,7 +36,7 @@ function Footer() {
                   <Link to="SearchPage/SearchModule">Поиск</Link>
                 </li>
                 <li className={hrefName === "MapPage" ? styles.active : ""}>
-                  <Link to="MapPage">Крата</Link>
+                  <Link to="MapPage">Карта</Link>
                 </li>
                 <li className={hrefName === "#" ? styles.active : ""}>
                   <Link to="/" onClick={handleLinkClick}>

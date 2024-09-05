@@ -2,7 +2,6 @@
 @import "./../../styles/colors.scss";
 
 form {
-  
   .blockInput {
     display: flex;
     width: 56vw;
@@ -31,7 +30,7 @@ form {
         &:first-child {
           margin-top: 0px;
           position: relative;
-         top: 8px;
+          top: 8px;
         }
         margin-bottom: 33px;
       }
@@ -45,9 +44,21 @@ form {
   }
   .SubmitButton {
     width: 949px;
+    display: flex;
+    flex-direction: row;
     input {
-      width: 100%;
+      width: 50%;
       @include Button();
+    }
+    .reset {
+      width: 50%;
+      margin-left: 12px;
+      @include Button2();
+    }
+  }
+  .blockInput {
+    img {
+      right: -20px !important;
     }
   }
 }

@@ -47,26 +47,32 @@ function CardAdmin(props: any) {
     navigate("/AdminPage/EditHumanModule");
   };
 
+  const funcardClick = () => {
+    console.log(props.item?.id);
+    dispacth(setSelectedPerson({ id: props.item?.id }));
+    navigate(`/AdminPage/HumanProfile`);
+  };
+
   return (
     <div className={styles.CardAdminMainBlock}>
-      <div className={styles.CardAdmin}>
+      <div className={styles.CardAdmin} onClick={funcardClick}>
         <div className={styles.CardAdminImg}>
           <DeleteIMG
             className={styles.CarrdDelite}
             onClick={() => setActivDeleteCard(true)}
           />
-          <Link to="../../AdminPage/HumanProfile">
-            <img
-              src={
-                props.item?.img
-                  ? `${server}/${props.item?.img}`
-                  : "../img/notFoto.png"
-              }
-              alt="man"
-            />
-          </Link>
+          {/* <Link to="../../AdminPage/HumanProfile"> */}
+          <img
+            src={
+              props.item?.img
+                ? `${server}/${props.item?.img}`
+                : "../img/notFoto.png"
+            }
+            alt="man"
+          />
+          {/* </Link> */}
           <EditIMG
-            onClick={() => routeEdit(props.item.id)}
+            onClick={() => routeEdit(props.item?.id)}
             className={styles.CarrdEdit}
           />
         </div>

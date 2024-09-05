@@ -13,6 +13,7 @@ function MapPoint(props: any) {
     dispatch(setSelectedPoint({ id }));
     dispatch(setModalOpen({ action: true }));
   };
+  console.log("props.item", props);
 
   const getBalun = () => {
     return `<div id=${props.item.locality} class=${styles.balloon}>

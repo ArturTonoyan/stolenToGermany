@@ -59,23 +59,27 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     <div className={styles.SearchModule}>
       <div className={styles.topMenu}>
         <div className={styles.search}>
-          <Input
-            type="text"
-            placeholder={"Фамилия, Имя, Отчество, год рождения"}
-            value={inpValue}
-            funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-              funOnChange(e.target.value)
-            }
-          />
+          {!isActionOpen && (
+            <Input
+              type="text"
+              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              value={inpValue}
+              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+                funOnChange(e.target.value)
+              }
+            />
+          )}
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
-        <button className={styles.reset} onClick={funReset}>
-          Сбросить
-        </button>
+        {!isActionOpen && (
+          <button className={styles.reset} onClick={funReset}>
+            Сбросить
+          </button>
+        )}
       </div>
       {isActionOpen && (
         <div className={styles.filter}>
-          <Form />
+          <Form isActionOpen={isActionOpen} funReset={funReset} />
         </div>
       )}
       <div className={styles.container}>

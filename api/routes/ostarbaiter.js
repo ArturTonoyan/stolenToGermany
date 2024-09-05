@@ -8,7 +8,7 @@ const router = Router();
 
 router.route('/')
     .get(asyncRoute(osCtrl.get))
-    .post(/*asyncRoute(verify.general),*/ asyncRoute(osCtrl.create))
+    .post(asyncRoute(verify.general), asyncRoute(osCtrl.create))
 
 router.route('/camps')
     .get(asyncRoute(osCtrl.stolenInCamps))

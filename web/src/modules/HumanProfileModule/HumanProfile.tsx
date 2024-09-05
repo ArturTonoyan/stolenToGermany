@@ -125,10 +125,10 @@ function HumanProfile(props: any) {
             </Link>
           </div>
           <div className={styles.way}>
-            {showPath && (
+            {(showPath && humanData?.localityDeparture!=="" && humanData?.localityWork!=="") && (
               <PathToPoint
-                localityDeparture={humanData?.localityDeparture || "Москва"}
-                localityWork={humanData?.localityWork || "Берлин"}
+                localityDeparture={humanData?.localityDeparture || ""}
+                localityWork={humanData?.localityWork || ""}
               />
             )}
           </div>

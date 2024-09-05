@@ -38,6 +38,7 @@ function CardArchiveNotData(props: any) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+      console.log("file", file.name.split(".")[file.name.split(".").length - 1]);
       if (file.size > 3 * 1024 * 1024) { // Check if file size exceeds 3MB
         setErrorFile("Слишком большой файл")
         setSelectedFile(null);
@@ -46,7 +47,11 @@ function CardArchiveNotData(props: any) {
         setErrorFile("Загрузите файл")
         setSelectedFile(null);
         setFileName("");
-      } else {
+      } else if(file.name.split(".")[file.name.split(".").length - 1] !== "jpg" && file.name.split(".")[file.name.split(".").length - 1] !== "jpeg" && file.name.split(".")[file.name.split(".").length - 1] !== "png"){
+        setErrorFile("Неверное расширение")
+        setSelectedFile(null);
+        setFileName("");
+      }else {
         setErrorFile("")
         setFileName(file.name);
         setSelectedFile(file);

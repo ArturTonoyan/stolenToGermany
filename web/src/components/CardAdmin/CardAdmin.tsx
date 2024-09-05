@@ -9,6 +9,8 @@ import {
   apiGetPeople,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
+import notFoto from "./../../imgs/notfoto.png";
+
 function CardAdmin(props: any) {
   const server = process.env.REACT_APP_API_URL;
   const [activDeleteCard, setActivDeleteCard] = useState<boolean>(false);
@@ -56,14 +58,14 @@ function CardAdmin(props: any) {
             onClick={() => setActivDeleteCard(true)}
           />
           <Link to="../../AdminPage/HumanProfile">
-            <img
-              src={
-                props.item?.img
-                  ? `${server}/${props.item?.img}`
-                  : "../img/notFoto.png"
-              }
-              alt="man"
-            />
+          <img
+            src={
+              props.item?.img
+                ? `${server}/${props.item?.img}`
+                : `${notFoto}`
+            }
+            alt="man"
+          />
           </Link>
           <EditIMG
             onClick={() => routeEdit(props.item.id)}

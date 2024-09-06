@@ -22,6 +22,41 @@
           padding-bottom: 34px;
         }
       }
+      .address {
+        display: block;
+        position: relative;
+        ul {
+          width: 100%;
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          z-index: 100;
+          left: -40px;
+          top: 80px;
+          overflow-y: auto;
+          height: 40vh;
+          @include scrollStyle();
+          &::-webkit-scrollbar-track {
+            background: #fff; /* цвет дорожки */
+          }
+          li {
+            display: flex;
+          }
+          button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            &:hover {
+              background-color: var(--blue1);
+              color: #fff;
+              transition: all 0.15s ease;
+            }
+          }
+        }
+      }
       .blockFormSecond {
         display: block;
         width: 741px;

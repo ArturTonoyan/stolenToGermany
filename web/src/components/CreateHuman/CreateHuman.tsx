@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
-import { OstarbaitersCreate, apiGetOstarbaiter } from "../../api/ApiRequest";
+import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { AddressSuggestions } from "react-dadata";
 
 type Inputs = {
   name: string;
@@ -28,7 +29,6 @@ export default function CreateHuman(props: any) {
     formState: { errors },
     reset,
     setValue,
-    
   } = useForm<Inputs>();
   const [data, setData] = useState<any>();
 
@@ -85,6 +85,24 @@ export default function CreateHuman(props: any) {
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
 
+  const funSetAddress = (e: any) => {
+    console.log("e", e.value);
+    setValue("addressAfterReturning", e.value);
+  };
+
+  useEffect(() => {
+    const inputs = document.querySelectorAll<HTMLInputElement>(
+      ".react-dadata__input"
+    );
+    if (inputs.length > 0) {
+      inputs.forEach((input) => {
+        input.placeholder = data?.addressAfterReturning
+          ? data.addressAfterReturning
+          : "Адрес проживания после возвращения в СССР";
+      });
+    }
+  }, [data?.addressAfterReturning]);
+
   return (
     <div className={styles.CreateHuman}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -109,23 +127,22 @@ export default function CreateHuman(props: any) {
               maxLength={50}
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
-           <input
-            placeholder="Год рождения*"
-            className={`${errors.date ? styles.inputError : ""}`}
-            type="number"
-            defaultValue={props.data?.date || ""}
-            onInput={(e) => {
-              const input = e.target as HTMLInputElement;
-              if (input.value.length > 4) {
-                input.value = input.value.slice(0, 4);
-              }
-            }}
-            {...register("date", { 
-              required: true, 
-              pattern: /^[0-9]{4}$/ // Ensures only 4 digits are allowed
-            })}
-          />
-
+            <input
+              placeholder="Год рождения*"
+              className={`${errors.date ? styles.inputError : ""}`}
+              type="number"
+              defaultValue={props.data?.date || ""}
+              onInput={(e) => {
+                const input = e.target as HTMLInputElement;
+                if (input.value.length > 4) {
+                  input.value = input.value.slice(0, 4);
+                }
+              }}
+              {...register("date", {
+                required: true,
+                pattern: /^[0-9]{4}$/, // Ensures only 4 digits are allowed
+              })}
+            />
 
             <input
               className={styles.biginp}
@@ -162,9 +179,11 @@ export default function CreateHuman(props: any) {
                 }
               }}
               defaultValue={props.data?.dateDeparture || ""}
-              {...register("dateDeparture", {  required: false, 
-                maxLength: 4, 
-                pattern: /^[0-9]{4}$/})}
+              {...register("dateDeparture", {
+                required: false,
+                maxLength: 4,
+                pattern: /^[0-9]{4}$/,
+              })}
             />
             <input
               placeholder="Место трудоиспользования в Третьем рейхе"
@@ -187,7 +206,7 @@ export default function CreateHuman(props: any) {
                 maxLength: 50,
               })}
             />
-            <input
+            {/* <input
               placeholder="Адрес проживания после возвращения в СССР"
               maxLength={50}
               defaultValue={props.data?.addressAfterReturning || ""}
@@ -195,7 +214,16 @@ export default function CreateHuman(props: any) {
                 required: false,
                 maxLength: 50,
               })}
-            />
+            /> */}
+            <div className={styles.address}>
+              <AddressSuggestions
+                key={"addressAfterReturning"}
+                token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                // value={adressA}
+                onChange={funSetAddress}
+              />
+            </div>
+
             {location.pathname === "/AdminPage/EditHumanModule" && (
               <>
                 <div className={styles.archive}>

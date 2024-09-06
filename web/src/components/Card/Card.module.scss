@@ -35,5 +35,9 @@
       font-weight: 500;
       line-height: 20px;
     }
+    span {
+      overflow: hidden; /* Скрывает текст, выходящий за пределы блока */
+      text-overflow: ellipsis; /* Добавляет многоточие в конце обрезанного текста */
+    }
   }
 }

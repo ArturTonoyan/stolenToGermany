@@ -71,7 +71,7 @@ export default function CreateHuman(props: any) {
   function isValid(value: string, key: string) {
     // Проверяем, что строка не содержит цифр и английских букв
     const regex = /^[А-Яа-яЁё\s]+$/;
-    const regex2 = /^[А-Яа-яЁё0-9\s/_-]+$/;
+    const regex2 = /^[А-Яа-яЁё0-9\s/_,.()-]+$/;
     if (key === "name" || key === "surname" || key === "patronymic") {
       return regex.test(value);
     } else if (key !== "date" && key !== "dateDeparture") {
@@ -103,48 +103,35 @@ export default function CreateHuman(props: any) {
       }
     }
 
-    // if(errorMessage.length === 0){
-    //   props.funcCreate(data).then((res: any) => {
-    //   if (res?.status === 200 && res.type === "edit") {
-    //     reset(props.data);
-    //     SetDataResp();
-    //   }
-    //   if (res?.status === 200) {
-    //     reset();
+    if (errorMessage.length === 0) {
+      props.funcCreate(data).then((res: any) => {
+        if (res?.status === 200 && res.type === "edit") {
+          reset(props.data);
+          SetDataResp();
+        }
+        if (res?.status === 200) {
+          reset();
 
-    //     setDataSaved(true);
-    //   } else {
-    //     console.log("res", res);
-    //     setDataNotSaved(true);
-    //   }
-    // });
-    // }
+          setDataSaved(true);
+        } else {
+          console.log("res", res);
+          setDataNotSaved(true);
+        }
+      });
+    }
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
 
-  const funSetAddress = (e: any) => {
+  const funSetAddress = (e: any, key: any) => {
     console.log("e", e.value);
-    setValue("addressAfterReturning", e.value);
+    setValue(key, e.value);
   };
 
-  const funSetAddressInput = (e: any) => {
+  const funSetAddressInput = (e: any, key: any) => {
     console.log("e", e.target.value);
-    setValue("addressAfterReturning", e.target.value);
+    setValue(key, e.target.value);
   };
-
-  // useEffect(() => {
-  //   const inputs = document.querySelectorAll<HTMLInputElement>(
-  //     ".react-dadata__input"
-  //   );
-  //   if (inputs.length > 0) {
-  //     inputs.forEach((input) => {
-  //       input.placeholder = data?.addressAfterReturning
-  //         ? data.addressAfterReturning
-  //         : "Адрес проживания после возвращения в СССР";
-  //     });
-  //   }
-  // }, [data?.addressAfterReturning]);
 
   return (
     <div className={styles.CreateHuman}>
@@ -208,13 +195,26 @@ export default function CreateHuman(props: any) {
               </p>
             )}
 
-            <input
+            {/* <input
               className={styles.biginp}
               placeholder="Адрес проживания до угона на принудительные работы в Германию"
               maxLength={50}
               defaultValue={props.data?.departure || ""}
               {...register("departure", { required: false, maxLength: 20 })}
-            />
+            /> */}
+            <div className={styles.address}>
+              <AddressSuggestions
+                key={"departure"}
+                token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                // value={adressA}
+                onChange={(e) => funSetAddress(e, "departure")}
+                inputProps={{
+                  placeholder:
+                    "Адрес проживания до угона на принудительные работы в Германию",
+                  onChange: (e) => funSetAddressInput(e, "departure"),
+                }}
+              />
+            </div>
             {errorMessage.includes("departure") && (
               <p className={styles.errorMessage}>
                 Поле содержит недопустимые символы.
@@ -231,7 +231,7 @@ export default function CreateHuman(props: any) {
                 Поле содержит недопустимые символы.
               </p>
             )}
-            <input
+            {/* <input
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
               defaultValue={props.data?.localityDeparture || ""}
@@ -239,7 +239,20 @@ export default function CreateHuman(props: any) {
                 required: false,
                 maxLength: 50,
               })}
-            />
+            /> */}
+            <div className={styles.address}>
+              <AddressSuggestions
+                key={"localityDeparture"}
+                token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                // value={adressA}
+                onChange={(e) => funSetAddress(e, "localityDeparture")}
+                inputProps={{
+                  placeholder:
+                    "Населенный пункт откуда угнан на принудительные работы",
+                  onChange: (e) => funSetAddressInput(e, "localityDeparture"),
+                }}
+              />
+            </div>
             {errorMessage.includes("localityDeparture") && (
               <p className={styles.errorMessage}>
                 Поле содержит недопустимые символы.
@@ -314,10 +327,11 @@ export default function CreateHuman(props: any) {
                 key={"addressAfterReturning"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                 // value={adressA}
-                onChange={funSetAddress}
+                onChange={(e) => funSetAddress(e, "addressAfterReturning")}
                 inputProps={{
                   placeholder: "Адрес проживания после возвращения в СССР",
-                  onChange: funSetAddressInput,
+                  onChange: (e) =>
+                    funSetAddressInput(e, "addressAfterReturning"),
                 }}
               />
             </div>

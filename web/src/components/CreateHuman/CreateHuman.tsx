@@ -180,17 +180,11 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.date || ""}
               onInput={(e) => {
                 const input = e.target as HTMLInputElement;
+                // Remove unwanted characters
+                input.value = input.value.replace(/[-+eE]/g, '');
+                // Limit input to 4 digits
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
-                } else if (
-                  input.value.includes("-") ||
-                  input.value.includes("+") ||
-                  input.value.includes(".") ||
-                  input.value.includes(",") ||
-                  input.value.includes("e") ||
-                  input.value.includes("E")
-                ) {
-                  input.value = input.value.replace(/[-+.,eE]/g, "");
                 }
               }}
               {...register("date", {
@@ -269,12 +263,15 @@ export default function CreateHuman(props: any) {
             )}
           </div>
           <div className={styles.blockFormSecond}>
-            <input
+          <input
               placeholder="Дата угона"
               maxLength={4}
               type="number"
               onInput={(e) => {
                 const input = e.target as HTMLInputElement;
+                // Remove unwanted characters
+                input.value = input.value.replace(/[-+eE]/g, '');
+                // Limit input to 4 digits
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
                 }

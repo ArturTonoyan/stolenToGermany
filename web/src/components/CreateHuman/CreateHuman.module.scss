@@ -225,6 +225,11 @@
       }
     }
   }
+  .errorMessage{
+    color: var(--RedColor);
+    margin-top: -15px;
+    margin-bottom: 0px;
+  }
 }
 @keyframes boxShadowFade {
   0% {

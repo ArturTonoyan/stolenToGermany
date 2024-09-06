@@ -67,20 +67,58 @@ export default function CreateHuman(props: any) {
     setValue("addressAfterReturning", date?.addressAfterReturning || "");
   };
   const location = useLocation();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    props.funcCreate(data).then((res: any) => {
-      if (res?.status === 200 && res.type === "edit") {
-        reset(props.data);
-        SetDataResp();
-      }
-      if (res?.status === 200) {
-        reset();
-
-        setDataSaved(true);
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  function isValid(value: string, key: string) {
+    // Проверяем, что строка не содержит цифр и английских букв
+    const regex = /^[А-Яа-яЁё\s]+$/;
+    const regex2 = /^[А-Яа-яЁё0-9\s/_-]+$/;
+    if (key === "name" || key === "surname" || key === "patronymic") {
+      return regex.test(value);
+    } else if (key !== "date" && key !== "dateDeparture") {
+      return regex2.test(value);
+    } else {
+      const date = Number(value);
+      console.log("date", date);
+      if (date < 1900 || date > 2022) {
+        return false;
       } else {
-        setDataNotSaved(true);
+        return true;
       }
-    });
+    }
+  }
+
+  useEffect(() => {
+    console.log("errorMessage", errorMessage);
+  }, [errorMessage]);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("data", data);
+    for (const key of Object.keys(data) as (keyof Inputs)[]) {
+      if (data[key] !== "") {
+        if (!isValid(data[key], key)) {
+          console.log(`${key} содержит недопустимые символы.`);
+          setErrorMessage((prev) => [...prev, key]);
+        } else {
+          setErrorMessage((prev) => prev.filter((item) => item !== key));
+        }
+      }
+    }
+
+    // if(errorMessage.length === 0){
+    //   props.funcCreate(data).then((res: any) => {
+    //   if (res?.status === 200 && res.type === "edit") {
+    //     reset(props.data);
+    //     SetDataResp();
+    //   }
+    //   if (res?.status === 200) {
+    //     reset();
+
+    //     setDataSaved(true);
+    //   } else {
+    //     console.log("res", res);
+    //     setDataNotSaved(true);
+    //   }
+    // });
+    // }
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
@@ -120,18 +158,34 @@ export default function CreateHuman(props: any) {
               maxLength={50}
               {...register("surname", { required: true, maxLength: 50 })}
             />
+            {errorMessage.includes("surname") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Имя"
               defaultValue={props.data?.name || ""}
               maxLength={50}
               {...register("name", { required: false, maxLength: 50 })}
             />
+            {errorMessage.includes("name") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
+
             <input
               placeholder="Отчество"
               defaultValue={props.data?.patronymic || ""}
               maxLength={50}
               {...register("patronymic", { required: false, maxLength: 20 })}
             />
+            {errorMessage.includes("patronymic") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Год рождения*"
               className={`${errors.date ? styles.inputError : ""}`}
@@ -148,6 +202,11 @@ export default function CreateHuman(props: any) {
                 pattern: /^[0-9]{4}$/, // Ensures only 4 digits are allowed
               })}
             />
+            {errorMessage.includes("date") && (
+              <p className={styles.errorMessage}>
+                Год должен быть больше 1900 и меньше 2022
+              </p>
+            )}
 
             <input
               className={styles.biginp}
@@ -156,12 +215,22 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.departure || ""}
               {...register("departure", { required: false, maxLength: 20 })}
             />
+            {errorMessage.includes("departure") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Профессия на момент отправки в Германию"
               maxLength={50}
               defaultValue={props.data?.profession || ""}
               {...register("profession", { required: false, maxLength: 50 })}
             />
+            {errorMessage.includes("profession") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Населенный пункт откуда угнан на принудительные работы"
               maxLength={50}
@@ -171,6 +240,11 @@ export default function CreateHuman(props: any) {
                 maxLength: 50,
               })}
             />
+            {errorMessage.includes("localityDeparture") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
           </div>
           <div className={styles.blockFormSecond}>
             <input
@@ -190,18 +264,33 @@ export default function CreateHuman(props: any) {
                 pattern: /^[0-9]{4}$/,
               })}
             />
+            {errorMessage.includes("dateDeparture") && (
+              <p className={styles.errorMessage}>
+                Год должен быть больше 1900 и меньше 2022
+              </p>
+            )}
             <input
               placeholder="Место трудоиспользования в Третьем рейхе"
               maxLength={50}
               defaultValue={props.data?.localityWork || ""}
               {...register("localityWork", { required: false, maxLength: 50 })}
             />
+            {errorMessage.includes("localityWork") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Дата, место и причина смерти на момент пребывания в Германии"
               maxLength={50}
               defaultValue={props.data?.infoOfDeath || ""}
               {...register("infoOfDeath", { required: false, maxLength: 50 })}
             />
+            {errorMessage.includes("infoOfDeath") && (
+              <p className={styles.errorMessage}>
+                Поле содержит недопустимые символы.
+              </p>
+            )}
             <input
               placeholder="Дата и место репатриации"
               maxLength={50}

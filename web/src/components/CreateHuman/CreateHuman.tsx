@@ -103,22 +103,22 @@ export default function CreateHuman(props: any) {
       }
     }
 
-    // if(errorMessage.length === 0){
-    //   props.funcCreate(data).then((res: any) => {
-    //   if (res?.status === 200 && res.type === "edit") {
-    //     reset(props.data);
-    //     SetDataResp();
-    //   }
-    //   if (res?.status === 200) {
-    //     reset();
+    if(errorMessage.length === 0){
+      props.funcCreate(data).then((res: any) => {
+      if (res?.status === 200 && res.type === "edit") {
+        reset(props.data);
+        SetDataResp();
+      }
+      if (res?.status === 200) {
+        reset();
 
-    //     setDataSaved(true);
-    //   } else {
-    //     console.log("res", res);
-    //     setDataNotSaved(true);
-    //   }
-    // });
-    // }
+        setDataSaved(true);
+      } else {
+        console.log("res", res);
+        setDataNotSaved(true);
+      }
+    });
+    }
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
@@ -195,6 +195,9 @@ export default function CreateHuman(props: any) {
                 const input = e.target as HTMLInputElement;
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
+                }else if(input.value.includes("-") || input.value.includes("+") || input.value.includes(".") || input.value.includes(",") || input.value.includes("e") || input.value.includes("E")){
+                  input.value = input.value.replace(/[-+.,eE]/g, '');
+
                 }
               }}
               {...register("date", {

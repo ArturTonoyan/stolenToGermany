@@ -102,7 +102,7 @@ export default function Form(props: any) {
             placeholder="Фамилия"
             maxLength={50}
             defaultValue={store.formData.surname || ""}
-            {...register("surname", { maxLength: 50 })}
+            {...register("surname", { maxLength: 50})}
           />
           <input
             placeholder="Отчество"

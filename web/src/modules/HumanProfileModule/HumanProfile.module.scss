@@ -38,8 +38,11 @@
         line-height: 75px;
         text-align: left;
         color: #3d4970;
+        max-width: 24vw;
+
         p {
-          width: 24vw;
+          width: min-content;
+          max-width: 100%;
           border-bottom: 2px solid #3d4970;
           margin: 0;
           overflow-wrap: break-word;

@@ -107,9 +107,9 @@ function HumanProfile(props: any) {
           </div>
           <div className={styles.HumanProfile__card__info}>
             <div className={styles.HumanProfile__card__info__name}>
-              <p>{humanData?.surname}</p>
-              <p>{humanData?.name}</p>
-              <p>{humanData?.patronymic}</p>
+              {humanData?.surname && <p>{humanData?.surname}</p>}
+              {humanData?.name && <p>{humanData?.name}</p>}
+              {humanData?.patronymic && <p>{humanData?.patronymic}</p>}
             </div>
             <Link
               to={
@@ -125,12 +125,14 @@ function HumanProfile(props: any) {
             </Link>
           </div>
           <div className={styles.way}>
-            {(showPath && humanData?.localityDeparture!=="" && humanData?.localityWork!=="") && (
-              <PathToPoint
-                localityDeparture={humanData?.localityDeparture || ""}
-                localityWork={humanData?.localityWork || ""}
-              />
-            )}
+            {showPath &&
+              humanData?.localityDeparture !== "" &&
+              humanData?.localityWork !== "" && (
+                <PathToPoint
+                  localityDeparture={humanData?.localityDeparture || ""}
+                  localityWork={humanData?.localityWork || ""}
+                />
+              )}
           </div>
         </div>
 

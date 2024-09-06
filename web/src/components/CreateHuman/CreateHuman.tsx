@@ -90,18 +90,23 @@ export default function CreateHuman(props: any) {
     setValue("addressAfterReturning", e.value);
   };
 
-  useEffect(() => {
-    const inputs = document.querySelectorAll<HTMLInputElement>(
-      ".react-dadata__input"
-    );
-    if (inputs.length > 0) {
-      inputs.forEach((input) => {
-        input.placeholder = data?.addressAfterReturning
-          ? data.addressAfterReturning
-          : "Адрес проживания после возвращения в СССР";
-      });
-    }
-  }, [data?.addressAfterReturning]);
+  const funSetAddressInput = (e: any) => {
+    console.log("e", e.target.value);
+    setValue("addressAfterReturning", e.target.value);
+  };
+
+  // useEffect(() => {
+  //   const inputs = document.querySelectorAll<HTMLInputElement>(
+  //     ".react-dadata__input"
+  //   );
+  //   if (inputs.length > 0) {
+  //     inputs.forEach((input) => {
+  //       input.placeholder = data?.addressAfterReturning
+  //         ? data.addressAfterReturning
+  //         : "Адрес проживания после возвращения в СССР";
+  //     });
+  //   }
+  // }, [data?.addressAfterReturning]);
 
   return (
     <div className={styles.CreateHuman}>
@@ -221,6 +226,10 @@ export default function CreateHuman(props: any) {
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                 // value={adressA}
                 onChange={funSetAddress}
+                inputProps={{
+                  placeholder: "Адрес проживания после возвращения в СССР",
+                  onChange: funSetAddressInput,
+                }}
               />
             </div>
 

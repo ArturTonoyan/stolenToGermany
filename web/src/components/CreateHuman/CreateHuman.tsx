@@ -195,9 +195,6 @@ export default function CreateHuman(props: any) {
                 const input = e.target as HTMLInputElement;
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
-                }else if(input.value.includes("-") || input.value.includes("+") || input.value.includes(".") || input.value.includes(",") || input.value.includes("e") || input.value.includes("E")){
-                  input.value = input.value.replace(/[-+.,eE]/g, '');
-
                 }
               }}
               {...register("date", {

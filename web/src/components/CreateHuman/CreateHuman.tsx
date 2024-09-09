@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
@@ -133,6 +133,19 @@ export default function CreateHuman(props: any) {
     setValue(key, e.target.value);
   };
 
+  const funSetVal = (key: string) => {
+    const myInputElement = document.getElementById(key) as HTMLInputElement;
+    if (myInputElement && props.data?.[key]) {
+      myInputElement.value = props.data[key];
+    }
+  };
+  useEffect(() => {
+    funSetVal("departure");
+    funSetVal("localityDeparture");
+    funSetVal("addressAfterReturning");
+  }, [props.data]);
+
+  console.log("props.data", props.data);
   return (
     <div className={styles.CreateHuman}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -181,7 +194,7 @@ export default function CreateHuman(props: any) {
               onInput={(e) => {
                 const input = e.target as HTMLInputElement;
                 // Remove unwanted characters
-                input.value = input.value.replace(/[-+eE]/g, '');
+                input.value = input.value.replace(/[-+eE]/g, "");
                 // Limit input to 4 digits
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
@@ -207,11 +220,12 @@ export default function CreateHuman(props: any) {
             /> */}
             <div className={styles.address}>
               <AddressSuggestions
+                value={props.data?.departure}
                 key={"departure"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                // value={adressA}
                 onChange={(e) => funSetAddress(e, "departure")}
                 inputProps={{
+                  id: "departure",
                   placeholder:
                     "Адрес проживания до угона на принудительные работы в Германию",
                   onChange: (e) => funSetAddressInput(e, "departure"),
@@ -250,6 +264,7 @@ export default function CreateHuman(props: any) {
                 // value={adressA}
                 onChange={(e) => funSetAddress(e, "localityDeparture")}
                 inputProps={{
+                  id: "localityDeparture",
                   placeholder:
                     "Населенный пункт откуда угнан на принудительные работы",
                   onChange: (e) => funSetAddressInput(e, "localityDeparture"),
@@ -263,14 +278,14 @@ export default function CreateHuman(props: any) {
             )}
           </div>
           <div className={styles.blockFormSecond}>
-          <input
+            <input
               placeholder="Дата угона"
               maxLength={4}
               type="number"
               onInput={(e) => {
                 const input = e.target as HTMLInputElement;
                 // Remove unwanted characters
-                input.value = input.value.replace(/[-+eE]/g, '');
+                input.value = input.value.replace(/[-+eE]/g, "");
                 // Limit input to 4 digits
                 if (input.value.length > 4) {
                   input.value = input.value.slice(0, 4);
@@ -335,6 +350,7 @@ export default function CreateHuman(props: any) {
                 // value={adressA}
                 onChange={(e) => funSetAddress(e, "addressAfterReturning")}
                 inputProps={{
+                  id: "addressAfterReturning",
                   placeholder: "Адрес проживания после возвращения в СССР",
                   onChange: (e) =>
                     funSetAddressInput(e, "addressAfterReturning"),

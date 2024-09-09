@@ -37,7 +37,7 @@ export const humaInfo: HumanInfo[] = [
   {
     type: "addressBeforeShipping",
     text: "Адрес проживания до угона на принудительные работы в Германию — ",
-    dataKey: "addressAfterReturning" as keyof Human,
+    dataKey: "departure" as keyof Human,
   },
   {
     type: "departureDate",

@@ -49,6 +49,7 @@ function HumanProfile(props: any) {
         }
       });
     }
+    console.log("humanData", humanData);
   }, [store.selectedPerson]);
 
   //! функция определения класса у p

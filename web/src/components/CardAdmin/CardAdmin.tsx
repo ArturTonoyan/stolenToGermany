@@ -56,21 +56,23 @@ function CardAdmin(props: any) {
   };
 
   return (
-    <div className={styles.CardAdminMainBlock} onClick={funcardClick}>
+    <div className={styles.CardAdminMainBlock}>
       <div className={styles.CardAdmin}>
         <div className={styles.CardAdminImg}>
           <DeleteIMG
             className={styles.CarrdDelite}
             onClick={() => setActivDeleteCard(true)}
           />
-          <Link to="../../AdminPage/HumanProfile">
-            <img
-              src={
-                props.item?.img ? `${server}/${props.item?.img}` : `${notFoto}`
-              }
-              alt="man"
-            />
-          </Link>
+          {/* <Link to="../../AdminPage/HumanProfile"> */}
+          <img
+            // onClick={() => navigate("../../AdminPage/HumanProfile")}
+            onClick={funcardClick}
+            src={
+              props.item?.img ? `${server}/${props.item?.img}` : `${notFoto}`
+            }
+            alt="man"
+          />
+          {/* </Link> */}
           <EditIMG
             onClick={() => routeEdit(props.item.id)}
             className={styles.CarrdEdit}

@@ -108,9 +108,6 @@ export default {
     if(patronymic && !validateLetter(patronymic)) throw  new AppErrorInvalid('patronymic')
     if(profession && !validateLetter(profession)) throw new AppErrorInvalid('profession')
     if(dateDeparture && !validateNumeric(dateDeparture)) throw new AppErrorInvalid('dateDeparture')
-    if(localityWork) throw new AppErrorInvalid('localityWork')
-    if(localityDeparture) throw new AppErrorInvalid('localityDeparture')
-    if(addressAfterReturning) throw new AppErrorInvalid('addressAfterReturning')
     if(infoOfRepatriation && !validateLetterNumeric(infoOfRepatriation)) throw new AppErrorInvalid('infoOfRepatriation')
     if(infoOfDeath && !validateLetterNumeric(infoOfDeath)) throw new AppErrorInvalid('infoOfDeath')
 
@@ -161,9 +158,6 @@ export default {
     if(patronymic && !validateLetter(patronymic)) throw  new AppErrorInvalid('patronymic')
     if(profession && !validateLetter(profession)) throw new AppErrorInvalid('profession')
     if(dateDeparture && !validateNumeric(dateDeparture) ) throw new AppErrorInvalid('dateDeparture')
-    if(localityWork) throw new AppErrorInvalid('localityWork')
-    if(localityDeparture) throw new AppErrorInvalid('localityDeparture')
-    if(addressAfterReturning) throw new AppErrorInvalid('addressAfterReturning')
     if(infoOfRepatriation && !validateLetterNumeric(infoOfRepatriation)) throw new AppErrorInvalid('infoOfRepatriation')
     if(infoOfDeath && !validateLetterNumeric(infoOfDeath)) throw new AppErrorInvalid('infoOfDeath')
 

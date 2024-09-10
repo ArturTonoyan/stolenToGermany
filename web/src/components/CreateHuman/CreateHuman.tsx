@@ -77,14 +77,18 @@ export default function CreateHuman(props: any) {
     } else if (key !== "date" && key !== "dateDeparture") {
       return regex2.test(value);
     } else {
+      if(key === "date"){
       const date = Number(value);
-      console.log("date", date);
-      if (date < 1900 || date > 2022) {
+      if (date < 1845 || date > 1946) {
         return false;
       } else {
         return true;
       }
-    }
+  }else{
+    return true;
+  }
+}
+     
   }
 
   useEffect(() => {
@@ -93,8 +97,8 @@ export default function CreateHuman(props: any) {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log("data", data);
     for (const key of Object.keys(data) as (keyof Inputs)[]) {
-      if (data[key] !== "") {
-        if (!isValid(data[key], key)) {
+      if (data[key] !== "" && data[key] !== "dateDeparture") {
+        if (!isValid(data[key].toString(), key)) {
           console.log(`${key} содержит недопустимые символы.`);
           setErrorMessage((prev) => [...prev, key]);
         } else {
@@ -102,7 +106,7 @@ export default function CreateHuman(props: any) {
         }
       }
     }
-
+    console.log("errorMessage", errorMessage);
     if (errorMessage.length === 0) {
       props.funcCreate(data).then((res: any) => {
         if (res?.status === 200 && res.type === "edit") {
@@ -145,7 +149,6 @@ export default function CreateHuman(props: any) {
     funSetVal("addressAfterReturning");
   }, [props.data]);
 
-  console.log("props.data", props.data);
   return (
     <div className={styles.CreateHuman}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -207,7 +210,7 @@ export default function CreateHuman(props: any) {
             />
             {errorMessage.includes("date") && (
               <p className={styles.errorMessage}>
-                Год должен быть больше 1900 и меньше 2022
+                Год должен быть больше 1845 и меньше 1946
               </p>
             )}
 
@@ -281,26 +284,17 @@ export default function CreateHuman(props: any) {
             <input
               placeholder="Дата угона"
               maxLength={4}
-              type="number"
-              onInput={(e) => {
-                const input = e.target as HTMLInputElement;
-                // Remove unwanted characters
-                input.value = input.value.replace(/[-+eE]/g, "");
-                // Limit input to 4 digits
-                if (input.value.length > 4) {
-                  input.value = input.value.slice(0, 4);
-                }
-              }}
+              type="date"
+              min={"1845-01-01"}
+              max={"1946-12-31"}
               defaultValue={props.data?.dateDeparture || ""}
               {...register("dateDeparture", {
                 required: false,
-                maxLength: 4,
-                pattern: /^[0-9]{4}$/,
               })}
             />
             {errorMessage.includes("dateDeparture") && (
               <p className={styles.errorMessage}>
-                Год должен быть больше 1900 и меньше 2022
+                 Год должен быть больше 1845 и меньше 1946
               </p>
             )}
             <input

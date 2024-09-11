@@ -8,9 +8,12 @@ function MapComponent() {
       <Map
         width={"100%"}
         height={"100%"}
-        state={{
+        defaultState={{
           center: [52.516363, 13.378906],
           zoom: 7,
+        }}
+        options={{
+          minZoom: 4,
         }}
       >
         <GeolocationControl options={{ float: "left" }} />

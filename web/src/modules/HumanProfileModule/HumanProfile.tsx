@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PathToPoint from "../../components/PathToPoint/PathToPoint";
 import styles from "./HumanProfile.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -73,6 +73,26 @@ function HumanProfile(props: any) {
     setImgOpen([]);
   };
 
+  const [classNameSet, setClassName] = useState(
+    styles.HumanProfile__card__info__name
+  );
+  const funMouseEnter = () => {
+    console.log("funMouseEnter");
+    if (
+      humanData?.surname.length > 11 ||
+      humanData?.name.length > 11 ||
+      humanData?.patronymic.length > 11
+    ) {
+      let cl = `${styles.HumanProfile__card__info__name} ${styles.nameScrollAnim}`;
+      setClassName(cl);
+    }
+  };
+
+  const funMouseOut = () => {
+    console.log("funMouseOut");
+    setClassName(styles.HumanProfile__card__info__name);
+  };
+
   return (
     <div className={styles.HumanProfile}>
       {imgOpen.length !== 0 && (
@@ -107,7 +127,11 @@ function HumanProfile(props: any) {
             />
           </div>
           <div className={styles.HumanProfile__card__info}>
-            <div className={styles.HumanProfile__card__info__name}>
+            <div
+              className={classNameSet}
+              onMouseEnter={funMouseEnter}
+              onMouseLeave={funMouseOut}
+            >
               {humanData?.surname && <p>{humanData?.surname}</p>}
               {humanData?.name && <p>{humanData?.name}</p>}
               {humanData?.patronymic && <p>{humanData?.patronymic}</p>}

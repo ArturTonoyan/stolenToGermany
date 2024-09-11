@@ -52,6 +52,29 @@ export const Auth = async (data) => {
   }
 };
 
+//! поучаем адреса
+export const apiGetAdress = async (data) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Token YOUR_API_KEY_HERE",
+    };
+
+    const response = await http.post(
+      "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address",
+      data,
+      { headers }
+    );
+
+    if (response.status === 200) {
+      return response.data.suggestions;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 //! Запрос на создание human
 export const OstarbaitersCreate = async (data) => {
   try {

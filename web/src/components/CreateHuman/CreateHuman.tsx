@@ -41,12 +41,26 @@ export default function CreateHuman(props: any) {
     }
   }, []);
 
+  const funSetVal = (key: string) => {
+    const myInputElement = document.getElementById(key) as HTMLInputElement;
+    if (myInputElement && data?.[key]) {
+      myInputElement.value = data[key];
+    }
+  };
+
   const store = useSelector((state: RootState) => state.peopleSlice);
   const SetDataResp = () => {
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
       setData(res && res?.data?.ostarbaiter);
     });
   };
+
+  useEffect(() => {
+    console.log("data", data);
+    funSetVal("departure");
+    funSetVal("localityDeparture");
+    funSetVal("addressAfterReturning");
+  }, [props, data]);
 
   useEffect(() => {
     setDatas(data);
@@ -133,18 +147,6 @@ export default function CreateHuman(props: any) {
     setValue(key, e.target.value);
   };
 
-  const funSetVal = (key: string) => {
-    const myInputElement = document.getElementById(key) as HTMLInputElement;
-    if (myInputElement && props.data?.[key]) {
-      myInputElement.value = props.data[key];
-    }
-  };
-  useEffect(() => {
-    funSetVal("departure");
-    funSetVal("localityDeparture");
-    funSetVal("addressAfterReturning");
-  }, [props.data]);
-
   console.log("props.data", props.data);
   return (
     <div className={styles.CreateHuman}>
@@ -220,7 +222,6 @@ export default function CreateHuman(props: any) {
             /> */}
             <div className={styles.address}>
               <AddressSuggestions
-                value={props.data?.departure}
                 key={"departure"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                 onChange={(e) => funSetAddress(e, "departure")}

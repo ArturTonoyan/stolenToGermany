@@ -73,6 +73,7 @@ export default function Form(props: any) {
   const dispatch = useDispatch();
 
   const handleImgClick = () => {
+    props.funReset();
     dispatch(openClodeAction()); // Dispatch the openAction to update the state to true when the image is clicked
   };
 
@@ -102,7 +103,7 @@ export default function Form(props: any) {
             placeholder="Фамилия"
             maxLength={50}
             defaultValue={store.formData.surname || ""}
-            {...register("surname", { maxLength: 50})}
+            {...register("surname", { maxLength: 50 })}
           />
           <input
             placeholder="Отчество"
@@ -116,26 +117,26 @@ export default function Form(props: any) {
             defaultValue={store.formData.name || ""}
             {...register("name", { maxLength: 50 })}
           />
-           <input
-              placeholder="Год рождения"
-              maxLength={4}
-              type="number"
-              onInput={(e) => {
-                const input = e.target as HTMLInputElement;
-                // Remove unwanted characters
-                input.value = input.value.replace(/[-+eE]/g, '');
-                // Limit input to 4 digits
-                if (input.value.length > 4) {
-                  input.value = input.value.slice(0, 4);
-                }
-              }}
-              defaultValue={props.data?.dateDeparture || ""}
-              {...register("date", {
-                required: false,
-                maxLength: 4,
-                pattern: /^[0-9]{4}$/,
-              })}
-            />
+          <input
+            placeholder="Год рождения"
+            maxLength={4}
+            type="number"
+            onInput={(e) => {
+              const input = e.target as HTMLInputElement;
+              // Remove unwanted characters
+              input.value = input.value.replace(/[-+eE]/g, "");
+              // Limit input to 4 digits
+              if (input.value.length > 4) {
+                input.value = input.value.slice(0, 4);
+              }
+            }}
+            defaultValue={props.data?.dateDeparture || ""}
+            {...register("date", {
+              required: false,
+              maxLength: 4,
+              pattern: /^[0-9]{4}$/,
+            })}
+          />
         </div>
         <div className={styles.blockFormSecond}>
           <input

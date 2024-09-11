@@ -29,8 +29,9 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
   const [filterHumen, setFilterHumen] = useState<Person[]>([]);
 
   useEffect(() => {
-    setFilterHumen(store.people);
-  }, [store.people]);
+    setFilterHumen(store.filterPeople);
+  }, [store.filterPeople]);
+
   useEffect(() => {
     console.log("filterHumen", filterHumen);
   }, [filterHumen]);
@@ -96,6 +97,7 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
               funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
                 funOnChange(e.target.value)
               }
+              funReset={funReset}
             />
           )}
         </div>

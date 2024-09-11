@@ -5,9 +5,12 @@ import { openClodeAction } from "../../store/basic/action.slice";
 import { RootState } from "../../store/store";
 function Input(props: any) {
   const dispatch = useDispatch();
-  const isActionOpen = useSelector((state: RootState) => state.actionSlice.action);
+  const isActionOpen = useSelector(
+    (state: RootState) => state.actionSlice.action
+  );
 
   const handleImgClick = () => {
+    props.funReset();
     dispatch(openClodeAction()); // Dispatch the openAction to update the state to true when the image is clicked
   };
 
@@ -20,7 +23,11 @@ function Input(props: any) {
         className={styles.input}
         onChange={(el) => props.funOnChange(el)}
       ></input>
-      <img onClick={handleImgClick} src={!isActionOpen ? "./../../img/param.svg" : "../../img/Close.svg"} alt="filter" />
+      <img
+        onClick={handleImgClick}
+        src={!isActionOpen ? "./../../img/param.svg" : "../../img/Close.svg"}
+        alt="filter"
+      />
     </div>
   );
 }

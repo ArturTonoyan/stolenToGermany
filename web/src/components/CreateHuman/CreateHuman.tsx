@@ -78,12 +78,11 @@ export default function CreateHuman(props: any) {
       return regex2.test(value);
     } else {
       const date = Number(value);
-      console.log("date", date);
-      if (date < 1900 || date > 2022) {
-        return false;
-      } else {
-        return true;
-      }
+        if (date < 1845 || date > 1946) {
+          return false;
+        } else {
+          return true;
+        }
     }
   }
 
@@ -207,7 +206,7 @@ export default function CreateHuman(props: any) {
             />
             {errorMessage.includes("date") && (
               <p className={styles.errorMessage}>
-                Год должен быть больше 1900 и меньше 2022
+                Год должен быть больше 1845 и меньше 1946
               </p>
             )}
 
@@ -279,7 +278,7 @@ export default function CreateHuman(props: any) {
           </div>
           <div className={styles.blockFormSecond}>
             <input
-              placeholder="Дата угона"
+              placeholder="Год угона"
               maxLength={4}
               type="number"
               onInput={(e) => {
@@ -300,7 +299,7 @@ export default function CreateHuman(props: any) {
             />
             {errorMessage.includes("dateDeparture") && (
               <p className={styles.errorMessage}>
-                Год должен быть больше 1900 и меньше 2022
+                 Год должен быть больше 1845 и меньше 1946
               </p>
             )}
             <input

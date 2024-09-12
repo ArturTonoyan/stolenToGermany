@@ -5,7 +5,7 @@ import fs from "fs";
 const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
 
 import cookieParser from "cookie-parser";
-import { initializeDbModels, parsnigExsel } from "./utils/db.js";
+import {initializeDbModels, parsingZip, parsnigExsel} from "./utils/db.js";
 const app = express();
 
 import 'dotenv/config'

@@ -79,7 +79,7 @@ const uploader = multer({
 
 export default {
   uploader,
-  async afterUpload({body: {id, types}, file, url }, res) {
+  async afterUpload({body: { id, types }, file, url }, res) {
     for (let i=1; i<types.length; i++){
       fs.mkdirSync(
           path.join(

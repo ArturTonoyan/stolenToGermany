@@ -13,6 +13,11 @@
         height: 452px;
       }
     }
+    .HumanImg {
+      img {
+        object-fit: cover;
+      }
+    }
     .way {
       display: flex;
       margin-left: 7%;

@@ -37,13 +37,14 @@ function HumanSliderFoto(props: any) {
         </button>
       </div>
       <div className={styles.listPoints}>
-        {props.imgOpen.map((_: any, index: number) => (
-          <div
-            className={
-              index === selectedImg ? styles.pointActive : styles.point
-            }
-          ></div>
-        ))}
+        {props.imgOpen?.length > 1 &&
+          props.imgOpen.map((_: any, index: number) => (
+            <div
+              className={
+                index === selectedImg ? styles.pointActive : styles.point
+              }
+            ></div>
+          ))}
       </div>
     </div>
   );

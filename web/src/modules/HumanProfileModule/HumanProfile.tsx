@@ -116,7 +116,7 @@ function HumanProfile(props: any) {
               <PageArrow />
             </Link>
           </div>
-          <div>
+          <div className={styles.HumanImg}>
             <img
               src={
                 humanData?.img

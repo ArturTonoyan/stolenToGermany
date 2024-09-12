@@ -30,6 +30,7 @@
         width: 246px;
         height: 314px;
         margin: 16px;
+        object-fit: cover;
       }
       .CarrdEdit {
         position: absolute;
@@ -72,14 +73,17 @@
       width: 90%;
 
       .name {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 500;
-        line-height: 25px;
+        line-height: 20px;
+        text-wrap: nowrap;
+        // height: 40px;
       }
       .info {
         font-size: 16px;
         font-weight: 500;
         line-height: 20px;
+        height: 40px;
       }
       span {
         overflow: hidden !important; /* Скрывает текст, выходящий за пределы блока */

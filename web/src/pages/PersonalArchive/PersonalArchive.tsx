@@ -124,14 +124,27 @@ function PersonalArchive() {
           <button onClick={funScrollLeft}>
             <ArrowLeft />
           </button>
-          <img
-            src={
-              imgs[selectedImg]
-                ? `${server}/${imgs[selectedImg]}`
-                : "./img/notfoto.png"
-            }
-            alt="foto"
-          />
+          <div className={styles.containerFotos}>
+            <img
+              className={styles.imgblur}
+              src={
+                imgs[selectedImg]
+                  ? `${server}/${imgs[selectedImg]}`
+                  : "./img/notfoto.png"
+              }
+              alt="foto"
+            />
+            <img
+              className={styles.imgosn}
+              src={
+                imgs[selectedImg]
+                  ? `${server}/${imgs[selectedImg]}`
+                  : "./img/notfoto.png"
+              }
+              alt="foto"
+            />
+          </div>
+
           <button onClick={funScrollRigth}>
             <ArrowLeft className={styles.rigth} />
           </button>

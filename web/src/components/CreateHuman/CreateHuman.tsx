@@ -30,6 +30,9 @@ export default function CreateHuman(props: any) {
     setValue,
   } = useForm<Inputs>();
   const [data, setData] = useState<any>();
+  const suggestionsRef = useRef<AddressSuggestions>(null);
+  const localityDepartureRef = useRef<AddressSuggestions>(null);
+  const addressAfterReturningRef = useRef<AddressSuggestions>(null);
 
   useEffect(() => {
     if (
@@ -111,6 +114,15 @@ export default function CreateHuman(props: any) {
         }
         if (res?.status === 200) {
           reset();
+          if (suggestionsRef.current) {
+            suggestionsRef.current.setInputValue("");
+          }
+          if (localityDepartureRef.current) {
+            localityDepartureRef.current.setInputValue("");
+          }
+          if (addressAfterReturningRef.current) {
+            addressAfterReturningRef.current.setInputValue("");
+          }
 
           setDataSaved(true);
         } else {
@@ -125,7 +137,6 @@ export default function CreateHuman(props: any) {
 
   //! устанавливаем занчения для адресов
   //! 1
-  const suggestionsRef = useRef<AddressSuggestions>(null);
   const handleClick = () => {
     if (suggestionsRef.current) {
       suggestionsRef.current.setInputValue(data?.departure || "");
@@ -136,7 +147,6 @@ export default function CreateHuman(props: any) {
   }, [suggestionsRef, data, props.data]);
 
   //! 2
-  const localityDepartureRef = useRef<AddressSuggestions>(null);
   const handleClick2 = () => {
     if (localityDepartureRef.current) {
       localityDepartureRef.current.setInputValue(data?.localityDeparture || "");
@@ -147,7 +157,6 @@ export default function CreateHuman(props: any) {
   }, [localityDepartureRef, data, props.data]);
 
   //! 3
-  const addressAfterReturningRef = useRef<AddressSuggestions>(null);
   const handleClick3 = () => {
     if (addressAfterReturningRef.current) {
       addressAfterReturningRef.current.setInputValue(

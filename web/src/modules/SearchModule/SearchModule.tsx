@@ -73,6 +73,7 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
               funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
                 funOnChange(e.target.value)
               }
+              funReset={funReset}
             />
           )}
         </div>

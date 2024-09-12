@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreateHuman.module.scss";
-import { apiGetOstarbaiter } from "../../api/ApiRequest";
+import { apiGetAdress, apiGetOstarbaiter } from "../../api/ApiRequest";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { AddressSuggestions } from "react-dadata";
-
 type Inputs = {
   name: string;
   surname: string;
@@ -40,6 +39,7 @@ export default function CreateHuman(props: any) {
       SetDataResp();
     }
   }, []);
+  // const [addressList, setAddressList] = useState<string[]>([]); //adressList
 
   const store = useSelector((state: RootState) => state.peopleSlice);
   const SetDataResp = () => {
@@ -53,6 +53,7 @@ export default function CreateHuman(props: any) {
   }, [data]);
 
   const setDatas = (date: any) => {
+    console.log("date", date);
     setValue("surname", date?.surname || "");
     setValue("name", date?.name || "");
     setValue("patronymic", date?.patronymic || "");
@@ -78,11 +79,11 @@ export default function CreateHuman(props: any) {
       return regex2.test(value);
     } else {
       const date = Number(value);
-        if (date < 1845 || date > 1946) {
-          return false;
-        } else {
-          return true;
-        }
+      if (date < 1845 || date > 1946) {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
@@ -122,6 +123,44 @@ export default function CreateHuman(props: any) {
   const [DataSaved, setDataSaved] = useState<boolean>(false);
   const [DataNotSaved, setDataNotSaved] = useState<boolean>(false);
 
+  //! устанавливаем занчения для адресов
+  //! 1
+  const suggestionsRef = useRef<AddressSuggestions>(null);
+  const handleClick = () => {
+    if (suggestionsRef.current) {
+      suggestionsRef.current.setInputValue(data?.departure || "");
+    }
+  };
+  useEffect(() => {
+    handleClick();
+  }, [suggestionsRef, data, props.data]);
+
+  //! 2
+  const localityDepartureRef = useRef<AddressSuggestions>(null);
+  const handleClick2 = () => {
+    if (localityDepartureRef.current) {
+      localityDepartureRef.current.setInputValue(data?.localityDeparture || "");
+    }
+  };
+  useEffect(() => {
+    handleClick2();
+  }, [localityDepartureRef, data, props.data]);
+
+  //! 3
+  const addressAfterReturningRef = useRef<AddressSuggestions>(null);
+  const handleClick3 = () => {
+    if (addressAfterReturningRef.current) {
+      addressAfterReturningRef.current.setInputValue(
+        data?.addressAfterReturning || ""
+      );
+    }
+  };
+  useEffect(() => {
+    handleClick3();
+  }, [addressAfterReturningRef, data, props.data]);
+
+  //!------------------------------------
+
   const funSetAddress = (e: any, key: any) => {
     console.log("e", e.value);
     setValue(key, e.value);
@@ -132,19 +171,6 @@ export default function CreateHuman(props: any) {
     setValue(key, e.target.value);
   };
 
-  const funSetVal = (key: string) => {
-    const myInputElement = document.getElementById(key) as HTMLInputElement;
-    if (myInputElement && props.data?.[key]) {
-      myInputElement.value = props.data[key];
-    }
-  };
-  useEffect(() => {
-    funSetVal("departure");
-    funSetVal("localityDeparture");
-    funSetVal("addressAfterReturning");
-  }, [props.data]);
-
-  console.log("props.data", props.data);
   return (
     <div className={styles.CreateHuman}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -219,7 +245,7 @@ export default function CreateHuman(props: any) {
             /> */}
             <div className={styles.address}>
               <AddressSuggestions
-                value={props.data?.departure}
+                ref={suggestionsRef}
                 key={"departure"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                 onChange={(e) => funSetAddress(e, "departure")}
@@ -258,9 +284,9 @@ export default function CreateHuman(props: any) {
             /> */}
             <div className={styles.address}>
               <AddressSuggestions
+                ref={localityDepartureRef}
                 key={"localityDeparture"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                // value={adressA}
                 onChange={(e) => funSetAddress(e, "localityDeparture")}
                 inputProps={{
                   id: "localityDeparture",
@@ -299,7 +325,7 @@ export default function CreateHuman(props: any) {
             />
             {errorMessage.includes("dateDeparture") && (
               <p className={styles.errorMessage}>
-                 Год должен быть больше 1845 и меньше 1946
+                Год должен быть больше 1845 и меньше 1946
               </p>
             )}
             <input
@@ -344,6 +370,7 @@ export default function CreateHuman(props: any) {
             /> */}
             <div className={styles.address}>
               <AddressSuggestions
+                ref={addressAfterReturningRef}
                 key={"addressAfterReturning"}
                 token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                 // value={adressA}

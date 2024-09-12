@@ -31,25 +31,54 @@
         width: auto;
         padding-right: 10px;
       }
+
       .HumanProfile__card__info__name {
+        display: flex;
+        flex-direction: column;
         font-family: "Playfair Display";
-        font-size: 60px;
+        font-size: 52px;
         font-weight: 500;
-        line-height: 75px;
+        line-height: 60px;
         text-align: left;
         color: #3d4970;
         max-width: 24vw;
+        overflow: hidden;
 
         p {
+          display: inline-block;
           width: min-content;
           max-width: 100%;
           border-bottom: 2px solid #3d4970;
           margin: 0;
-          overflow-wrap: break-word;
+          transition: all 0.1s linear;
+
+          // overflow-wrap: break-word;
+        }
+
+        @keyframes marquee {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-110%);
+          }
+        }
+        p::-webkit-scrollbar {
+          width: 0;
+          height: 0;
         }
         @media (max-width: 1650px) {
           font-size: 52px;
           line-height: 70px;
+        }
+      }
+
+      .nameScrollAnim {
+        width: 100%;
+        overflow: hidden;
+        p {
+          max-width: none;
+          animation: marquee 10s linear infinite;
         }
       }
 

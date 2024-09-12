@@ -53,11 +53,13 @@
     top: -55px;
   }
   .BgAboutHomeLeft {
+    filter: brightness(0.85);
     position: absolute;
     left: 0;
     top: 1200px;
   }
   .BgAboutHomeRight {
+    filter: brightness(0.99);
     position: absolute;
     right: 0;
     top: 1200px;

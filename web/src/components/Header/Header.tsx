@@ -50,9 +50,9 @@ function Header(props: any) {
               О проекте
             </Link>
           </li>
-          <li className={hrefName === "#" ? styles.active : ""}>
+          {/* <li className={hrefName === "#" ? styles.active : ""}>
             <Link to="/AdminPage/AdminPageAuth">Админка</Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </header>

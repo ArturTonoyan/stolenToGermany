@@ -7,19 +7,6 @@ import fs from "fs";
 import AdmZip from 'adm-zip'
 import {readdir} from "node:fs/promises";
 
-const supportingDocuments = {
-    0: 'images',
-    1: "scanPassport",
-    2: "employmentHistory",
-    3: "addressBeforeShipping",
-    4: "departureDate",
-    5: "departure",
-    6: "arrival",
-    7: "deathInformation",
-    8: "repatriationInfo",
-    9: "addressAfterShipping",
-};
-
 export async function initializeDbModels() {
     if (typeof Ostarbeiter.initialize === 'function') Ostarbeiter.initialize(sequelize);
     if (typeof Admin.initialize === 'function') Admin.initialize(sequelize);

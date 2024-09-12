@@ -3,6 +3,23 @@ import Ostarbeiter, { Admin } from "../models/index.js";
 import ExcelJS from 'exceljs';
 import { v4 as uuidv4 } from 'uuid';
 import 'dotenv/config';
+import fs from "fs";
+import AdmZip from 'adm-zip'
+import {readdir} from "node:fs/promises";
+
+const supportingDocuments = {
+    0: 'images',
+    1: "scanPassport",
+    2: "employmentHistory",
+    3: "addressBeforeShipping",
+    4: "departureDate",
+    5: "departure",
+    6: "arrival",
+    7: "deathInformation",
+    8: "repatriationInfo",
+    9: "addressAfterShipping",
+};
+
 export async function initializeDbModels() {
     if (typeof Ostarbeiter.initialize === 'function') Ostarbeiter.initialize(sequelize);
     if (typeof Admin.initialize === 'function') Admin.initialize(sequelize);
@@ -26,9 +43,9 @@ export async function parsnigExsel(){
             await workbook.xlsx.readFile('../api/uploads/sample.xlsx');
             const worksheet = await workbook.getWorksheet('Таганрог')
             const data = []
+            const numbersData={}
             worksheet.eachRow(function (row, rowNumber) {
-                const [, ,
-                    surname, name, patronymic, date, departure, profession, dateDeparture,
+                const [, number, surname, name, patronymic, date, departure, profession, dateDeparture,
                     localityDeparture, localityWork, infoOfDeath, infoOfRepatriation, addressAfterReturning, note
                 ] = row.values
 
@@ -50,12 +67,33 @@ export async function parsnigExsel(){
                             addressAfterReturning,
                             note
                         })
+                    numbersData[number] = data[data.length-1].id
                 }
             })
             await Ostarbeiter.bulkCreate(data)
+            await parsingZip(numbersData)
         }
     }catch (e) {
         console.log(e)
+    }
+}
+
+export async function parsingZip(numbersData){
+    try {
+        const zip=new AdmZip('../api/uploads/угнаные.zip')
+        zip.extractAllTo( "../api/uploads/",  true);
+        const nameFile= (await readdir(`../api/uploads/`))
+        for (const file of nameFile) {
+            if(Number(file) && file) {
+                    fs.cp(`../api//uploads/${file}`, `../api/uploads/${numbersData[file]}`, {recursive: true}, (err) => {
+                        if (!err) fs.rm(`../api/uploads/${file}`, {recursive: true}, (err) => {
+                            if (err) console.log(err)
+                        });
+                    });
+            }
+        }
+    }catch (e){
+
     }
 }
 

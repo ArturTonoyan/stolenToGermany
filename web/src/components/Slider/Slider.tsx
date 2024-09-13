@@ -23,7 +23,7 @@ const Slider = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused) {
-        console.log('indexISPause', index);
+        console.log("indexISPause", index);
         setIndex((prevIndex) => (prevIndex + 1) % images.length);
       }
     }, 3000); // Rotate every 2 seconds
@@ -40,19 +40,19 @@ const Slider = () => {
   }, [isPaused]);
 
   useEffect(() => {
-    const slider : any = document.getElementById("sliderBlock");
+    const slider: any = document.getElementById("sliderBlock");
     if (slider) {
-      slider.style.transition = "transform 0.5s ease";  // Add smooth transition
-      slider.style.transform = `rotate(-${index * 30}deg)`;  // Smoothly rotate by 30 degree counterclockwise
+      slider.style.transition = "transform 0.5s ease"; // Add smooth transition
+      slider.style.transform = `rotate(-${index * 30}deg)`; // Smoothly rotate by 30 degree counterclockwise
     }
   }, [index]);
-  
+
   return (
     <div className={styles.sliderContainer}>
       <div className={styles.Slider} id="sliderBlock">
         {images.map((image, i) => {
-          const angle : number = (360 / images.length) * i + 180;
-          const isActive : boolean = (index + 6) % images.length === i; // Adjusted to check the left-central image
+          const angle: number = (360 / images.length) * i + 180;
+          const isActive: boolean = (index + 6) % images.length === i; // Adjusted to check the left-central image
           return (
             <img
               key={i}
@@ -60,9 +60,14 @@ const Slider = () => {
               alt={`Image ${i + 1}`}
               style={{
                 position: "absolute",
-                transition: "transform 0.5s ease, width 0.5s ease, height 0.5s ease",
-                left: `${41.5 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)}%`,
-                top: `${41.5 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)}%`,
+                transition:
+                  "transform 0.5s ease, width 0.5s ease, height 0.5s ease",
+                left: `${
+                  41.5 + 40 * Math.cos(((2 * Math.PI) / images.length) * i)
+                }%`,
+                top: `${
+                  42.5 + 40 * Math.sin(((2 * Math.PI) / images.length) * i)
+                }%`,
                 transform: `rotate(${angle}deg)`,
                 width: isActive ? "190px" : "160px",
                 height: isActive ? "190px" : "160px",

@@ -6,21 +6,7 @@ import CreateHuman from "../../../components/CreateHuman/CreateHuman";
 import { Person } from "../../../store/basic/people.slice";
 import { OstarbaitersCreate } from "../../../api/ApiRequest";
 function AdminPanelModule() {
-  const [inpValue, setInpValue] = useState<string>("");
-
-  const funOnChange = (text: string): void => {
-    setInpValue(text);
-  };
-  const store = useSelector((state: RootState) => state.peopleSlice);
-  const isActionOpen = useSelector(
-    (state: RootState) => state.actionSlice.action
-  );
-
-  const createdHuman = async (
-    data: Person,
-    photo: File,
-    additionalFiles: File[]
-  ) => {
+  const createdHuman = async (data: Person) => {
     try {
       const response = await OstarbaitersCreate(data);
       if (response?.status === 200) {

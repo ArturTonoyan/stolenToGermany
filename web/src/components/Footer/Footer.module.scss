@@ -8,11 +8,11 @@
   background-color: #000000;
   left: 0;
   bottom: 0;
-  height: 387px;
- padding: 64px 48px;
- box-sizing: border-box;
+  height: 287px;
+  padding: 64px 48px;
+  box-sizing: border-box;
 
-  .footer_innerTop{
+  .footer_innerTop {
     display: flex;
     justify-content: space-between;
     ul {
@@ -45,10 +45,10 @@
         color: var(--blue1);
       }
     }
-    .footer__mesagers{
-      img{
+    .footer__mesagers {
+      img {
         transition: 0.1s linear all;
-        &:hover{
+        &:hover {
           cursor: pointer;
           opacity: 0.8;
         }
@@ -56,9 +56,9 @@
       }
     }
   }
-  
-  .footer_innerBottom{
+
+  .footer_innerBottom {
     color: #ffffff;
-   padding-top: 167px;
+    // padding-top: 167px;
   }
 }

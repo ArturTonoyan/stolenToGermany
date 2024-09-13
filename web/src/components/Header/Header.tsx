@@ -11,13 +11,17 @@ function Header(props: any) {
   }, [pathname]);
 
   const handleLinkClick = () => {
-    window.scrollTo({ top: 1020, behavior: "smooth" }); // Прокрутка страницы на 500px от верха с плавным эффектом
+    // window.scrollTo({ top: 1020, behavior: "smooth" }); // Прокрутка страницы на 500px от верха с плавным эффектом
+    setTimeout(() => {
+      window.scrollTo({ top: 1020, behavior: "smooth" }); // Прокрутка страницы на 500px от верха с плавным эффектом
+    }, 200); // прокрутка через 1000 мс (1 секунда)
   };
-
+  useEffect(() => {
+    console.log("hrefName", hrefName);
+  }, [hrefName]);
   useEffect(() => {
     //! записываем всех людей в редукс
     props.funUpdatePeople();
-
     //! записываем данные карты
     props.funUpdateCamps();
   }, []);
@@ -46,7 +50,7 @@ function Header(props: any) {
             <Link to="MapPage">Карта</Link>
           </li>
           <li className={hrefName === "#" ? styles.active : ""}>
-            <Link to="/" onClick={handleLinkClick}>
+            <Link to="/#about" onClick={handleLinkClick}>
               О проекте
             </Link>
           </li>

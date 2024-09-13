@@ -10,16 +10,26 @@
   position: relative;
   left: -4%;
   top: -250px;
-  min-width: 1200px;
-  min-height: 1200px;
+  // min-width: 1200px;
+  // min-height: 1200px;
   max-width: 1200px;
   max-height: 1200px;
   width: 1200px;
   height: 1200px;
   border-radius: 50%;
+  @media (max-width: 1850px) {
+    width: 1000px;
+    height: 1000px;
+    top: -98px;
+  }
   img {
     width: 160px;
     height: 160px;
     transform-origin: center;
+
+    @media (max-width: 1850px) {
+      width: 130px !important;
+      height: 130px !important;
+    }
   }
 }

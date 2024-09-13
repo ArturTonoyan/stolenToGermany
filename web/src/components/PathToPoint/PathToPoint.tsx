@@ -9,6 +9,8 @@ function PathToPoint(props: any) {
   const [route, setRoute] = useState<any>(null);
   const [points, setPoints] = useState<any>([]);
 
+  const width = 420;
+  const heigth = 230;
   const getRoute = async () => {
     try {
       const resp1 = await axios.get(
@@ -57,8 +59,8 @@ function PathToPoint(props: any) {
       );
       const minLon = Math.min(...coords.map(([lon]: [number]) => lon));
       const maxLon = Math.max(...coords.map(([lon]: [number]) => lon));
-      const scaleX = 420 / (maxLon - minLon);
-      const scaleY = 230 / (maxLat - minLat);
+      const scaleX = width / (maxLon - minLon);
+      const scaleY = heigth / (maxLat - minLat);
       const points = coords.map(([lonValue, latValue]: [number, number]) => {
         const lonNumber: number = lonValue;
         const latNumber: number = latValue;
@@ -70,6 +72,16 @@ function PathToPoint(props: any) {
       setPoints(points);
     }
   }, [route]);
+
+  const getLeft = () => {
+    console.log("window.innerWidth", width);
+    console.log("points[0][0]", points[0][0]);
+    if (points[0][0] + 100 > width) {
+      return points[0][0] - 100;
+    } else {
+      return points[0][0];
+    }
+  };
 
   return (
     <div
@@ -83,7 +95,10 @@ function PathToPoint(props: any) {
       <div
         style={
           points.length > 0
-            ? { top: points[0][1], left: points[0][0] }
+            ? {
+                top: points[0][1],
+                left: getLeft() + 100,
+              }
             : { top: "0" }
         }
         className={styles.point1}
@@ -94,8 +109,8 @@ function PathToPoint(props: any) {
         style={
           points.length > 0
             ? {
-                top: points[points.length - 1][1] + 11,
-                left: points[points.length - 1][0] - 5,
+                top: points[points.length - 1][1],
+                left: points[points.length - 1][0] - 65,
               }
             : { top: "0" }
         }

@@ -43,11 +43,12 @@ form {
     }
   }
   .SubmitButton {
-    width: 949px;
+    // width: 949px;
     display: flex;
     flex-direction: row;
     input {
       width: 50%;
+      margin-right: 60px;
       @include Button();
     }
     .reset {

@@ -92,7 +92,6 @@ function HumanProfile(props: any) {
     console.log("funMouseOut");
     setClassName(styles.HumanProfile__card__info__name);
   };
-
   return (
     <div className={styles.HumanProfile}>
       {imgOpen.length !== 0 && (
@@ -138,7 +137,9 @@ function HumanProfile(props: any) {
             </div>
             <Link
               to={
-                humanData.links
+                humanData &&
+                humanData?.links &&
+                Object.keys(humanData?.links).length > 0
                   ? "../../PersonalArchive"
                   : "../../NoSearchResults"
               }

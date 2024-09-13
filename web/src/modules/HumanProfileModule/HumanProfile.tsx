@@ -137,7 +137,9 @@ function HumanProfile(props: any) {
             </div>
             <Link
               to={
-                !!Object.keys(humanData.links).length
+                humanData &&
+                humanData?.links &&
+                Object.keys(humanData?.links).length > 0
                   ? "../../PersonalArchive"
                   : "../../NoSearchResults"
               }

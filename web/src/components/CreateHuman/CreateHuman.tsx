@@ -178,6 +178,12 @@ export default function CreateHuman(props: any) {
   const funSetAddressInput = (e: any, key: any) => {
     console.log("e", e.target.value);
     setValue(key, e.target.value);
+    if (!isValid(e.target.value, key) && e.target.value !== "") {
+      console.log(`${key} содержит недопустимые символы.`);
+      setErrorMessage((prev) => [...prev, key]);
+    } else {
+      setErrorMessage((prev) => prev.filter((item) => item !== key));
+    }
   };
 
   return (

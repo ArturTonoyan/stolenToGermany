@@ -30,12 +30,14 @@
       font-size: 24px;
       font-weight: 500;
       line-height: 25px;
+      text-wrap: nowrap;
     }
     .info {
       font-size: 16px;
       font-weight: 500;
       line-height: 20px;
       height: 40px;
+      text-wrap: nowrap;
     }
     span {
       overflow: hidden; /* Скрывает текст, выходящий за пределы блока */

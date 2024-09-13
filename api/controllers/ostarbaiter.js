@@ -5,10 +5,6 @@ import Ostarbeiter from "../models/index.js";
 import {AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
 import axios from "axios";
 import { Op } from "sequelize";
-const validateLetter  = (str) => /^[А-ЯЁ-]+$/i.test(str)
-const validateDeparture  = (str) => /^[А-ЯЁ.,-]+$/i.test(str)
-const validateNumeric = (str) => /^(18[4-9][0-9]|19[0-3][0-9]|194[0-4])+$/i.test(str)
-const validateLetterNumeric = (str) => /^[А-Яа-яЁё0-9.,;:!?\"'()\-—\s]+$/i.test(str)
 
 
 
@@ -101,15 +97,9 @@ export default {
     },
     res
   ) {
-    if (!surname || !validateLetter(surname)) throw new AppErrorMissing("surname");
+    if (!surname) throw new AppErrorMissing("surname");
     if (!date) throw new AppErrorMissing("date");
-    if(date && !validateNumeric(date))  throw new AppErrorInvalid('date')
-    if(name && !validateLetter(name)) throw  new AppErrorInvalid('name')
-    if(patronymic && !validateLetter(patronymic)) throw  new AppErrorInvalid('patronymic')
-    if(profession && !validateLetter(profession)) throw new AppErrorInvalid('profession')
-    if(dateDeparture && !validateNumeric(dateDeparture)) throw new AppErrorInvalid('dateDeparture')
-    if(infoOfRepatriation && !validateLetterNumeric(infoOfRepatriation)) throw new AppErrorInvalid('infoOfRepatriation')
-    if(infoOfDeath && !validateLetterNumeric(infoOfDeath)) throw new AppErrorInvalid('infoOfDeath')
+
 
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
     if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
@@ -151,15 +141,8 @@ export default {
     res
   ) {
 
-    if (!surname || !validateLetter(surname)) throw new AppErrorMissing("surname");
+    if (!surname) throw new AppErrorMissing("surname");
     if (!date) throw new AppErrorMissing("date");
-    if(date && !validateNumeric(date))  throw new AppErrorInvalid('date')
-    if(name && !validateLetter(name)) throw  new AppErrorInvalid('name')
-    if(patronymic && !validateLetter(patronymic)) throw  new AppErrorInvalid('patronymic')
-    if(profession && !validateLetter(profession)) throw new AppErrorInvalid('profession')
-    if(dateDeparture && !validateNumeric(dateDeparture) ) throw new AppErrorInvalid('dateDeparture')
-    if(infoOfRepatriation && !validateLetterNumeric(infoOfRepatriation)) throw new AppErrorInvalid('infoOfRepatriation')
-    if(infoOfDeath && !validateLetterNumeric(infoOfDeath)) throw new AppErrorInvalid('infoOfDeath')
 
     await Ostarbeiter.create({
       surname: surname,

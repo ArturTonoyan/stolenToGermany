@@ -14,6 +14,7 @@
     margin-bottom: 250px;
     display: flex;
     justify-content: center;
+
     h3 {
       font-family: Playfair Display;
       font-size: 34px;
@@ -43,9 +44,13 @@
       text-align: left;
     }
     .about_inner {
-      width: 1200px;
+      // width: 1200px;
+      width: 60%;
       font-size: 20px;
       color: var(--textColor);
+      // @media (max-width: 1850px) {
+      //   wi
+      // }
     }
   }
   .HomePage__bg1 {

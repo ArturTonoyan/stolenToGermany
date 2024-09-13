@@ -153,6 +153,7 @@ export default function Form(props: any) {
             {...register("dateDeparture", { maxLength: 20 })}
           />
           <input
+            className={styles.bigInp}
             placeholder="Населенный пункт откуда угнан на принудительные работы"
             maxLength={50}
             defaultValue={store.formData.localityDeparture || ""}

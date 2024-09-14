@@ -74,7 +74,7 @@ export default function CreateHuman(props: any) {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   function isValid(value: string, key: string) {
     // Проверяем, что строка не содержит цифр и английских букв
-    const regex = /^[А-Яа-яЁё\s]+$/;
+    const regex = /^[А-Яа-яЁё\s-]+$/;
     const regex2 = /^[А-Яа-яЁё0-9\s/_,.()-]+$/;
     if (key === "name" || key === "surname" || key === "patronymic") {
       return regex.test(value);
@@ -95,7 +95,7 @@ export default function CreateHuman(props: any) {
   }, [errorMessage]);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log("data", data);
-    let Error = false
+    let Error = false;
     for (const key of Object.keys(data) as (keyof Inputs)[]) {
       if (data[key] !== "") {
         if (!isValid(data[key], key)) {

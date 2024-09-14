@@ -8,9 +8,9 @@
       width: 432px;
       height: 552px;
       margin-right: 32px;
-      @media (max-width: 1650px) {
-        width: 332px;
-        height: 452px;
+      @media (max-width: 1850px) {
+        width: 302px;
+        height: 422px;
       }
     }
     .HumanImg {
@@ -20,7 +20,10 @@
     }
     .way {
       display: flex;
-      margin-left: 7%;
+      margin-left: 15%;
+      @media (max-width: 1850px) {
+        margin-left: 12%;
+      }
     }
     margin-left: 100px;
     margin-top: 220px;
@@ -33,7 +36,7 @@
       width: auto;
       max-width: 26%;
 
-      @media (max-width: 1650px) {
+      @media (max-width: 1850px) {
         width: auto;
         padding-right: 10px;
         max-width: 26%;
@@ -58,7 +61,10 @@
           border-bottom: 2px solid #3d4970;
           margin: 0;
           transition: all 0.1s linear;
-
+          @media (max-width: 1850px) {
+            line-height: 40px;
+            font-size: 32px;
+          }
           // overflow-wrap: break-word;
         }
 
@@ -74,7 +80,7 @@
           width: 0;
           height: 0;
         }
-        @media (max-width: 1650px) {
+        @media (max-width: 1850px) {
           font-size: 52px;
           line-height: 70px;
         }
@@ -99,6 +105,9 @@
           text-align: left;
           color: #828282;
           border-bottom: 2px solid #828282;
+          @media (max-width: 1850px) {
+            font-size: 22px;
+          }
         }
         &:hover {
           cursor: pointer;
@@ -109,6 +118,9 @@
         width: 16px;
         height: 20px;
         margin-left: 8px;
+        @media (max-width: 1850px) {
+          transform: translateY(6px);
+        }
       }
     }
   }

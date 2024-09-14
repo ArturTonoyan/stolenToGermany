@@ -91,6 +91,7 @@ function AdminPageEditArchiveModule(props: any) {
               text={"Фото профиля"}
               idHuman={data?.id}
               id={0}
+              funUpdatePeople={props.funUpdatePeople}
             />
           )}
           {data?.links &&

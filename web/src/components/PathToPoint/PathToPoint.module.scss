@@ -14,13 +14,20 @@
   display: flex;
   margin-top: 100px;
   .point1 {
-    width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     position: absolute;
     transform: translateY(-40px);
     text-wrap: nowrap;
     color: var(--blue1);
+    background-color: inherit;
+    width: auto;
+    height: auto;
+    padding: 23px;
+    border-radius: 50%;
+    text-wrap: wrap;
+    max-width: 200px;
+
     // &::after {
     //   content: "";
     //   width: 8px;
@@ -33,14 +40,20 @@
     // }
   }
   .point2 {
-    width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     position: absolute;
-    bottom: 12px;
-    right: -50px;
+    // bottom: 12px;
+    // right: -50px;
     color: var(--blue1);
     transform: translateY(-40px);
+    max-width: 200px;
+    background-color: #eff2f1;
+    height: auto;
+    padding: 23px;
+    border-radius: 50%;
+    z-index: 20;
+    text-wrap: wrap;
 
     // &::after {
     //   content: "";
@@ -70,6 +83,7 @@
       height: 100%;
       position: absolute;
       transition: all 0.15s ease;
+      z-index: 1;
       polyline {
         transition: all 0.15s ease;
         stroke-dasharray: 150%;

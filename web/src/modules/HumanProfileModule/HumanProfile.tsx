@@ -79,9 +79,9 @@ function HumanProfile(props: any) {
   const funMouseEnter = () => {
     console.log("funMouseEnter");
     if (
-      humanData?.surname?.length > 11 ||
-      humanData?.name?.length > 11 ||
-      humanData?.patronymic?.length > 11
+      humanData?.surname?.length > 15 ||
+      humanData?.name?.length > 15 ||
+      humanData?.patronymic?.length > 15
     ) {
       let cl = `${styles.HumanProfile__card__info__name} ${styles.nameScrollAnim}`;
       setClassName(cl);

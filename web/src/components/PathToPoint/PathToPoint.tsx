@@ -1,7 +1,7 @@
 // import { useSelector } from "react-redux";
 import styles from "./PathToPoint.module.scss";
 // import { RootState } from "../../store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { alternative } from "./PathToPointData";
 function PathToPoint(props: any) {
@@ -69,19 +69,46 @@ function PathToPoint(props: any) {
           Math.round((latNumber - minLat) * scaleY),
         ];
       });
+      console.log("points", points);
       setPoints(points);
     }
   }, [route]);
 
-  const getLeft = () => {
-    console.log("window.innerWidth", width);
-    console.log("points[0][0]", points[0][0]);
-    if (points[0][0] + 100 > width) {
-      return points[0][0] - 100;
-    } else {
-      return points[0][0];
-    }
+  // const getLeft = () => {
+  //   console.log("window.innerWidth", width);
+  //   console.log("points[0][0]", points[0][0]);
+  //   if (points[0][0] + 100 > width) {
+  //     return points[0][0] - 100;
+  //   } else {
+  //     return points[0][0];
+  //   }
+  // };
+
+  const pointGetStyle = () => {
+    if (points.length > 0) {
+      return {
+        top: points[points.length - 1][1],
+        left: points[points.length - 1][0] - 10,
+      };
+    } else return { top: "0" };
   };
+  const refPoint2 = useRef<HTMLDivElement>(null);
+  // useEffect(() => {
+  //   const element = refPoint2?.current;
+  //   console.log("element", refPoint2);
+  //   if (element) {
+  //     const { left, right, width } = element.getBoundingClientRect();
+  //     const viewportWidth = window.innerWidth;
+  //     console.log("right", left, right, width, viewportWidth, right + left);
+
+  //     if (right + left > viewportWidth) {
+  //       console.log("да");
+  //       element.style.maxWidth = "150px";
+  //     } else {
+  //       element.style.maxWidth = "auto";
+  //     }
+  //   }
+  // }, [refPoint2, window.innerWidth]);
 
   return (
     <div
@@ -97,7 +124,7 @@ function PathToPoint(props: any) {
           points.length > 0
             ? {
                 top: points[0][1],
-                left: getLeft() + 100,
+                left: points[0][0],
               }
             : { top: "0" }
         }
@@ -105,17 +132,7 @@ function PathToPoint(props: any) {
       >
         {props.localityDeparture}
       </div>
-      <div
-        style={
-          points.length > 0
-            ? {
-                top: points[points.length - 1][1],
-                left: points[points.length - 1][0] - 65,
-              }
-            : { top: "0" }
-        }
-        className={styles.point2}
-      >
+      <div ref={refPoint2} className={styles.point2} style={pointGetStyle()}>
         {props.localityWork}
       </div>
       <div

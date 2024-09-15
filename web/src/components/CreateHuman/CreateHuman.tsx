@@ -74,7 +74,7 @@ export default function CreateHuman(props: any) {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   function isValid(value: string, key: string) {
     // Проверяем, что строка не содержит цифр и английских букв
-    const regex = /^[А-Яа-яЁё\s]+$/;
+    const regex = /^[А-Яа-яЁё\s-]+$/;
     const regex2 = /^[А-Яа-яЁё0-9\s/_,.()-]+$/;
     if (key === "name" || key === "surname" || key === "patronymic") {
       return regex.test(value);
@@ -95,18 +95,20 @@ export default function CreateHuman(props: any) {
   }, [errorMessage]);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log("data", data);
+    let Error = false;
     for (const key of Object.keys(data) as (keyof Inputs)[]) {
       if (data[key] !== "") {
         if (!isValid(data[key], key)) {
           console.log(`${key} содержит недопустимые символы.`);
+          Error = true;
           setErrorMessage((prev) => [...prev, key]);
         } else {
           setErrorMessage((prev) => prev.filter((item) => item !== key));
         }
       }
     }
-
-    if (errorMessage.length === 0) {
+    console.log("errorMessage", errorMessage.length);
+    if (!Error) {
       props.funcCreate(data).then((res: any) => {
         if (res?.status === 200 && res.type === "edit") {
           reset(props.data);

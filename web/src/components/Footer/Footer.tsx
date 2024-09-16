@@ -28,7 +28,9 @@ function Footer() {
                 </li>
                 <li
                   className={
-                    hrefName === "SearchPage" || hrefName === "HumanProfile"
+                    hrefName === "SearchPage" ||
+                    hrefName === "HumanProfile" ||
+                    hrefName === "SearchModule"
                       ? styles.active
                       : ""
                   }

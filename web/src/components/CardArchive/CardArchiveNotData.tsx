@@ -14,45 +14,52 @@ function CardArchiveNotData(props: any) {
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [errorFile, setErrorFile] = useState<string | null>("")
+  const [errorFile, setErrorFile] = useState<string | null>("");
   const navigate = useNavigate();
-  useEffect(() => { 
+  useEffect(() => {
     if (store.selectedPerson === "" || store.selectedPerson === null) {
-      navigate("/AdminPage/AdminSearchResult")
-    } 
+      navigate("/AdminPage/AdminSearchResult");
+    }
   }, []);
-
 
   const options = [
     "Фото профиля",
     "Удостоверение личности",
-    "Профессия на момент отправки в Германиюe",
-    "Адрес проживания до угона на принудительные работы в Германиюe",
-    "Дата угона на принудительные работы в Германиюe",
+    "Профессия на момент отправки в Германию",
+    "Адрес проживания до угона на принудительные работы в Германию",
+    "Дата угона на принудительные работы в Германию",
     "Населенный пункт откуда угнан на принудительные работыe",
-    "Место трудоиспользования на принудительных работах в Германииe",
-    "Дата, место и причина смерти на момент пребывания в Германииe",
+    "Место трудоиспользования на принудительных работах в Германии",
+    "Дата, место и причина смерти на момент пребывания в Германии",
     "Дата и место репатриацииe",
     "Адрес проживания после возвращения в СССР ",
   ];
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      console.log("file", file.name.split(".")[file.name.split(".").length - 1]);
-      if (file.size > 3 * 1024 * 1024) { // Check if file size exceeds 3MB
-        setErrorFile("Слишком большой файл")
+      console.log(
+        "file",
+        file.name.split(".")[file.name.split(".").length - 1]
+      );
+      if (file.size > 3 * 1024 * 1024) {
+        // Check if file size exceeds 3MB
+        setErrorFile("Слишком большой файл");
         setSelectedFile(null);
         setFileName("");
-      }else if(!file){
-        setErrorFile("Загрузите файл")
+      } else if (!file) {
+        setErrorFile("Загрузите файл");
         setSelectedFile(null);
         setFileName("");
-      } else if(file.name.split(".")[file.name.split(".").length - 1] !== "jpg" && file.name.split(".")[file.name.split(".").length - 1] !== "jpeg" && file.name.split(".")[file.name.split(".").length - 1] !== "png"){
-        setErrorFile("Неверное расширение")
+      } else if (
+        file.name.split(".")[file.name.split(".").length - 1] !== "jpg" &&
+        file.name.split(".")[file.name.split(".").length - 1] !== "jpeg" &&
+        file.name.split(".")[file.name.split(".").length - 1] !== "png"
+      ) {
+        setErrorFile("Неверное расширение");
         setSelectedFile(null);
         setFileName("");
-      }else {
-        setErrorFile("")
+      } else {
+        setErrorFile("");
         setFileName(file.name);
         setSelectedFile(file);
       }
@@ -69,42 +76,39 @@ function CardArchiveNotData(props: any) {
 
   const store = useSelector((state: RootState) => state.peopleSlice);
 
-
-  const checkSelected = () =>{
-      setError(false);
-  }
+  const checkSelected = () => {
+    setError(false);
+  };
   const handleSave = () => {
     if (selectedOptions.length === 0) {
       setError(true);
       return;
-    }else if(!selectedFile){
-      setErrorFile("Загрузите файл!")
-    }else{
+    } else if (!selectedFile) {
+      setErrorFile("Загрузите файл!");
+    } else {
       const selectedIds: number[] = selectedOptions
-      .map((option) => options.indexOf(option))
-      .filter((index) => index !== -1)
-      .sort((a, b) => a - b);
-    const formData = new FormData();
+        .map((option) => options.indexOf(option))
+        .filter((index) => index !== -1)
+        .sort((a, b) => a - b);
+      const formData = new FormData();
 
-    selectedIds.forEach((id, index) => {
-      formData.append(`types[${index}]`, `${id}`);
-    });
+      selectedIds.forEach((id, index) => {
+        formData.append(`types[${index}]`, `${id}`);
+      });
 
-    formData.append("id", store.selectedPerson as any);
-    formData.append("file", selectedFile as Blob);
+      formData.append("id", store.selectedPerson as any);
+      formData.append("file", selectedFile as Blob);
 
-    AddPhoto(formData).then((resp) => {
-      if (resp?.status === 200) {
-        props.apiGetData();
-        setSelectedOptions([]);
-        setSelectedFile(null);
-        setFileName("");
-        props.funUpdatePeople();
-      }
-    });
-  }
-
-   
+      AddPhoto(formData).then((resp) => {
+        if (resp?.status === 200) {
+          props.apiGetData();
+          setSelectedOptions([]);
+          setSelectedFile(null);
+          setFileName("");
+          props.funUpdatePeople();
+        }
+      });
+    }
   };
 
   const handleFileInputClick = () => {
@@ -132,23 +136,31 @@ function CardArchiveNotData(props: any) {
             </div>
             <div className={styles.TypeAddList}>
               <p>Выберите пункты списка:</p>
-              <ul className={error ? styles.errorList : ''}>
-              {options.map((option) => (
+              <ul className={error ? styles.errorList : ""}>
+                {options.map((option) => (
                   <li key={option}>
-                      <label className={styles.customCheckbox}>
-                          <img src="./../img/complete.svg" alt="Complete" />
-                          <input
-                              type="checkbox"
-                              checked={selectedOptions.includes(option)}
-                              onChange={() => { handleOptionChange(option); checkSelected(); }}
-                          />
-                          <span className={`${styles.textOption} ${error && !selectedOptions.includes(option) ? styles.errorLi : ''}`}>
-                              {option}
-                          </span>
-                      </label>
+                    <label className={styles.customCheckbox}>
+                      <img src="./../img/complete.svg" alt="Complete" />
+                      <input
+                        type="checkbox"
+                        checked={selectedOptions.includes(option)}
+                        onChange={() => {
+                          handleOptionChange(option);
+                          checkSelected();
+                        }}
+                      />
+                      <span
+                        className={`${styles.textOption} ${
+                          error && !selectedOptions.includes(option)
+                            ? styles.errorLi
+                            : ""
+                        }`}
+                      >
+                        {option}
+                      </span>
+                    </label>
                   </li>
-              ))}
-
+                ))}
               </ul>
               <div className={styles.fileContainerStreat}>
                 <p>Выберите фото:</p>
@@ -163,7 +175,9 @@ function CardArchiveNotData(props: any) {
                     <input
                       placeholder="Ничего не выбранно(.jpg, .jpeg, .png)"
                       value={fileName}
-                      className={`${styles.fileUpload} ${error && !selectedFile ? styles.errorInput : ''}`}
+                      className={`${styles.fileUpload} ${
+                        error && !selectedFile ? styles.errorInput : ""
+                      }`}
                       disabled
                     />
                     <input
@@ -173,10 +187,10 @@ function CardArchiveNotData(props: any) {
                       className={styles.fileUploadSecret}
                       ref={fileInputRef}
                     />
-
                   </label>
-                  {errorFile != "" && <p className={styles.errorFile}>{errorFile}</p>}
-
+                  {errorFile != "" && (
+                    <p className={styles.errorFile}>{errorFile}</p>
+                  )}
                 </div>
               </div>
               <button onClick={handleSave}>Сохранить</button>

@@ -28,11 +28,11 @@ function CardArchiveNotData(props: any) {
     "Профессия на момент отправки в Германию",
     "Адрес проживания до угона на принудительные работы в Германию",
     "Дата угона на принудительные работы в Германию",
-    "Населенный пункт откуда угнан на принудительные работы",
+    "Населенный пункт, откуда угнан на принудительные работы",
     "Место трудоиспользования на принудительных работах в Германии",
     "Дата, место и причина смерти на момент пребывания в Германии",
     "Дата и место репатриации",
-    "Адрес проживания после возвращения в СССР ",
+    "Адрес проживания после возвращения в СССР",
   ];
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -173,7 +173,7 @@ function CardArchiveNotData(props: any) {
                       {" "}
                     </div>
                     <input
-                      placeholder="Ничего не выбранно(.jpg, .jpeg, .png)"
+                      placeholder="Ничего не выбрано (.jpg, .jpeg, .png)"
                       value={fileName}
                       className={`${styles.fileUpload} ${
                         error && !selectedFile ? styles.errorInput : ""

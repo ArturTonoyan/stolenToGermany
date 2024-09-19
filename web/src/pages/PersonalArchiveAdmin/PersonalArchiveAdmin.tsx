@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./PersonalArchive.module.scss";
+import styles from "./PersonalArchiveAdmin.module.scss";
 import { ReactComponent as ArrowLeft } from "./../../imgs/arrowLeft.svg";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 
-function PersonalArchive() {
+function PersonalArchiveAdmin() {
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
   const store = useSelector((state: RootState) => state.peopleSlice);
@@ -106,13 +106,7 @@ function PersonalArchive() {
   //     "./img/imgSlider/12.png",
   //   ]);
   // }, []);
-  const goBack = () => {
-    if(document.location.pathname.includes("AdminPage")){
-      navigate("../../AdminPage/HumanProfile");
-    }else{
-      navigate("/SearchPage/HumanProfile");
-    }
-  }
+  
   return (
     <div className={styles.PersonalArchive}>
       <img
@@ -121,10 +115,10 @@ function PersonalArchive() {
         alt="Bg"
       />
       <div className={styles.container}>
-        <div className={styles.pageArrow} onClick={()=>goBack()}>
-          
+        <div className={styles.pageArrow}>
+          <Link to="../SearchPage/HumanProfile">
             <PageArrow />
-          
+          </Link>
         </div>
         <div className={styles.slider}>
           <button onClick={funScrollLeft}>
@@ -184,4 +178,4 @@ function PersonalArchive() {
   );
 }
 
-export default PersonalArchive;
+export default PersonalArchiveAdmin;

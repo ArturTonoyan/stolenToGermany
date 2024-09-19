@@ -22,6 +22,7 @@ import { apiGetPeople } from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
 import { useEffect } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
+import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
 
 function App() {
   const location = useLocation();
@@ -88,6 +89,7 @@ function App() {
             <Route path="AdminPanelModule" element={<AdminPanelModule />} />
             <Route path="AdminSearchResult" element={<AdminSearchResult />} />
             <Route path="EditHumanModule" element={<EditHumanModule />} />
+            <Route path="PersonalArchive" element={<PersonalArchive />} />
             <Route
               path="HumanProfile"
               element={<HumanProfile loc={location.pathname} />}

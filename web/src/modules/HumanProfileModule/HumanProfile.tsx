@@ -92,6 +92,25 @@ function HumanProfile(props: any) {
     console.log("funMouseOut");
     setClassName(styles.HumanProfile__card__info__name);
   };
+
+  const goNextLink = () => {
+
+    if(
+      humanData &&
+      humanData?.links &&
+      Object.keys(humanData?.links).length > 0){
+        if(document.location.pathname.includes("AdminPage")){
+          navigate("../../AdminPage/PersonalArchive");
+        }else{
+          navigate("../../PersonalArchive");
+        }
+      }else{
+        navigate("../../NoSearchResults");
+      }
+   
+  };
+
+
   return (
     <div className={styles.HumanProfile}>
       {imgOpen.length !== 0 && (
@@ -135,20 +154,12 @@ function HumanProfile(props: any) {
               {humanData?.name && <p>{humanData?.name}</p>}
               {humanData?.patronymic && <p>{humanData?.patronymic}</p>}
             </div>
-            <Link
-              to={
-                humanData &&
-                humanData?.links &&
-                Object.keys(humanData?.links).length > 0
-                  ? "../../PersonalArchive"
-                  : "../../NoSearchResults"
-              }
-            >
-              <p className={styles.HumanProfile__card__info__archiv}>
+            
+              <p className={styles.HumanProfile__card__info__archiv} onClick={() => goNextLink()}>
                 <span>Личный архив</span>
                 <img src="./../img/Archiv.svg" />
               </p>
-            </Link>
+           
           </div>
           <div className={styles.way}>
             {showPath &&

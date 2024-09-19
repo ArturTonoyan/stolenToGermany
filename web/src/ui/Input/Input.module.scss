@@ -6,6 +6,9 @@
   border-bottom: 1px solid #adadad;
   background-color: inherit;
   width: 949px;
+  @media (max-width: 1360px) {
+    width: 635px;
+  }
   .input {
     @include Input();
   }

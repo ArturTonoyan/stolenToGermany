@@ -1,3 +1,12 @@
+
+@font-face {
+  font-family: "PlayfairDisplay";
+  src: url("./../../assets/fonts/PlayfairDisplay-VariableFont_wght.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 .HomePage {
   overflow: hidden;
   padding-top: 46px;
@@ -23,21 +32,21 @@
       text-align: left;
     }
     p {
-      font-family: Playfair Display;
+     
       font-size: 20px;
       font-weight: 400;
       line-height: 40px;
       text-align: left;
     }
     h5 {
-      font-family: Playfair Display;
+    
       font-size: 22px;
       font-weight: 600;
       line-height: 44px;
       text-align: left;
     }
     ul li {
-      font-family: Playfair Display;
+     
       font-size: 20px;
       font-weight: 400;
       line-height: 40px;
@@ -48,6 +57,11 @@
       width: 60%;
       font-size: 20px;
       color: var(--textColor);
+      //styleName: контент текст/text;
+   
+    line-height: 40px;
+    text-align: left;
+
       // @media (max-width: 1850px) {
       //   wi
       // }

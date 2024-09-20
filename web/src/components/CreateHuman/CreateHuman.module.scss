@@ -25,6 +25,9 @@
       .address {
         display: block;
         position: relative;
+        input {
+          padding-bottom: 1vw;
+        }
         ul {
           width: 100%;
           position: absolute;
@@ -206,6 +209,9 @@
         }
       }
     }
+    input {
+      font-size: 1vw !important;
+    }
   }
   .archive {
     display: flex;
@@ -225,7 +231,7 @@
       }
     }
   }
-  .errorMessage{
+  .errorMessage {
     color: var(--RedColor);
     margin-top: -15px;
     margin-bottom: 0px;

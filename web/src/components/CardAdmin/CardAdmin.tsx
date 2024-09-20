@@ -14,7 +14,6 @@ import notFoto from "./../../imgs/notfoto.png";
 function CardAdmin(props: any) {
   const server = process.env.REACT_APP_API_URL;
   const [activDeleteCard, setActivDeleteCard] = useState<boolean>(false);
-  console.log("props", props.item);
   const fio = [props.item?.surname, props.item?.name, props.item?.patronymic]
     .filter(Boolean)
     .join(" ");
@@ -32,11 +31,9 @@ function CardAdmin(props: any) {
     setActivDeleteCard(false);
     OstarbaitersDelete(id).then((resp: any) => {
       if (resp.status === 200) {
-        console.log(resp);
         apiOstarbaiters().then((req) => {
           if (req?.status === 200) {
             dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-            console.log("req.data", req.data.ostarbaiters);
           }
         });
       }

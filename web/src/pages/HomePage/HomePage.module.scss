@@ -78,9 +78,16 @@
   .sliderImg {
     position: absolute;
     right: 70px;
-    top: 400px;
+    bottom: 5vw;
     width: 20vw;
     height: auto;
     object-fit: cover;
+    @media (max-width: 1550px) {
+      bottom: 6vw;
+    }
+    @media (max-width: 1450px) {
+      bottom: 6vw;
+      right: 50px;
+    }
   }
 }

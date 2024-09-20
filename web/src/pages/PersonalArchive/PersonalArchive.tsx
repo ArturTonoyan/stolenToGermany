@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
-
+import lupa from "./../../imgs/lupa.svg";
 function PersonalArchive() {
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
@@ -107,12 +107,12 @@ function PersonalArchive() {
   //   ]);
   // }, []);
   const goBack = () => {
-    if(document.location.pathname.includes("AdminPage")){
+    if (document.location.pathname.includes("AdminPage")) {
       navigate("../../AdminPage/HumanProfile");
-    }else{
+    } else {
       navigate("/SearchPage/HumanProfile");
     }
-  }
+  };
   return (
     <div className={styles.PersonalArchive}>
       <img
@@ -121,10 +121,8 @@ function PersonalArchive() {
         alt="Bg"
       />
       <div className={styles.container}>
-        <div className={styles.pageArrow} onClick={()=>goBack()}>
-          
-            <PageArrow />
-          
+        <div className={styles.pageArrow} onClick={() => goBack()}>
+          <PageArrow />
         </div>
         <div className={styles.slider}>
           <button onClick={funScrollLeft}>
@@ -171,7 +169,7 @@ function PersonalArchive() {
         <ul>
           {imgs.map((el, index) => (
             <li key={index} onClick={() => funSelectImg(index)}>
-              <img className={styles.lupa} src="./img/lupa.svg" alt="l" />
+              <img className={styles.lupa} src={lupa} alt="l" />
               <img
                 src={el ? `${server}/${el}` : "./img/notfoto.png"}
                 alt="foto"

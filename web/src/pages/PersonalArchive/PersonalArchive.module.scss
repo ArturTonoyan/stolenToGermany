@@ -126,12 +126,14 @@
   .imgs {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    // justify-content: center;
     margin-top: 32px;
     overflow-y: auto;
     @include scrollStyle(4px, 12px);
     ul {
       @include Ul();
+      margin: 0 auto;
+
       li {
         cursor: pointer;
         position: relative;

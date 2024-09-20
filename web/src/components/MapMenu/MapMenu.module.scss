@@ -51,8 +51,11 @@
     margin-top: 16px;
     overflow-y: auto;
     max-height: 90%;
+    text-wrap: wrap;
+    overflow-x: hidden;
     @include scrollStyle;
     justify-content: start;
+    overflow-wrap: break-word;
 
     li:hover {
       cursor: pointer;

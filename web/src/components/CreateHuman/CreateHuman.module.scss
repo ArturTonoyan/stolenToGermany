@@ -81,6 +81,7 @@
         input {
           width: 100%;
           @include Button();
+          font-size: 24px !important;
         }
       }
       .Button {
@@ -93,6 +94,7 @@
           margin-top: -22px;
           @include Button();
           width: 741px !important;
+          font-size: 24px !important;
         }
       }
       .SelectFile {

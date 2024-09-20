@@ -4,7 +4,7 @@
 .MapMenu {
   margin-top: 48px;
   width: 30vw;
-  height: 80vh;
+  height: 70vh;
   background-color: #fff;
   padding: 24px 32px;
   box-sizing: border-box;
@@ -50,7 +50,7 @@
     flex-direction: column;
     margin-top: 16px;
     overflow-y: auto;
-    max-height: 50%;
+    max-height: 90%;
     @include scrollStyle;
     justify-content: start;
 

@@ -94,22 +94,20 @@ function HumanProfile(props: any) {
   };
 
   const goNextLink = () => {
-
-    if(
+    if (
       humanData &&
       humanData?.links &&
-      Object.keys(humanData?.links).length > 0){
-        if(document.location.pathname.includes("AdminPage")){
-          navigate("../../AdminPage/PersonalArchive");
-        }else{
-          navigate("../../PersonalArchive");
-        }
-      }else{
-        navigate("../../NoSearchResults");
+      Object.keys(humanData?.links).length > 0
+    ) {
+      if (document.location.pathname.includes("AdminPage")) {
+        navigate("../../AdminPage/PersonalArchive");
+      } else {
+        navigate("../../PersonalArchive");
       }
-   
+    } else {
+      navigate("../../NoSearchResults");
+    }
   };
-
 
   return (
     <div className={styles.HumanProfile}>
@@ -154,20 +152,22 @@ function HumanProfile(props: any) {
               {humanData?.name && <p>{humanData?.name}</p>}
               {humanData?.patronymic && <p>{humanData?.patronymic}</p>}
             </div>
-            
-              <p className={styles.HumanProfile__card__info__archiv} onClick={() => goNextLink()}>
-                <span>Личный архив</span>
-                <img src="./../img/Archiv.svg" />
-              </p>
-           
+
+            <p
+              className={styles.HumanProfile__card__info__archiv}
+              onClick={() => goNextLink()}
+            >
+              <span>Личный архив</span>
+              <img src="./../img/Archiv.svg" />
+            </p>
           </div>
           <div className={styles.way}>
             {showPath &&
               humanData?.localityDeparture !== "" &&
               humanData?.localityWork !== "" && (
                 <PathToPoint
-                  localityDeparture={humanData?.localityDeparture || ""}
-                  localityWork={humanData?.localityWork || ""}
+                  localityDeparture={humanData?.localityDeparture || "Россия"}
+                  localityWork={humanData?.localityWork || "Германия"}
                 />
               )}
           </div>
@@ -180,7 +180,7 @@ function HumanProfile(props: any) {
               funGetClassActive={funGetClassActive}
               type={item.type}
               text={item.text}
-              data={humanData[item.dataKey] || "информация отсутсвует"}
+              data={humanData[item.dataKey] || "информация отсутствует"}
             />
           ))}
         </div>

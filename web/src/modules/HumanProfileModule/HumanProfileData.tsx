@@ -41,7 +41,7 @@ export const humaInfo: HumanInfo[] = [
   },
   {
     type: "departureDate",
-    text: "Дата угона на принудительные работы в Германию — ",
+    text: "Год угона на принудительные работы в Германию — ",
     dataKey: "dateDeparture" as keyof Human,
   },
   {

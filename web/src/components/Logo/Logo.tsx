@@ -6,7 +6,7 @@ function Logo() {
       <img src="./../../img/logo.svg" alt="logo" />
       <div className={styles.logoText}>
         <span>ОСТАРБАЙТЕРЫ</span>
-        <span>OSTARBITERS</span>
+        <span>OSTARBAITERS</span>
       </div>
     </div>
   );

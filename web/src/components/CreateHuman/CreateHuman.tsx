@@ -47,8 +47,26 @@ export default function CreateHuman(props: any) {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const SetDataResp = () => {
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
-      setData(res && res?.data?.ostarbaiter);
+      res && setData(FormatedData(res?.data?.ostarbaiter));
     });
+    
+  };
+
+  const FormatedData = (data: any) => {
+    return {
+      name: data?.name || "",
+      surname: data?.surname || "",
+      patronymic: data?.patronymic || "",
+      date: data?.date || "",
+      dateDeparture: data?.dateDeparture || "",
+      profession: data?.profession || "",
+      localityWork: data?.localityWork || "",
+      localityDeparture: data?.localityDeparture || "",
+      departure: data?.departure || "",
+      infoOfRepatriation: data?.infoOfRepatriation || "",
+      addressAfterReturning: data?.addressAfterReturning || "",
+      infoOfDeath: data?.infoOfDeath || "",
+    };
   };
 
   useEffect(() => {
@@ -56,7 +74,6 @@ export default function CreateHuman(props: any) {
   }, [data]);
 
   const setDatas = (date: any) => {
-    console.log("date", date);
     setValue("surname", date?.surname || "");
     setValue("name", date?.name || "");
     setValue("patronymic", date?.patronymic || "");
@@ -90,15 +107,13 @@ export default function CreateHuman(props: any) {
     }
   }
 
-  useEffect(() => {
-    console.log("errorMessage", errorMessage);
-  }, [errorMessage]);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("data", data);
+    const dete = FormatedData(data);
     let Error = false;
-    for (const key of Object.keys(data) as (keyof Inputs)[]) {
-      if (data[key] !== "") {
-        if (!isValid(data[key], key)) {
+    for (const key of Object.keys(dete) as (keyof Inputs)[]) {
+      if (dete[key] !== "") {
+        if (!isValid(dete[key], key)) {
           console.log(`${key} содержит недопустимые символы.`);
           Error = true;
           setErrorMessage((prev) => [...prev, key]);
@@ -107,11 +122,10 @@ export default function CreateHuman(props: any) {
         }
       }
     }
-    console.log("errorMessage", errorMessage.length);
     if (!Error) {
-      props.funcCreate(data).then((res: any) => {
+      props.funcCreate(dete).then((res: any) => {
         if (res?.status === 200 && res.type === "edit") {
-          reset(props.data);
+          reset(props.dete);
           SetDataResp();
         }
         if (res?.status === 200) {
@@ -128,7 +142,6 @@ export default function CreateHuman(props: any) {
 
           setDataSaved(true);
         } else {
-          console.log("res", res);
           setDataNotSaved(true);
         }
       });
@@ -173,12 +186,10 @@ export default function CreateHuman(props: any) {
   //!------------------------------------
 
   const funSetAddress = (e: any, key: any) => {
-    console.log("e", e.value);
     setValue(key, e.value);
   };
 
   const funSetAddressInput = (e: any, key: any) => {
-    console.log("e", e.target.value);
     setValue(key, e.target.value);
     if (!isValid(e.target.value, key) && e.target.value !== "") {
       console.log(`${key} содержит недопустимые символы.`);
@@ -283,7 +294,7 @@ export default function CreateHuman(props: any) {
               placeholder="Профессия на момент отправки в Германию"
               maxLength={50}
               defaultValue={props.data?.profession || ""}
-              {...register("profession", { required: false, maxLength: 50 })}
+              {...register("profession", { required: false, maxLength: 100 })}
             />
             {errorMessage.includes("profession") && (
               <p className={styles.errorMessage}>
@@ -347,9 +358,9 @@ export default function CreateHuman(props: any) {
             )}
             <input
               placeholder="Место трудоиспользования в Третьем рейхе"
-              maxLength={50}
+              maxLength={100}
               defaultValue={props.data?.localityWork || ""}
-              {...register("localityWork", { required: false, maxLength: 50 })}
+              {...register("localityWork", { required: false, maxLength: 100 })}
             />
             {errorMessage.includes("localityWork") && (
               <p className={styles.errorMessage}>
@@ -358,9 +369,9 @@ export default function CreateHuman(props: any) {
             )}
             <input
               placeholder="Дата, место и причина смерти на момент пребывания в Германии"
-              maxLength={50}
+              maxLength={100}
               defaultValue={props.data?.infoOfDeath || ""}
-              {...register("infoOfDeath", { required: false, maxLength: 50 })}
+              {...register("infoOfDeath", { required: false, maxLength: 100 })}
             />
             {errorMessage.includes("infoOfDeath") && (
               <p className={styles.errorMessage}>
@@ -369,11 +380,11 @@ export default function CreateHuman(props: any) {
             )}
             <input
               placeholder="Дата и место репатриации"
-              maxLength={50}
+              maxLength={100}
               defaultValue={props.data?.infoOfRepatriation || ""}
               {...register("infoOfRepatriation", {
                 required: false,
-                maxLength: 50,
+                maxLength: 100,
               })}
             />
             {/* <input

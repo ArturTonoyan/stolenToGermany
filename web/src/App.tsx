@@ -102,6 +102,7 @@ function App() {
               }
             />
           </Route>
+          <Route path="*" element={<ErrorPage />} /> 
         </Routes>
       </div>
       <Footer />

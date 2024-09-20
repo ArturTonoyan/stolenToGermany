@@ -33,7 +33,7 @@ function MapModule() {
             !store.selectedPoint.menuOpen ? styles.menuactive : styles.menu
           }
         >
-          {store.selectedPoint.menuOpen && (
+          {store.selectedPoint.id && (
             <MapMenu
               funShowMenu={funShowMenu}
               menuOpen={store.selectedPoint.menuOpen}

@@ -33,10 +33,12 @@ function MapModule() {
             !store.selectedPoint.menuOpen ? styles.menuactive : styles.menu
           }
         >
-          <MapMenu
-            funShowMenu={funShowMenu}
-            menuOpen={store.selectedPoint.menuOpen}
-          />
+          {store.selectedPoint.menuOpen && (
+            <MapMenu
+              funShowMenu={funShowMenu}
+              menuOpen={store.selectedPoint.menuOpen}
+            />
+          )}
         </div>
       </YMaps>
     </div>

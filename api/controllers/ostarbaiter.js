@@ -182,7 +182,7 @@ export default {
           if (camp?.localityWork) {
             const { data } = await axios({
               method: "get",
-              url: `https://geocode-maps.yandex.ru/1.x/?apikey=3a416b68-bdc6-48ee-98e8-00efedbf025f&geocode=${camp.localityWork}&format=json`,
+              url: `https://geocode-maps.yandex.ru/1.x/?apikey=03aee4ec-fed3-419c-adf2-766edb38b30b&geocode=${camp.localityWork}&format=json`,
               responseType: "json",
             });
 
@@ -213,7 +213,7 @@ export default {
 
     const { data } = await axios({
       method: "get",
-      url: `https://geocode-maps.yandex.ru/1.x/?apikey=3a416b68-bdc6-48ee-98e8-00efedbf025f&geocode=${filters.localityWork}&format=json`,
+      url: `https://geocode-maps.yandex.ru/1.x/?apikey=03aee4ec-fed3-419c-adf2-766edb38b30b&geocode=${filters.localityWork}&format=json`,
       responseType: "json",
     });
     const responseData= data.response.GeoObjectCollection?.featureMember?.

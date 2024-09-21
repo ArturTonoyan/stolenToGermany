@@ -92,18 +92,18 @@
   .sliderImg {
     position: absolute;
     right: 70px;
-    bottom: 19vw;
+    top: 430px;
     width: 20vw;
     height: auto;
     object-fit: cover;
     @media (max-width: 1550px) {
-      bottom: 17vw;
+      top: 440px;
       right: 50px;
     }
     @media (max-width: 1450px) {
-      bottom: 11vw;
+      top: 470px;
       right: 50px;
-      width: 18vw;
+      width: 260px;
     }
   }
 }

@@ -55,7 +55,7 @@
         margin-left: 16px;
         width: 809px;
         height: 488px;
-        padding: 18px 48px;
+        padding: 2px 48px;
         position: relative;
         box-sizing: border-box;
 
@@ -71,14 +71,16 @@
           position: absolute;
           bottom: 12px;
           left: 48px;
-          padding: 6px!important;
+          padding: 6px !important;
           @include Button();
           width: 710px;
         }
         ul {
           list-style: none;
           padding-left: 0;
-          margin-bottom: 15px;
+          margin-bottom: 5px;
+          margin-top: 5px;
+
           li {
             font-size: 16px;
             margin-bottom: 4px;
@@ -113,14 +115,12 @@
                 margin-right: 10px;
                 transition: background-color 0.2s, border-color 0.2s;
                 top: 4px;
-            }
-            
-            span.errorLi::before {
+              }
+
+              span.errorLi::before {
                 border: 1px solid var(--RedColor) !important;
                 animation: boxShadowFade 1.5s ease-in-out forwards; // Apply the animation
-
-            }
-            
+              }
 
               input[type="checkbox"]:checked + span::before {
                 background-color: #2d2d2d !important; // Black background when checked
@@ -185,20 +185,18 @@
             margin-left: 10px;
           }
         }
-       
       }
     }
   }
-  .errorFile{
-   position: absolute;
-  right: -200px;
-  top: 10px;
-  font-size: 18px!important;
-  color: var(--RedColor);
-  animation: boxShadowFade 1.5s ease-in-out forwards; // Apply the animation
+  .errorFile {
+    position: absolute;
+    right: -200px;
+    top: 10px;
+    font-size: 18px !important;
+    color: var(--RedColor);
+    animation: boxShadowFade 1.5s ease-in-out forwards; // Apply the animation
   }
 }
-
 
 @keyframes boxShadowFade {
   0% {

@@ -33,6 +33,7 @@ function CardArchiveNotData(props: any) {
     "Дата, место и причина смерти на момент пребывания в Германии",
     "Дата и место репатриации",
     "Адрес проживания после возвращения в СССР",
+    "Другое",
   ];
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {

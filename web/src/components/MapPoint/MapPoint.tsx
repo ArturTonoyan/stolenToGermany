@@ -45,11 +45,12 @@ function MapPoint(props: any) {
   //     ">${index + 1}</span>`;
   //   });
   // }, [plRef, props.item]);
-
   const svgData = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="16" fill="#F8F7FF"/>
     <circle cx="16" cy="16" r="12" fill="#5B6A99"/>
-    <text x="16" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">${11}</text>
+    <text x="16" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">${
+      10000 > 999 ? ">999" : props.item?.count || 0
+    }</text>
     </svg>`;
 
   const iconImageHref = `data:image/svg+xml;base64,${btoa(svgData)}`;

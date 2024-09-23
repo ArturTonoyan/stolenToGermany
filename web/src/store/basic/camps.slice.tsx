@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Camps {
+  count: number;
   locality: string;
   point: [number, number];
 }
@@ -32,6 +33,7 @@ const campsSlice = createSlice({
       camps?.map((el: any) => {
         const [longitude, latitude] = el.point.pos.split(" ").map(parseFloat);
         campsNew.push({
+          count: el.count,
           locality: el.locality,
           point: [latitude, longitude],
         });

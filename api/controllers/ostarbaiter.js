@@ -178,6 +178,7 @@ export default {
 
       const points = [];
       try {
+        const ostarbaiters=await Ostarbeiter.findAll()
         for (const camp of camps) {
           if (camp?.localityWork) {
             const { data } = await axios({
@@ -185,6 +186,7 @@ export default {
               url: `https://geocode-maps.yandex.ru/1.x/?apikey=03aee4ec-fed3-419c-adf2-766edb38b30b&geocode=${camp.localityWork}&format=json`,
               responseType: "json",
             });
+            let count = ostarbaiters.filter(ostarbaiter=>ostarbaiter.localityWork === camp.localityWork).length
 
             const responseData= data.response.GeoObjectCollection?.featureMember?.
             filter((object) => object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality")
@@ -192,6 +194,7 @@ export default {
              points.push({
                 locality: camp.localityWork,
                 point: Object(...responseData).GeoObject.Point,
+                count: count
               });
             }
           }

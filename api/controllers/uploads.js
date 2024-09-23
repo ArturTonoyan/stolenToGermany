@@ -19,6 +19,7 @@ const supportingDocuments = {
   7: "deathInformation",
   8: "repatriationInfo",
   9: "addressAfterShipping",
+  10: "other"
 };
 
 const acceptedTypes = /jpeg|jpg|png/;

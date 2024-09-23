@@ -69,6 +69,11 @@ function AdminPageEditArchiveModule(props: any) {
       type: "addressAfterShipping",
       text: "Адрес проживания после возвращения в СССР",
     },
+    {
+      id: 10,
+      type: "other",
+      text: "Другое",
+    },
   ];
 
   return (

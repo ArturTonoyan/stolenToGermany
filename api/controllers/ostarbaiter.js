@@ -176,24 +176,20 @@ export default {
         attributes: ["localityWork"],
       });
 
+
       const points = [];
       try {
         const ostarbaiters=await Ostarbeiter.findAll()
         for (const camp of camps) {
           if (camp?.localityWork) {
-            const { data } = await axios({
-              method: "get",
-              url: `https://geocode-maps.yandex.ru/1.x/?apikey=03aee4ec-fed3-419c-adf2-766edb38b30b&geocode=${camp.localityWork}&format=json`,
-              responseType: "json",
-            });
-            let count = ostarbaiters.filter(ostarbaiter=>ostarbaiter.localityWork === camp.localityWork).length
+            const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${camp.localityWork}&format=json`);
 
-            const responseData= data.response.GeoObjectCollection?.featureMember?.
-            filter((object) => object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality")
-            if(responseData.length > 0) {
+            let count = ostarbaiters.filter(ostarbaiter=>ostarbaiter?.localityWork?.toUpperCase() === camp.localityWork.toUpperCase()).length
+
+            if(response?.data.length > 0) {
              points.push({
                 locality: camp.localityWork,
-                point: Object(...responseData).GeoObject.Point,
+                point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
                 count: count
               });
             }
@@ -214,16 +210,11 @@ export default {
 
     if (count < 1) throw new AppErrorNotExist("ostarbaiters");
 
-    const { data } = await axios({
-      method: "get",
-      url: `https://geocode-maps.yandex.ru/1.x/?apikey=03aee4ec-fed3-419c-adf2-766edb38b30b&geocode=${filters.localityWork}&format=json`,
-      responseType: "json",
-    });
-    const responseData= data.response.GeoObjectCollection?.featureMember?.
-    filter((object) => object.GeoObject.metaDataProperty.GeocoderMetaData.kind === "locality")
-    if(responseData.length < 0) throw new AppErrorInvalid('localityWork')
+    const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${filters?.localityWork}&format=json`);
+
+    if(response?.length < 0) throw new AppErrorInvalid('localityWork')
     res.json({
-      point:  Object(...responseData).GeoObject.Point,
+      point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
       count: count,
       ostarbaiters: rows?.map(mapOfStolen),
     });

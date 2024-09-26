@@ -35,7 +35,7 @@ const campsSlice = createSlice({
         campsNew.push({
           count: el.count,
           locality: el.locality,
-          point: [latitude, longitude],
+          point: [longitude, latitude],
         });
       });
       state.camps = campsNew;

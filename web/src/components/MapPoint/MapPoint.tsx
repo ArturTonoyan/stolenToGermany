@@ -49,7 +49,7 @@ function MapPoint(props: any) {
     <circle cx="16" cy="16" r="16" fill="#F8F7FF"/>
     <circle cx="16" cy="16" r="12" fill="#5B6A99"/>
     <text x="16" y="20" text-anchor="middle" fill="white" font-size="12" font-weight="bold">${
-      10000 > 999 ? ">999" : props.item?.count || 0
+      props.item?.count > 999 ? ">999" : props.item?.count || 0
     }</text>
     </svg>`;
 
@@ -68,8 +68,8 @@ function MapPoint(props: any) {
         }}
         options={{
           iconLayout: "default#image",
-          iconImageHref: "./img/point.svg",
-          // iconImageHref: iconImageHref,
+          // iconImageHref: "./img/point.svg",
+          iconImageHref: iconImageHref,
         }}
       ></Placemark>
     </div>

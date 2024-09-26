@@ -188,7 +188,7 @@ export default {
 
             if(response?.data.length > 0) {
              points.push({
-                locality: camp.localityWork,
+                locality: camp,
                 point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
                 count: count
               });

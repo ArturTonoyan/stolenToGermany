@@ -68,8 +68,8 @@ function MapPoint(props: any) {
         }}
         options={{
           iconLayout: "default#image",
-          // iconImageHref: "./img/point.svg",
-          iconImageHref: iconImageHref,
+          iconImageHref: "./img/point.svg",
+          // iconImageHref: iconImageHref,
         }}
       ></Placemark>
     </div>

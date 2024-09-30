@@ -113,6 +113,15 @@ function PersonalArchive() {
       navigate("/SearchPage/HumanProfile");
     }
   };
+
+  const getNameImgs = (img: string) => {
+    if(!img) return "Фото";
+    console.log("img", img);
+    const arr = img?.split("/");
+    const name = arr[arr?.length - 1]?.split(".");
+    return name[0] || "Фото";
+  };
+
   return (
     <div className={styles.PersonalArchive}>
       <img
@@ -147,6 +156,12 @@ function PersonalArchive() {
               }
               alt="foto"
             />
+            <div className={styles.blakBoxTypePhotoContainer}>
+              <div className={styles.blakBoxTypePhoto}>
+                <p>Название фото: {getNameImgs(imgs[selectedImg])}</p>
+              </div>
+            </div>
+            
           </div>
 
           <button onClick={funScrollRigth}>

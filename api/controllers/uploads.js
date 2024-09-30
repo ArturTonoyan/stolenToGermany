@@ -67,7 +67,7 @@ const storage = multer.diskStorage({
     const extension = path.extname(originalname).toLowerCase();
     const ostarbaiter = await Ostarbeiter.findByPk(id);
     if (!ostarbaiter) cb(new AppError(errorCodes.NotExist));
-    else cb(null,  uuidv4() + extension);
+  else cb(null,  Buffer.from(originalname, 'latin1').toString('utf8'));
   },
 });
 

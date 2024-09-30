@@ -156,18 +156,20 @@ function PersonalArchive() {
               }
               alt="foto"
             />
-            <div className={styles.blakBoxTypePhotoContainer}>
-              <div className={styles.blakBoxTypePhoto}>
-                <p>Название фото: {getNameImgs(imgs[selectedImg])}</p>
-              </div>
+           
+           <div className={styles.blakBoxTypePhotoContainer}>
+            <div className={styles.blakBoxTypePhoto}>
+              <p>Название фото: {getNameImgs(imgs[selectedImg])}</p>
             </div>
-            
-          </div>
+        </div>
 
+            </div>
+        
           <button onClick={funScrollRigth}>
             <ArrowLeft className={styles.rigth} />
           </button>
         </div>
+       
         <div className={styles.styderPoints}>
           <ul>
             {imgs.map((_, index) => (

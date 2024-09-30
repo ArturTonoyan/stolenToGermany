@@ -164,7 +164,7 @@ function PersonalArchive() {
         </div>
         <div className={styles.blakBoxTypePhotoContainer}>
           <div className={styles.blakBoxTypePhoto}>
-            <p>Название фото: {getNameImgs(imgs[selectedImg])}</p>
+            <p>{getNameImgs(imgs[selectedImg])}</p>
           </div>
         </div>
 

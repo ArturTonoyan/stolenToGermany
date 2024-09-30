@@ -109,7 +109,10 @@ function PathToPoint(props: any) {
   //     }
   //   }
   // }, [refPoint2, window.innerWidth]);
-
+  console.log(
+    "points",
+    points.map(([x, y]: [number, number]) => `${x},${y}`).join(" ")
+  );
   return (
     <div
       className={styles.PathToPoint}
@@ -143,9 +146,10 @@ function PathToPoint(props: any) {
         <svg>
           <polyline
             // points="0,0 420,230"
-            points={points
-              .map(([x, y]: [number, number]) => `${x},${y}`)
-              .join(" ")}
+            // points={points
+            //   .map(([x, y]: [number, number]) => `${x},${y}`)
+            //   .join(" ")}
+            points={alternative}
             style={{
               fill: "none",
               stroke: "#5b6a99",

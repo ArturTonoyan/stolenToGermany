@@ -162,14 +162,14 @@ function HumanProfile(props: any) {
             </p>
           </div>
           <div className={styles.way}>
-            {showPath && (
-              // humanData?.localityDeparture !== "" &&
-              // humanData?.localityWork !== "" &&
-              <PathToPoint
-                localityDeparture={humanData?.localityDeparture || "Россия"}
-                localityWork={humanData?.localityWork || "Германия"}
-              />
-            )}
+            {showPath &&
+              humanData?.localityDeparture !== "" &&
+              humanData?.localityWork !== "" && (
+                <PathToPoint
+                  localityDeparture={humanData?.localityDeparture}
+                  localityWork={humanData?.localityWork}
+                />
+              )}
           </div>
         </div>
 

@@ -146,10 +146,10 @@ function PathToPoint(props: any) {
         <svg>
           <polyline
             // points="0,0 420,230"
-            // points={points
-            //   .map(([x, y]: [number, number]) => `${x},${y}`)
-            //   .join(" ")}
-            points={alternative}
+            points={points
+              .map(([x, y]: [number, number]) => `${x},${y}`)
+              .join(" ")}
+            // points={alternative}
             style={{
               fill: "none",
               stroke: "#5b6a99",

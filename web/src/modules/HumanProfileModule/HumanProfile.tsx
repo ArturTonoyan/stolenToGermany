@@ -166,8 +166,8 @@ function HumanProfile(props: any) {
               humanData?.localityDeparture !== "" &&
               humanData?.localityWork !== "" && (
                 <PathToPoint
-                  localityDeparture={humanData?.localityDeparture || "Россия"}
-                  localityWork={humanData?.localityWork || "Германия"}
+                  localityDeparture={humanData?.localityDeparture}
+                  localityWork={humanData?.localityWork}
                 />
               )}
           </div>

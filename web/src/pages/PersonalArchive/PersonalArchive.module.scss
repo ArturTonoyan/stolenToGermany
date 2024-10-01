@@ -45,7 +45,7 @@
     .containerFotos {
       position: relative;
       width: 50vw;
-      height: 40vw;
+      height: 80vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -65,7 +65,7 @@
       background-position: center;
       background-repeat: no-repeat;
     }
-    .imgosn2{
+    .imgosn2 {
       position: absolute;
       z-index: 1;
       width: 100%;
@@ -135,7 +135,7 @@
     display: flex;
     flex-direction: row;
     // justify-content: center;
-    margin-top: 32px;
+    margin-top: 3vw;
     overflow-y: auto;
     @include scrollStyle(4px, 12px);
     ul {
@@ -164,23 +164,26 @@
       }
     }
   }
-  .blakBoxTypePhotoContainer{
+  .blakBoxTypePhotoContainer {
     display: flex;
     justify-content: center;
-    height: 33.5vw;
+    height: 5vw;
     position: relative;
   }
-  .blakBoxTypePhoto{
+  .blakBoxTypePhoto {
     background-color: #83818148;
     position: absolute;
     bottom: 0px;
     z-index: 1000;
-    width: 350px;
-    height: 53px;
+    width: 15vw;
+    height: 3vw;
     border-radius: 0px 0px 8px 8px;
     display: flex;
     justify-content: start;
     align-items: center;
-    padding-left: 10px;
+    p {
+      margin: 0 auto;
+      font-size: 1vw;
+    }
   }
 }

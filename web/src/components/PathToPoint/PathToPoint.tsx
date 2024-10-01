@@ -109,7 +109,10 @@ function PathToPoint(props: any) {
   //     }
   //   }
   // }, [refPoint2, window.innerWidth]);
-
+  console.log(
+    "points",
+    points.map(([x, y]: [number, number]) => `${x},${y}`).join(" ")
+  );
   return (
     <div
       className={styles.PathToPoint}
@@ -146,6 +149,7 @@ function PathToPoint(props: any) {
             points={points
               .map(([x, y]: [number, number]) => `${x},${y}`)
               .join(" ")}
+            // points={alternative}
             style={{
               fill: "none",
               stroke: "#5b6a99",

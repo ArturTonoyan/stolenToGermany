@@ -7,3 +7,23 @@ body {
   background-color: #eff2f1 !important;
   height: auto;
 }
+
+.mobil {
+  .mobilLogo {
+    div {
+      position: relative;
+      left: 0;
+    }
+    div:nth-child(1) {
+      margin: 0 auto;
+    }
+  }
+  .logoText {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 6vw;
+  }
+}

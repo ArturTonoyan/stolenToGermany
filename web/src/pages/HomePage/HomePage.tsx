@@ -1,8 +1,7 @@
-import React from "react";
 import FormModuleHomePage from "../../modules/HomePageFormModule/FormModuleHomePage";
 import SliderModule from "../../modules/SliderModule/SliderModule";
 import styles from "./HomePage.module.scss";
-import Footer from "../../components/Footer/Footer";
+
 function HomePage() {
   return (
     <div className={styles.HomePage}>

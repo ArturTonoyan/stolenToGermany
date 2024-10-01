@@ -20,9 +20,10 @@ import AdminPageEditArchiveModule from "./modules/AdminModule/AdminPageEditArchi
 import { apiGetCamps, apiOstarbaiters } from "./api/ApiRequest";
 import { apiGetPeople } from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
 import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
+import Logo from "./components/Logo/Logo";
 
 function App() {
   const location = useLocation();
@@ -51,62 +52,87 @@ function App() {
     });
   };
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(
+      navigator.userAgent
+    );
+    setIsMobile(isMobileDevice);
+  }, []);
+
   return (
-    <main className={styles.App}>
-      {location.pathname.includes("/AdminPage") &&
-      !location.pathname.includes("/AdminPageAuth") ? (
-        <HeaderAdmin
-          funUpdatePeople={funUpdatePeople}
-          funUpdateCamps={funUpdateCamps}
-        />
+    <>
+      {isMobile ? (
+        <div className={styles.mobil}>
+          <div className={styles.mobilLogo}>
+            <Logo />
+          </div>
+          <div className={styles.logoText}>Пожалуйста, зайдите с ПК.</div>
+        </div>
       ) : (
-        <Header
-          funUpdatePeople={funUpdatePeople}
-          funUpdateCamps={funUpdateCamps}
-        />
+        <main className={styles.App}>
+          {location.pathname.includes("/AdminPage") &&
+          !location.pathname.includes("/AdminPageAuth") ? (
+            <HeaderAdmin
+              funUpdatePeople={funUpdatePeople}
+              funUpdateCamps={funUpdateCamps}
+            />
+          ) : (
+            <Header
+              funUpdatePeople={funUpdatePeople}
+              funUpdateCamps={funUpdateCamps}
+            />
+          )}
+
+          <div className={styles.mainpage}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/SearchPage/*" element={<SearchPage />}>
+                <Route path="SearchModule" element={<SearchModule />} />
+                <Route
+                  path="HumanProfile"
+                  element={<HumanProfile loc={location.pathname} />}
+                />
+              </Route>
+              <Route path="/PersonalArchive" element={<PersonalArchive />} />
+              <Route path="/MapPage" element={<MapPage />} />
+              <Route path="/ErrorPage" element={<ErrorPage />} />
+              <Route path="/NoSearchResults" element={<NoSearchResults />} />
+
+              <Route
+                path="/AdminPage/*"
+                element={<AdminPage loc={location.pathname} />}
+              >
+                <Route path="AdminPageAuth" element={<AdminPageAuth />} />
+                <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+                <Route
+                  path="AdminSearchResult"
+                  element={<AdminSearchResult />}
+                />
+                <Route path="EditHumanModule" element={<EditHumanModule />} />
+                <Route path="PersonalArchive" element={<PersonalArchive />} />
+                <Route
+                  path="HumanProfile"
+                  element={<HumanProfile loc={location.pathname} />}
+                />
+
+                <Route
+                  path="AdminPageEditArchiveModule"
+                  element={
+                    <AdminPageEditArchiveModule
+                      funUpdatePeople={funUpdatePeople}
+                    />
+                  }
+                />
+              </Route>
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </div>
+          <Footer />
+        </main>
       )}
-
-      <div className={styles.mainpage}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/SearchPage/*" element={<SearchPage />}>
-            <Route path="SearchModule" element={<SearchModule />} />
-            <Route
-              path="HumanProfile"
-              element={<HumanProfile loc={location.pathname} />}
-            />
-          </Route>
-          <Route path="/PersonalArchive" element={<PersonalArchive />} />
-          <Route path="/MapPage" element={<MapPage />} />
-          <Route path="/ErrorPage" element={<ErrorPage />} />
-          <Route path="/NoSearchResults" element={<NoSearchResults />} />
-
-          <Route
-            path="/AdminPage/*"
-            element={<AdminPage loc={location.pathname} />}
-          >
-            <Route path="AdminPageAuth" element={<AdminPageAuth />} />
-            <Route path="AdminPanelModule" element={<AdminPanelModule />} />
-            <Route path="AdminSearchResult" element={<AdminSearchResult />} />
-            <Route path="EditHumanModule" element={<EditHumanModule />} />
-            <Route path="PersonalArchive" element={<PersonalArchive />} />
-            <Route
-              path="HumanProfile"
-              element={<HumanProfile loc={location.pathname} />}
-            />
-
-            <Route
-              path="AdminPageEditArchiveModule"
-              element={
-                <AdminPageEditArchiveModule funUpdatePeople={funUpdatePeople} />
-              }
-            />
-          </Route>
-          <Route path="*" element={<ErrorPage />} /> 
-        </Routes>
-      </div>
-      <Footer />
-    </main>
+    </>
   );
 }
 

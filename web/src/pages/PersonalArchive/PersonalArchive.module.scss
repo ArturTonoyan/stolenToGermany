@@ -65,6 +65,14 @@
       background-position: center;
       background-repeat: no-repeat;
     }
+    .imgosn2{
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      height: 90%;
+      object-fit: contain;
+      top: 140px;
+    }
     .imgblur {
       filter: blur(12px);
       position: absolute;
@@ -155,5 +163,24 @@
         }
       }
     }
+  }
+  .blakBoxTypePhotoContainer{
+    display: flex;
+    justify-content: center;
+    height: 33.5vw;
+    position: relative;
+  }
+  .blakBoxTypePhoto{
+    background-color: #83818148;
+    position: absolute;
+    bottom: 0px;
+    z-index: 1000;
+    width: 350px;
+    height: 53px;
+    border-radius: 0px 0px 8px 8px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 10px;
   }
 }

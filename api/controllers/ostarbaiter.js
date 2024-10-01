@@ -173,18 +173,22 @@ export default {
         where: {
           localityWork: { [Op.ne]: null },
         },
-        attributes: ["localityWork"],
       });
 
-      const localityWork=new Set(camps.filter(camp=>camp.localityWork).map(c=> c.localityWork))
+
+
+      for (const camp of camps) {
+        camp.localityWorkUpdate= camp.localityWork.split(' ')[1] !== undefined ? camp.localityWork.split(' ')[1] : camp.localityWork.split(' ')[0]
+      }
+
+      const localityWork=new Set(camps.filter(camp=>camp.localityWorkUpdate).map(c=> c.localityWorkUpdate))
 
       const points = [];
       try {
-        const ostarbaiters=await Ostarbeiter.findAll()
         for (const camp of localityWork) {
             const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${camp}&format=json`);
 
-            let count = ostarbaiters.filter(ostarbaiter=>ostarbaiter?.localityWork?.toUpperCase() === camp.toUpperCase()).length
+            let count = camps.filter(ostarbaiter=>ostarbaiter?.localityWorkUpdate?.toUpperCase() === camp.toUpperCase()).length
 
             if(response?.data.length > 0) {
              points.push({

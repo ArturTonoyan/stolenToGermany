@@ -2,7 +2,7 @@ import express from "express";
 import logger from "morgan";
 import { MulterError } from "multer";
 import fs from "fs";
-const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
+const errorCodes = JSON.parse(fs.readFileSync("./config/errorCodes.json"));
 
 import cookieParser from "cookie-parser";
 import {initializeDbModels, parsingZip, parsnigExsel} from "./utils/db.js";

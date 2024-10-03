@@ -5,7 +5,7 @@ import Ostarbeiter from "../models/index.js";
 import {AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
 import axios from "axios";
 import { Op } from "sequelize";
-
+  
 
 
 export default {

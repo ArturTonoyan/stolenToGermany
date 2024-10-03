@@ -1,14 +1,12 @@
-FROM node:20-alpine
+FROM node:20-alpine as build
 
-ARG APP_DIR=/var/www/ostarbaiters/web
-RUN mkdir -p ${APP_DIR}
-WORKDIR ${APP_DIR}
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
 COPY . .
-
 RUN npm run build
 
-EXPOSE 3000/tcp
-CMD npm start
+FROM nginx:1.27
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf

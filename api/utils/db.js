@@ -27,7 +27,7 @@ export async function parsnigExsel(){
     try {
         if(await checkTableExists(Ostarbeiter.tableName) && !(await Ostarbeiter.findAll()).length) {
             const workbook = new ExcelJS.Workbook();
-            await workbook.xlsx.readFile('../api/uploads/База сайт.xlsx');
+            await workbook.xlsx.readFile('../api/uploads/db.xlsx');
             const worksheet = await workbook.getWorksheet('Таганрог')
             const data = []
             const numbersData={}

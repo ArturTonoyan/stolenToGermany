@@ -27,7 +27,7 @@ export async function parsnigExsel(){
     try {
         if(await checkTableExists(Ostarbeiter.tableName) && !(await Ostarbeiter.findAll()).length) {
             const workbook = new ExcelJS.Workbook();
-            await workbook.xlsx.readFile('../api/uploads/sample.xlsx');
+            await workbook.xlsx.readFile('../api/uploads/База сайт.xlsx');
             const worksheet = await workbook.getWorksheet('Таганрог')
             const data = []
             const numbersData={}
@@ -72,7 +72,7 @@ export async function parsingZip(numbersData){
         const nameFile= (await readdir(`../api/uploads/`))
         for (const file of nameFile) {
             if(Number(file) && file) {
-                    fs.cp(`../api//uploads/${file}`, `../api/uploads/${numbersData[file]}`, {recursive: true}, (err) => {
+                    fs.cp(`../api/uploads/${file}`, `../api/uploads/${numbersData[file]}`, {recursive: true}, (err) => {
                         if (!err) fs.rm(`../api/uploads/${file}`, {recursive: true}, (err) => {
                             if (err) console.log(err)
                         });

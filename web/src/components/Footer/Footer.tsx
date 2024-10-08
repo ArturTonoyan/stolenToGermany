@@ -45,6 +45,13 @@ function Footer() {
                     О проекте
                   </Link>
                 </li>
+                <li
+                  className={
+                    hrefName === "LegalInformation" ? styles.active : ""
+                  }
+                >
+                  <Link to="LegalInformation">Правовая информация</Link>
+                </li>
               </ul>
             </div>
             <div className={styles.footer__mesagers}>
@@ -54,7 +61,14 @@ function Footer() {
           </div>
           <div className={styles.footer_innerBottom}>
             <p>© Все права защищены</p>
+            <div className={styles.footer__rnf}>
+              <img className={styles.rnf} src="./img/rnf.svg" alt="img" />
+              <p>Ресурс создан при поддержке Российского научного фонда</p>
+            </div>
           </div>
+          <a href="mailto:ostarbeiter.1942@mail.ru" className={styles.email}>
+            ostarbeiter.1942@mail.ru
+          </a>
         </footer>
       )}
     </>

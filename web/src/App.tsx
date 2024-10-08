@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
 import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
 import Logo from "./components/Logo/Logo";
+import LegalInformation from "./pages/LegalInformation/LegalInformation";
 
 function App() {
   const location = useLocation();
@@ -127,6 +128,7 @@ function App() {
                 />
               </Route>
               <Route path="*" element={<ErrorPage />} />
+              <Route path="LegalInformation" element={<LegalInformation />} />
             </Routes>
           </div>
           <Footer />

@@ -2,10 +2,11 @@
 @import "./../../styles/colors.scss";
 
 .footer {
+  position: relative;
   width: 100%;
   // position: absolute;
   z-index: 10;
-  background-color: #2D2D2D;
+  background-color: #2d2d2d;
   left: 0;
   bottom: 0;
   height: 287px;
@@ -28,6 +29,13 @@
       li {
         margin-right: 77px;
         cursor: pointer;
+        outline: none;
+        text-decoration: none;
+        color: #ffffff;
+        &:hover {
+          color: var(--blue1);
+          transition: color 0.15s ease;
+        }
       }
       li:last-child {
         margin: 0;
@@ -56,9 +64,40 @@
       }
     }
   }
+  .email {
+    position: absolute;
+    right: 3.8vw;
+    bottom: 2.3vw;
+    color: #ffffff;
+    font-family: "Playfair Display";
+    font-size: 1vw;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    text-decoration: none;
+  }
 
   .footer_innerBottom {
     color: #ffffff;
     // padding-top: 167px;
+  }
+  .footer__rnf {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0;
+    padding-top: 0;
+    p {
+      display: flex;
+      margin-top: 1vw;
+      margin-left: 1vw;
+    }
+    .rnf {
+      display: flex;
+      // width: 5vw;
+      height: 2vw;
+      margin: 0;
+      padding: 0;
+    }
   }
 }

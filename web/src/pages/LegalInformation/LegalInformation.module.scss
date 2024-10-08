@@ -1,0 +1,27 @@
+.LegalInformation {
+  min-height: 60vh;
+
+  .container {
+    width: 90vw;
+    margin: 0 auto;
+    h1 {
+      margin-top: 8vw;
+      font-family: "Playfair Display";
+      font-size: 2.5vw;
+      font-weight: 500;
+      line-height: 42.5px;
+      text-align: left;
+      color: #2d2d2d;
+    }
+
+    .text {
+      margin-top: 3vw;
+      font-family: "Playfair Display";
+      font-size: 1.3vw;
+      font-weight: 400;
+      line-height: 2vw;
+      text-align: left;
+      color: #2d2d2d;
+    }
+  }
+}

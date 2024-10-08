@@ -10,9 +10,10 @@ import {
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import notFoto from "./../../imgs/notfoto.png";
+import config from "./../../config.json";
 
 function CardAdmin(props: any) {
-  const server = process.env.REACT_APP_API_URL;
+  const server = config.REACT_APP_API_URL;
   const [activDeleteCard, setActivDeleteCard] = useState<boolean>(false);
   const fio = [props.item?.surname, props.item?.name, props.item?.patronymic]
     .filter(Boolean)

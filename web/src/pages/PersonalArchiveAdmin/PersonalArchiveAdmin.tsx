@@ -6,12 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
+import config from "./../../config.json";
 
 function PersonalArchiveAdmin() {
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const server = process.env.REACT_APP_API_URL;
+  const server = config.REACT_APP_API_URL;
 
   interface Human {
     addressAfterReturning: string;

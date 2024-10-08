@@ -9,10 +9,11 @@ import { RootState } from "../../store/store";
 import HumanInfoComponent from "../../components/HumanInfoComponent/HumanInfoComponent";
 import { humaInfo, Human, HumanInfo } from "./HumanProfileData";
 import HumanSliderFoto from "../../components/HumanSliderFoto/HumanSliderFoto";
+import config from "./../../config.json";
 
 function HumanProfile(props: any) {
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const server = process.env.REACT_APP_API_URL;
+  const server = config.REACT_APP_API_URL;
   const [showPath, setShowPath] = useState(false);
   const [imgOpen, setImgOpen] = useState([]);
 

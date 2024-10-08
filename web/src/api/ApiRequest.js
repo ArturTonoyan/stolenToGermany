@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const server = process.env.REACT_APP_API_URL;
+import config from './../config.json';
+const server = config.REACT_APP_API_URL;
 const http = axios.create({
   withCredentials: true,
 });

@@ -7,11 +7,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import lupa from "./../../imgs/lupa.svg";
+import config from "./../../config.json";
+
 function PersonalArchive() {
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const server = process.env.REACT_APP_API_URL;
+  const server = config.REACT_APP_API_URL;
 
   interface Human {
     addressAfterReturning: string;

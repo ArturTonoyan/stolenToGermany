@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./Card.module.scss";
+import config from "./../../config.json";
+
 function Card(props: any) {
-  const server = process.env.REACT_APP_API_URL;
+  const server = config.REACT_APP_API_URL;
   //! преобразуем фио для вывода
   const fio = [props.item?.surname, props.item?.name, props.item?.patronymic]
     .filter(Boolean)

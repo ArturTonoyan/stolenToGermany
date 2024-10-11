@@ -1,9 +1,11 @@
 import { apiDeleteFotoAdmin } from "../../api/ApiRequest";
 import styles from "./CardHumanFotoAdmin.module.scss";
-import config from "./../../config.json";
+import { useContext } from "react";
+import DataContext from "../../context";
 
 function CardHumanFotoAdmin(props: any) {
-  const server = config.REACT_APP_API_URL;
+  const context = useContext(DataContext);
+  const server = context.REACT_APP_API_URL;
   const funDeleteFoto = () => {
     const imgUrl = props.img.split("/");
 

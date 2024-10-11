@@ -1,5 +1,5 @@
 import styles from "./styles/App.module.scss";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
@@ -25,6 +25,7 @@ import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
 import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
 import Logo from "./components/Logo/Logo";
 import LegalInformation from "./pages/LegalInformation/LegalInformation";
+import DataContext from "./context";
 
 function App() {
   const location = useLocation();
@@ -61,9 +62,11 @@ function App() {
     );
     setIsMobile(isMobileDevice);
   }, []);
+  const REACT_APP_API_URL = "https://ostarbaiters.ru/api";
+  const context = { REACT_APP_API_URL };
 
   return (
-    <>
+  <>
       {isMobile ? (
         <div className={styles.mobil}>
           <div className={styles.mobilLogo}>
@@ -87,49 +90,51 @@ function App() {
           )}
 
           <div className={styles.mainpage}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/SearchPage/*" element={<SearchPage />}>
-                <Route path="SearchModule" element={<SearchModule />} />
-                <Route
-                  path="HumanProfile"
-                  element={<HumanProfile loc={location.pathname} />}
-                />
-              </Route>
-              <Route path="/PersonalArchive" element={<PersonalArchive />} />
-              <Route path="/MapPage" element={<MapPage />} />
-              <Route path="/ErrorPage" element={<ErrorPage />} />
-              <Route path="/NoSearchResults" element={<NoSearchResults />} />
-
-              <Route
-                path="/AdminPage/*"
-                element={<AdminPage loc={location.pathname} />}
-              >
-                <Route path="AdminPageAuth" element={<AdminPageAuth />} />
-                <Route path="AdminPanelModule" element={<AdminPanelModule />} />
-                <Route
-                  path="AdminSearchResult"
-                  element={<AdminSearchResult />}
-                />
-                <Route path="EditHumanModule" element={<EditHumanModule />} />
-                <Route path="PersonalArchive" element={<PersonalArchive />} />
-                <Route
-                  path="HumanProfile"
-                  element={<HumanProfile loc={location.pathname} />}
-                />
+            <DataContext.Provider value={context}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/SearchPage/*" element={<SearchPage />}>
+                  <Route path="SearchModule" element={<SearchModule />} />
+                  <Route
+                    path="HumanProfile"
+                    element={<HumanProfile loc={location.pathname} />}
+                  />
+                </Route>
+                <Route path="/PersonalArchive" element={<PersonalArchive />} />
+                <Route path="/MapPage" element={<MapPage />} />
+                <Route path="/ErrorPage" element={<ErrorPage />} />
+                <Route path="/NoSearchResults" element={<NoSearchResults />} />
 
                 <Route
-                  path="AdminPageEditArchiveModule"
-                  element={
-                    <AdminPageEditArchiveModule
-                      funUpdatePeople={funUpdatePeople}
-                    />
-                  }
-                />
-              </Route>
-              <Route path="*" element={<ErrorPage />} />
-              <Route path="LegalInformation" element={<LegalInformation />} />
-            </Routes>
+                  path="/AdminPage/*"
+                  element={<AdminPage loc={location.pathname} />}
+                >
+                  <Route path="AdminPageAuth" element={<AdminPageAuth />} />
+                  <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+                  <Route
+                    path="AdminSearchResult"
+                    element={<AdminSearchResult />}
+                  />
+                  <Route path="EditHumanModule" element={<EditHumanModule />} />
+                  <Route path="PersonalArchive" element={<PersonalArchive />} />
+                  <Route
+                    path="HumanProfile"
+                    element={<HumanProfile loc={location.pathname} />}
+                  />
+
+                  <Route
+                    path="AdminPageEditArchiveModule"
+                    element={
+                      <AdminPageEditArchiveModule
+                        funUpdatePeople={funUpdatePeople}
+                      />
+                    }
+                  />
+                </Route>
+                <Route path="*" element={<ErrorPage />} />
+                <Route path="LegalInformation" element={<LegalInformation />} />
+              </Routes>
+            </DataContext.Provider>
           </div>
           <Footer />
         </main>

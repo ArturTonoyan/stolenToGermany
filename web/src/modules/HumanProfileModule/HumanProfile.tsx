@@ -2,18 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import PathToPoint from "../../components/PathToPoint/PathToPoint";
 import styles from "./HumanProfile.module.scss";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import HumanInfoComponent from "../../components/HumanInfoComponent/HumanInfoComponent";
 import { humaInfo, Human, HumanInfo } from "./HumanProfileData";
 import HumanSliderFoto from "../../components/HumanSliderFoto/HumanSliderFoto";
-import config from "./../../config.json";
+import DataContext from "../../context";
 
 function HumanProfile(props: any) {
+  const context = useContext(DataContext);
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const server = config.REACT_APP_API_URL;
+  const server = context.REACT_APP_API_URL;
   const [showPath, setShowPath] = useState(false);
   const [imgOpen, setImgOpen] = useState([]);
 

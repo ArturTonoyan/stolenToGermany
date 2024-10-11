@@ -1,11 +1,12 @@
 import styles from "./HumanSliderFoto.module.scss";
 import { ReactComponent as ArrowLeft } from "./../../imgs/arrowLeft.svg";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
-import { useState } from "react";
-import config from "./../../config.json";
+import { useContext, useState } from "react";
+import DataContext from "../../context";
 
 function HumanSliderFoto(props: any) {
-  const server = config.REACT_APP_API_URL;
+  const context = useContext(DataContext);
+  const server = context.REACT_APP_API_URL;
   const [selectedImg, setSelectedImg] = useState<number>(0);
   //! скролл влево
   const funScrollLeft = () => {

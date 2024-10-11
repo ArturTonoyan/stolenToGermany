@@ -1,6 +1,6 @@
 import axios from "axios";
-import config from './../config.json';
-const server = config.REACT_APP_API_URL;
+
+const server = "https://ostarbaiters.ru/api"
 const http = axios.create({
   withCredentials: true,
 });

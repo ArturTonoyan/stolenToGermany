@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./PersonalArchive.module.scss";
 import { ReactComponent as ArrowLeft } from "./../../imgs/arrowLeft.svg";
 import { ReactComponent as PageArrow } from "./../../imgs/pageArrow.svg";
@@ -7,13 +7,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { apiGetOstarbaiter } from "../../api/ApiRequest";
 import lupa from "./../../imgs/lupa.svg";
-import config from "./../../config.json";
+import DataContext from "../../context";
 
 function PersonalArchive() {
+  const context = useContext(DataContext);
   const [imgs, setImgs] = useState<string[]>([]);
   const [selectedImg, setSelectedImg] = useState<number>(0);
   const store = useSelector((state: RootState) => state.peopleSlice);
-  const server = config.REACT_APP_API_URL;
+  const server = context.REACT_APP_API_URL;
 
   interface Human {
     addressAfterReturning: string;

@@ -1,7 +1,7 @@
 import styles from "./CardAdmin.module.scss";
 import { ReactComponent as DeleteIMG } from "../../imgs/delete.svg";
 import { ReactComponent as EditIMG } from "../../imgs/edit.svg";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { OstarbaitersDelete, apiOstarbaiters } from "../../api/ApiRequest";
 import { useDispatch } from "react-redux";
@@ -10,10 +10,11 @@ import {
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import notFoto from "./../../imgs/notfoto.png";
-import config from "./../../config.json";
+import DataContext from "../../context";
 
 function CardAdmin(props: any) {
-  const server = config.REACT_APP_API_URL;
+  const context = useContext(DataContext);
+  const server = context?.REACT_APP_API_URL;
   const [activDeleteCard, setActivDeleteCard] = useState<boolean>(false);
   const fio = [props.item?.surname, props.item?.name, props.item?.patronymic]
     .filter(Boolean)

@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import FormModuleHomePage from "../../modules/HomePageFormModule/FormModuleHomePage";
 import SliderModule from "../../modules/SliderModule/SliderModule";
 import styles from "./HomePage.module.scss";
+import DataContext from "../../context";
 
 function HomePage() {
   return (

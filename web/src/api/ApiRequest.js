@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const server = "https://ostarbaiters.ru/api"
+// const server = "https://ostarbaiters.ru/api"
+const server = "http://localhost:3001";
 const http = axios.create({
   withCredentials: true,
 });

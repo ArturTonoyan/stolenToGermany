@@ -61,6 +61,65 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
     setInpValue("");
   };
 
+  //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+  const cardWidth = 318;
+  // const cardHeight = 470;
+  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
+  // console.log("limCount", window.innerWidth - 98, limCount);
+
+  const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
+  const [limit, setLimit] = useState<number[]>([0, limCount]);
+  const [isLoading, setIsLoading] = useState(false);
+  const lengthData = store.filterPeople?.length || 0;
+  const [limitData, setLimitData] = useState<any>([]);
+
+  useEffect(() => {
+    setLimitData([
+      ...limitData,
+      ...store.filterPeople?.slice(limit[0], limit[1]),
+    ]);
+    console.log("limitData", limitData);
+  }, [limit, store.filterPeople]);
+
+  // console.log("lengthData", lengthData);
+
+  useEffect(() => {
+    console.log("limit", limit);
+  }, [limit]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      //! Определяем, достиг ли скролл конца страницы
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      // console.log("scrollHeight", scrollHeight, "clientHeight", clientHeight);
+      const scrollPosition = (scrollHeight - clientHeight) / 1.5;
+      if (scrollY >= scrollPosition && !isLoading) {
+        //! Подгружаем дополнительные данные
+        handleLoadMoreData();
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isLoading, scrollY]);
+
+  const handleLoadMoreData = () => {
+    setIsLoading(true);
+    const l1 =
+      limit[1] + limCount > lengthData - limCount
+        ? limit[1]
+        : limit[0] + limCount;
+    const l2 =
+      limit[1] + limCount > lengthData ? lengthData : limit[1] + limCount;
+    if (l1 !== limit[0] || l2 !== limit[1]) {
+      setLimit([l1, l2]);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className={styles.SearchModule}>
       <div className={styles.topMenu}>
@@ -90,12 +149,13 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
         </div>
       )}
       <div className={styles.container}>
-        {store.filterPeople?.map((item) => (
+        {limitData.slice(0, limit[1])?.map((item: any) => (
           <div key={item.id + "link"} onClick={() => clickCard(item?.id)}>
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {store.filterPeople?.length === 0 && (
+        {isLoading && <p>Загрузка данных...</p>}
+        {limitData?.length === 0 && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>

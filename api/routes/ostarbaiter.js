@@ -13,6 +13,7 @@ router.route('/')
 router.route('/camps')
     .get(asyncRoute(osCtrl.stolenInCamps))
 
+
 router.route('/:ostarbaiterId')
     .get(asyncRoute(osCtrl.getById))
     .put(asyncRoute(verify.general), asyncRoute(osCtrl.update))

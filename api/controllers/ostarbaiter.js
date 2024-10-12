@@ -1,9 +1,10 @@
 import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
 import uplCtrl from "../controllers/uploads.js";
-import Ostarbeiter from "../models/index.js";
+import Ostarbeiter, {City} from "../models/index.js";
 import {AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
 import axios from "axios";
+import send from '../utils/camps.js'
 import { Op } from "sequelize";
   
 
@@ -20,8 +21,17 @@ export default {
         departure: String,
         dateDeparture: String,
         localityDeparture: String,
+        start: String,
+        end: String,
       },
     });
+
+
+    let pageSize = Number(filters?.end - filters?.start) + 1;
+    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start)- 1);
+
+    if(!pageSize) pageSize=20
+    if(!offset) offset=0
 
     const ostarbaiters = await Ostarbeiter.findAll({
       order: ["surname", "name", "patronymic"],
@@ -49,6 +59,8 @@ export default {
           localityDeparture: { [Op.iLike]: `%${filters.localityDeparture}%` },
         }),
       },
+      limit: pageSize,
+      offset: offset
     });
 
     if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
@@ -97,9 +109,27 @@ export default {
     },
     res
   ) {
-    if (!surname) throw new AppErrorMissing("surname");
-    if (!date) throw new AppErrorMissing("date");
 
+
+    if(localityWork) {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
+
+      if (response.data && response.data.length > 0) {
+        const {lat, lon} = response.data[0]; // Get the first result's coordinates
+        const city = await City.findOne({
+          where: {
+            lat: lat,
+            lon: lon
+          }
+        })
+
+        if (!city) await City.create({
+          name: localityWork,
+          lat: lat,
+          lon: lon
+        })
+      }
+    }
 
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
     if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
@@ -141,8 +171,26 @@ export default {
     res
   ) {
 
-    if (!surname) throw new AppErrorMissing("surname");
-    if (!date) throw new AppErrorMissing("date");
+    if(localityWork) {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
+
+      if (response.data && response.data.length > 0) {
+        const {lat, lon} = response.data[0]; // Get the first result's coordinates
+        const city = await City.findOne({
+          where: {
+            lat: lat,
+            lon: lon
+          }
+        })
+
+        if (!city) await City.create({
+          name: localityWork,
+          lat: lat,
+          lon: lon
+        })
+      }
+
+    }
 
     await Ostarbeiter.create({
       surname: surname,
@@ -169,37 +217,32 @@ export default {
       },
     });
     if (!filters.localityWork) {
+
+      const cities=await City.findAll({
+      })
+
       const camps = await Ostarbeiter.findAll({
         where: {
           localityWork: { [Op.ne]: null },
         },
       });
 
+      const localityWork = cities.filter((obj, index, self) =>
+          index === self.findIndex((t) => (t.name === obj.name))
+      );
 
-
-      for (const camp of camps) {
-        camp.localityWorkUpdate= camp.localityWork.split(' ')[1] !== undefined ? camp.localityWork.split(' ')[1] : camp.localityWork.split(' ')[0]
-      }
-
-      const localityWork=new Set(camps.filter(camp=>camp.localityWorkUpdate).map(c=> c.localityWorkUpdate))
 
       const points = [];
-      try {
-        for (const camp of localityWork) {
-            const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${camp}&format=json`);
 
-            let count = camps.filter(ostarbaiter=>ostarbaiter?.localityWorkUpdate?.toUpperCase() === camp.toUpperCase()).length
 
-            if(response?.data.length > 0) {
-             points.push({
-                locality: camp,
-                point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
-                count: count
-              });
-            }
-          }
-      } catch (e) {
-        console.log(e);
+      for (const city of localityWork) {
+        let count = camps.filter(ostarbaiter=>ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()).length
+        points.push({
+          locality: city.name,
+          point: { pos: `${city.lat} ${city.lon}` },
+          count: count
+        });
+
       }
       return res.json({ camps: points });
     }
@@ -222,3 +265,4 @@ export default {
     });
   },
 };
+

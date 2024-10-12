@@ -5,7 +5,7 @@ import fs from "fs";
 const errorCodes = JSON.parse(fs.readFileSync("../api/config/errorCodes.json"));
 
 import cookieParser from "cookie-parser";
-import {initializeDbModels, parsingZip, parsnigExsel} from "./utils/db.js";
+import {initializeDbModels, searchCoordinates, parsnigExsel} from "./utils/db.js";
 const app = express();
 
 import 'dotenv/config'
@@ -58,6 +58,7 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
   try {
     await initializeDbModels();
     await parsnigExsel()
+    await searchCoordinates();
   } catch (e) {
     if (app.get("env") !== "test") {
       console.log(e);

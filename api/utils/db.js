@@ -1,17 +1,21 @@
 import  { sequelize } from '../models/index.js'
-import Ostarbeiter, { Admin } from "../models/index.js";
+import Ostarbeiter, { Admin, City } from "../models/index.js";
 import ExcelJS from 'exceljs';
 import { v4 as uuidv4 } from 'uuid';
 import 'dotenv/config';
 import fs from "fs";
 import AdmZip from 'adm-zip'
 import {readdir} from "node:fs/promises";
+import {Op} from "sequelize";
+import send from "./camps.js";
 
 export async function initializeDbModels() {
     if (typeof Ostarbeiter.initialize === 'function') Ostarbeiter.initialize(sequelize);
     if (typeof Admin.initialize === 'function') Admin.initialize(sequelize);
+    if (typeof City.initialize === 'function') City.initialize(sequelize);
     await Ostarbeiter.sync({ alter: true });
     await Admin.sync({ alter: true });
+    await City.sync({ alter: true });
     if (process.env.NODE_ENV !== 'test') console.log('models initialized');
 }
 
@@ -57,11 +61,32 @@ export async function parsnigExsel(){
                     numbersData[number] = data[data.length-1].id
                 }
             })
+
             await Ostarbeiter.bulkCreate(data)
             await parsingZip(numbersData)
         }
     }catch (e) {
         console.log(e)
+    }
+}
+
+export async function searchCoordinates(){
+    if(await checkTableExists(City.tableName) && !(await City.findAll()).length) {
+
+        const camps = await Ostarbeiter.findAll({
+            where: {
+                localityWork: {[Op.ne]: null},
+            },
+        });
+
+        for (const camp of camps) {
+            camp.localityWorkUpdate = camp.localityWork.split(' ')[1] !== undefined ? camp.localityWork.split(' ')[1] : camp.localityWork.split(' ')[0]
+        }
+
+        const localityWork =  Array.from(new Set(camps.filter(camp => camp.localityWorkUpdate).map(c => c.localityWorkUpdate)))
+
+        await send(localityWork, 0)
+
     }
 }
 

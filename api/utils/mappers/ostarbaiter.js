@@ -3,8 +3,8 @@ import { cdnUrlImg } from "../cdn-url.js";
 
 export default async ostarbaiter=>({
     id: ostarbaiter.id,
-    date: ostarbaiter.date,
-    surname: ostarbaiter.surname,
+    date: ostarbaiter?.date,
+    surname: ostarbaiter?.surname,
     name: ostarbaiter?.name,
     patronymic: ostarbaiter?.patronymic,
     departure: ostarbaiter?.departure,
@@ -22,8 +22,8 @@ export default async ostarbaiter=>({
 export  async function mapShort(ostarbaiter) {
     return {
         id: ostarbaiter.id,
-        date: ostarbaiter.date,
-        surname: ostarbaiter.surname,
+        date: ostarbaiter?.date,
+        surname: ostarbaiter?.surname,
         name: ostarbaiter?.name,
         patronymic: ostarbaiter?.patronymic,
         localityDeparture: ostarbaiter?.localityDeparture,

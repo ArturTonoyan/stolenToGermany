@@ -25,7 +25,7 @@ export default async function (ostarbaiter) {
 
 export async function cdnUrlImg(ostarbaiter) {
   const fullname = [
-    ostarbaiter.surname.trim(),
+    ostarbaiter?.surname?.trim(),
     ostarbaiter?.name?.trim(),
     ostarbaiter?.patronymic?.trim(),
   ].join("");

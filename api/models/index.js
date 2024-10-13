@@ -8,10 +8,10 @@ export default class Ostarbeiter extends Model {
     Ostarbeiter.init(
       {
         id: { type: DataTypes.UUID, primaryKey: true },
-        surname: { type: DataTypes.STRING, allowNull: false },
+        surname: { type: DataTypes.STRING, allowNull: true },
         name: { type: DataTypes.STRING, allowNull: true },
         patronymic: { type: DataTypes.STRING, allowNull: true },
-        date: { type: DataTypes.STRING, allowNull: false },
+        date: { type: DataTypes.STRING, allowNull: true },
         departure: { type: DataTypes.STRING, allowNull: true },
         profession: { type: DataTypes.STRING, allowNull: true },
         dateDeparture: { type: DataTypes.STRING, allowNull: true },
@@ -70,6 +70,29 @@ export class Admin extends Model {
   validatePassword(password) {
     return bcrypt.compareSync(password, this.password);
   }
+}
+
+export class City extends Model {
+    static initialize(sequelize) {
+        City.init(
+            {
+                id: { type: DataTypes.UUID, primaryKey: true },
+                name: { type: DataTypes.STRING  },
+                lat: { type: DataTypes.DOUBLE, allowNull: true },
+                lon: { type: DataTypes.DOUBLE, allowNull: true },
+            },
+            {
+                sequelize,
+                modelName: "City",
+                tableName: "cities",
+            }
+        );
+
+
+        City.beforeCreate((c) => {
+            c.id = uuidv4();
+        });
+    }
 }
 export const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PWD, {
   host: DB_HOST,

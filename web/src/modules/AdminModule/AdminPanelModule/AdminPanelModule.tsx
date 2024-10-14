@@ -1,7 +1,4 @@
-import { useState } from "react";
 import styles from "./AdminPanelModule.module.scss";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
 import CreateHuman from "../../../components/CreateHuman/CreateHuman";
 import { Person } from "../../../store/basic/people.slice";
 import { OstarbaitersCreate } from "../../../api/ApiRequest";

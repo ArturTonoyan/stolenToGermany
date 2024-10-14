@@ -7,9 +7,11 @@ const http = axios.create({
 });
 
 //! получаем людей
-export const apiOstarbaiters = async () => {
+export const apiOstarbaiters = async ({ start, end }) => {
   try {
-    const response = await http.get(`${server}/ostarbaiters`);
+    const response = await http.get(
+      `${server}/ostarbaiters?start=${start}&end=${end}`
+    );
     // console.log(response);
     return response;
   } catch (error) {

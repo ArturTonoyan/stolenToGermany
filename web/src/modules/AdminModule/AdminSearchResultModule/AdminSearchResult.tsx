@@ -5,19 +5,16 @@ import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Person,
-  apiGetPeople,
   resetFilterPeople,
+  resetLimit,
 } from "../../../store/basic/people.slice";
 import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
 import Form from "../../../components/Form/Form";
 import CardAdmin from "../../../components/CardAdmin/CardAdmin";
-import { apiOstarbaiters } from "../../../api/ApiRequest";
 import { resetForm } from "../../../store/form/form.slice";
 
-interface SearchModuleProps {}
-
-const AdminSearchResult: React.FC<SearchModuleProps> = () => {
+const AdminSearchResult = (props: any) => {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
@@ -37,15 +34,6 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
   }, [filterHumen]);
 
   const dispacth = useDispatch();
-
-  useEffect(() => {
-    apiOstarbaiters().then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-        console.log("req.data", req.data.ostarbaiters);
-      }
-    });
-  }, []);
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
@@ -74,6 +62,44 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     dispacth(resetFilterPeople());
     setInpValue("");
     setFilterHumen(store.people);
+  };
+
+  //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+  const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    dispacth(resetLimit());
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      //! Определяем, достиг ли скролл конца страницы
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      // console.log("scrollHeight", scrollHeight, "clientHeight", clientHeight);
+      const scrollPosition = (scrollHeight - clientHeight) / 1.5;
+      if (scrollY >= scrollPosition && !isLoading) {
+        //! Подгружаем дополнительные данные
+        handleLoadMoreData();
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrollY]);
+
+  useEffect(() => {
+    props.funUpdatePeople();
+  }, []);
+
+  const handleLoadMoreData = () => {
+    setIsLoading(true);
+    props.funUpdatePeople();
+    // dispacth(setLimitPlus());
+    setIsLoading(false);
   };
 
   return (
@@ -114,10 +140,10 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
         </div>
       )}
       <div className={styles.container}>
-        {filterHumen.map((item) => (
+        {store.people.map((item) => (
           <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
-        {filterHumen?.length === 0 && (
+        {store.people?.length === 0 && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>

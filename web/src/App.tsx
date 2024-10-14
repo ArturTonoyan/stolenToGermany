@@ -3,7 +3,7 @@ import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MapPage from "./pages/MapPage/MapPage";
 import SearchModule from "./modules/SearchModule/SearchModule";
 import HumanProfile from "./modules/HumanProfileModule/HumanProfile";
@@ -22,14 +22,16 @@ import { apiGetPeople } from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
 import { useEffect, useState } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
-import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
 import Logo from "./components/Logo/Logo";
 import LegalInformation from "./pages/LegalInformation/LegalInformation";
 import DataContext from "./context";
+import { RootState } from "./store/store";
 
 function App() {
   const location = useLocation();
   const dispacth = useDispatch();
+
+  const storPeople = useSelector((state: RootState) => state.peopleSlice);
 
   useEffect(() => {
     console.log("current path", location.pathname);
@@ -37,7 +39,10 @@ function App() {
 
   const funUpdatePeople = () => {
     //! записываем всех людей в редукс
-    apiOstarbaiters().then((req) => {
+    apiOstarbaiters({
+      start: storPeople.limit[0],
+      end: storPeople.limit[1],
+    }).then((req) => {
       if (req?.status === 200) {
         dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
         console.log("req.data", req.data.ostarbaiters);
@@ -66,7 +71,7 @@ function App() {
   const context = { REACT_APP_API_URL };
 
   return (
-  <>
+    <>
       {isMobile ? (
         <div className={styles.mobil}>
           <div className={styles.mobilLogo}>
@@ -94,7 +99,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/SearchPage/*" element={<SearchPage />}>
-                  <Route path="SearchModule" element={<SearchModule />} />
+                  <Route
+                    path="SearchModule"
+                    element={<SearchModule funUpdatePeople={funUpdatePeople} />}
+                  />
                   <Route
                     path="HumanProfile"
                     element={<HumanProfile loc={location.pathname} />}
@@ -110,10 +118,15 @@ function App() {
                   element={<AdminPage loc={location.pathname} />}
                 >
                   <Route path="AdminPageAuth" element={<AdminPageAuth />} />
-                  <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+                  <Route
+                    path="AdminPanelModule"
+                    element={<AdminPanelModule />}
+                  />
                   <Route
                     path="AdminSearchResult"
-                    element={<AdminSearchResult />}
+                    element={
+                      <AdminSearchResult funUpdatePeople={funUpdatePeople} />
+                    }
                   />
                   <Route path="EditHumanModule" element={<EditHumanModule />} />
                   <Route path="PersonalArchive" element={<PersonalArchive />} />

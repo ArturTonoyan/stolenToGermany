@@ -21,7 +21,7 @@ function Header(props: any) {
   }, [hrefName]);
   useEffect(() => {
     //! записываем всех людей в редукс
-    props.funUpdatePeople();
+    // props.funUpdatePeople();
     //! записываем данные карты
     props.funUpdateCamps();
   }, []);

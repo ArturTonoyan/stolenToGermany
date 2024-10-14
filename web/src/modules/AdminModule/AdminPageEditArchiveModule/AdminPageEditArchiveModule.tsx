@@ -11,7 +11,6 @@ function AdminPageEditArchiveModule(props: any) {
   const [data, setData] = useState<any>({});
 
   const apiGetData = () => {
-    console.log("store", store.selectedPerson);
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
       setData(res && res?.data?.ostarbaiter);
     });
@@ -19,9 +18,6 @@ function AdminPageEditArchiveModule(props: any) {
   useEffect(() => {
     apiGetData();
   }, []);
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
 
   const humaInfo = [
     {

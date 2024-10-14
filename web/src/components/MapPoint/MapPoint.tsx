@@ -15,7 +15,6 @@ function MapPoint(props: any) {
     dispatch(setSelectedPoint({ id }));
     dispatch(setModalOpen({ action: true }));
   };
-  console.log("props.item", props);
 
   const getBalun = () => {
     return `<div id=${props.item.locality} class=${styles.balloon}>
@@ -31,7 +30,6 @@ function MapPoint(props: any) {
   //   // Найдите все элементы с классом "ymaps-2-1-79-image"
   //   const elements = document.querySelectorAll(".ymaps-2-1-79-image");
   //   // Перебирайте каждый элемент и добавьте число к классу
-  //   console.log("elements", elements);
   //   elements.forEach((element, index) => {
   //     element.innerHTML = `<span class="number" style="
   //         width: 100%;
@@ -45,6 +43,7 @@ function MapPoint(props: any) {
   //     ">${index + 1}</span>`;
   //   });
   // }, [plRef, props.item]);
+
   const svgData = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="16" fill="#F8F7FF"/>
     <circle cx="16" cy="16" r="12" fill="#5B6A99"/>

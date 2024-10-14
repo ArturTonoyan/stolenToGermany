@@ -49,7 +49,6 @@ function CardAdmin(props: any) {
   };
 
   const funcardClick = () => {
-    console.log(props.item?.id);
     dispacth(setSelectedPerson({ id: props.item?.id }));
     navigate(`/AdminPage/HumanProfile`);
   };

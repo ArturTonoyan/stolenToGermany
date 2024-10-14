@@ -5,19 +5,16 @@ import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Person,
-  apiGetPeople,
   resetFilterPeople,
+  resetPeople,
 } from "../../../store/basic/people.slice";
 import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
 import Form from "../../../components/Form/Form";
 import CardAdmin from "../../../components/CardAdmin/CardAdmin";
-import { apiOstarbaiters } from "../../../api/ApiRequest";
 import { resetForm } from "../../../store/form/form.slice";
 
-interface SearchModuleProps {}
-
-const AdminSearchResult: React.FC<SearchModuleProps> = () => {
+const AdminSearchResult = (props: any) => {
   const store = useSelector((state: RootState) => state.peopleSlice);
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
@@ -32,20 +29,7 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     setFilterHumen(store.filterPeople);
   }, [store.filterPeople]);
 
-  useEffect(() => {
-    console.log("filterHumen", filterHumen);
-  }, [filterHumen]);
-
   const dispacth = useDispatch();
-
-  useEffect(() => {
-    apiOstarbaiters().then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-        console.log("req.data", req.data.ostarbaiters);
-      }
-    });
-  }, []);
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
@@ -64,16 +48,50 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
     );
     setFilterHumen(ostarbaiters);
   };
-  // const dispacth = useDispatch();
-  // useEffect(() => {
-  //   dispacth(apiGetPeople());
-  // }, []);
+
   const funReset = () => {
     //! сброс данных формы
     dispacth(resetForm());
     dispacth(resetFilterPeople());
     setInpValue("");
     setFilterHumen(store.people);
+  };
+
+  //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+  // const cardHeight = 470;
+  const cardWidth = 318;
+  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
+  const [limit, setLimit] = useState([0, limCount]);
+
+  const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      //! Определяем, достиг ли скролл конца страницы
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      const scrollPosition = (scrollHeight - clientHeight) / 1.9;
+      if (scrollY >= scrollPosition && !isLoading) {
+        //! Подгружаем дополнительные данные
+        handleLoadMoreData();
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isLoading, scrollY]);
+
+  useEffect(() => {
+    props.funUpdatePeople(limit[0], limit[1]);
+  }, [limit]);
+
+  const handleLoadMoreData = () => {
+    setIsLoading(true);
+    setLimit([limit[0] + limCount + 1, limit[1] + limCount + 1]);
+    setIsLoading(false);
   };
 
   return (
@@ -114,10 +132,10 @@ const AdminSearchResult: React.FC<SearchModuleProps> = () => {
         </div>
       )}
       <div className={styles.container}>
-        {filterHumen.map((item) => (
+        {store.people.map((item) => (
           <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
-        {filterHumen?.length === 0 && (
+        {store.people?.length === 0 && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>

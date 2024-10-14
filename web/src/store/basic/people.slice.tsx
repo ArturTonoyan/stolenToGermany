@@ -27,8 +27,12 @@ const peopleSlice = createSlice({
   initialState,
   reducers: {
     apiGetPeople(state, action) {
-      state.people = action.payload.ostarbaiters;
+      state.people.push(...action.payload.ostarbaiters);
       state.filterPeople = action.payload.ostarbaiters;
+    },
+
+    resetPeople(state) {
+      state.people = [];
     },
 
     setFilterPeople(state, action) {
@@ -36,13 +40,30 @@ const peopleSlice = createSlice({
     },
 
     setSelectedPerson(state, action) {
-      console.log("action.payload.id", action.payload.id);
       state.selectedPerson = action.payload.id;
     },
 
     resetFilterPeople(state) {
       state.filterPeople = state.people;
     },
+
+    // setLimit(state, action) {
+    //   const { start, end } = action.payload;
+    //   state.limit = [start, end];
+    // },
+
+    // setLimitPlus(state) {
+    //   if (state.filterPeople.length > limCount - 1) {
+    //     state.limit = [
+    //       state.limit[0] + limCount + 1,
+    //       state.limit[1] + limCount + 1,
+    //     ];
+    //   }
+    // },
+
+    // resetLimit(state) {
+    //   state.limit = [0, limCount];
+    // },
   },
 });
 
@@ -51,5 +72,6 @@ export const {
   apiGetPeople,
   setFilterPeople,
   setSelectedPerson,
+  resetPeople,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

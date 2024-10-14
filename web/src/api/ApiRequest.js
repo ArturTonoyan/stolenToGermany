@@ -1,14 +1,17 @@
 import axios from "axios";
 
-const server = "https://ostarbaiters.ru/api"
+// const server = "https://ostarbaiters.ru/api"
+const server = "http://localhost:3001";
 const http = axios.create({
   withCredentials: true,
 });
 
 //! получаем людей
-export const apiOstarbaiters = async () => {
+export const apiOstarbaiters = async ({ start, end }) => {
   try {
-    const response = await http.get(`${server}/ostarbaiters`);
+    const response = await http.get(
+      `${server}/ostarbaiters?start=${start}&end=${end}`
+    );
     // console.log(response);
     return response;
   } catch (error) {

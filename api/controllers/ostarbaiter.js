@@ -1,10 +1,14 @@
 import map, { mapOfStolen, mapShort } from "../utils/mappers/ostarbaiter.js";
 import prepareParams from "../utils/prepare-params.js";
 import uplCtrl from "../controllers/uploads.js";
-import Ostarbeiter, {City} from "../models/index.js";
-import {AppErrorInvalid, AppErrorMissing, AppErrorNotExist} from "../utils/error.js";
+import Ostarbeiter, { City } from "../models/index.js";
+import {
+  AppErrorInvalid,
+  AppErrorMissing,
+  AppErrorNotExist,
+} from "../utils/error.js";
 import axios from "axios";
-import send from '../utils/camps.js'
+import send from "../utils/camps.js";
 import { Op } from "sequelize";
   
 
@@ -60,7 +64,7 @@ export default {
         }),
       },
       limit: pageSize,
-      offset: offset
+      offset: offset,
     });
 
     if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
@@ -109,10 +113,10 @@ export default {
     },
     res
   ) {
-
-
-    if(localityWork) {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
+    if (localityWork) {
+      const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+      );
 
       if (response.data && response.data.length > 0) {
         for (const data of response.data) {
@@ -132,33 +136,29 @@ export default {
               lat: lat,
               lon: lon
             })
-
-
           }
         }
       }
-
     }
+        const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+        if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
-    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
-    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
-
-    await ostarbaiter.update({
-      surname: surname,
-      name: name,
-      patronymic: patronymic,
-      date: date,
-      profession: profession,
-      dateDeparture: dateDeparture,
-      localityWork: localityWork,
-      localityDeparture: localityDeparture,
-      departure: departure,
-      infoOfRepatriation: infoOfRepatriation,
-      addressAfterReturning: addressAfterReturning,
-      infoOfDeath: infoOfDeath,
-    });
-    res.json({ status: "Ok" });
-  },
+        await ostarbaiter.update({
+          surname: surname,
+          name: name,
+          patronymic: patronymic,
+          date: date,
+          profession: profession,
+          dateDeparture: dateDeparture,
+          localityWork: localityWork,
+          localityDeparture: localityDeparture,
+          departure: departure,
+          infoOfRepatriation: infoOfRepatriation,
+          addressAfterReturning: addressAfterReturning,
+          infoOfDeath: infoOfDeath,
+        });
+        res.json({status: "Ok"});
+      },
 
   async create(
     {
@@ -179,9 +179,10 @@ export default {
     },
     res
   ) {
-
-    if(localityWork) {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
+    if (localityWork) {
+      const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+      );
 
       if (response.data && response.data.length > 0) {
         for (const data of response.data) {
@@ -201,11 +202,9 @@ export default {
               lat: lat,
               lon: lon
             })
-
           }
         }
       }
-
     }
 
     await Ostarbeiter.create({
@@ -233,9 +232,7 @@ export default {
       },
     });
     if (!filters.localityWork) {
-
-      const cities=await City.findAll({
-      })
+      const cities = await City.findAll({});
 
       const camps = await Ostarbeiter.findAll({
         where: {
@@ -243,8 +240,9 @@ export default {
         },
       });
 
-      const localityWork = cities.filter((obj, index, self) =>
-          index === self.findIndex((t) => (t.name === obj.name))
+      const localityWork = cities.filter(
+        (obj, index, self) =>
+          index === self.findIndex((t) => t.name === obj.name)
       );
 
 
@@ -252,11 +250,14 @@ export default {
 
 
       for (const city of localityWork) {
-        let count = camps.filter(ostarbaiter=>ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()).length
+        let count = camps.filter(
+          (ostarbaiter) =>
+            ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()
+        ).length;
         points.push({
           locality: city.name,
           point: { pos: `${city.lat} ${city.lon}` },
-          count: count
+          count: count,
         });
 
       }
@@ -271,9 +272,11 @@ export default {
 
     if (count < 1) throw new AppErrorNotExist("ostarbaiters");
 
-    const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${filters?.localityWork}&format=json`);
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/search?q=${filters?.localityWork}&format=json`
+    );
 
-    if(response?.length < 0) throw new AppErrorInvalid('localityWork')
+    if (response?.length < 0) throw new AppErrorInvalid("localityWork");
     res.json({
       point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
       count: count,

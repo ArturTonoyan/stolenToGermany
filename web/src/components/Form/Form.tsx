@@ -30,8 +30,6 @@ export default function Form(props: any) {
   const { pathname } = useLocation();
 
   const appealApi = (data: Inputs) => {
-    console.log(data);
-
     //! записываем в стор
     dispacth(setFormData({ data }));
     if (
@@ -48,7 +46,6 @@ export default function Form(props: any) {
     param = param.slice(0, -1); // удаляем последний символ "/"
     apiGetOstarbaiterParam(param).then((req) => {
       if (req?.status === 200) {
-        console.log("req s param", req);
         dispacth(setFilterPeople({ ostarbaiters: req.data?.ostarbaiters }));
       }
     });

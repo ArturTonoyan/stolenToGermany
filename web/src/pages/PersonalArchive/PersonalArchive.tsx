@@ -58,7 +58,6 @@ function PersonalArchive() {
     }
     if (store.selectedPerson) {
       apiGetOstarbaiter(store.selectedPerson).then((req) => {
-        console.log("req", req);
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
           const links = req?.data.ostarbaiter.links;
@@ -119,7 +118,6 @@ function PersonalArchive() {
 
   const getNameImgs = (img: string) => {
     if (!img) return "Фото";
-    console.log("img", img);
     const arr = img?.split("/");
     const name = arr[arr?.length - 1]?.split(".");
     return name[0] || "Фото";

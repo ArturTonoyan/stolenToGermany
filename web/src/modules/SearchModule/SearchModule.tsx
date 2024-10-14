@@ -5,7 +5,6 @@ import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetFilterPeople,
-  resetPeople,
   setFilterPeople,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
@@ -61,6 +60,7 @@ const SearchModule = (props: any) => {
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
   // const cardHeight = 470;
   const cardWidth = 318;
+  // const limCount = 3;
   const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
   const [limit, setLimit] = useState([0, limCount]);
 

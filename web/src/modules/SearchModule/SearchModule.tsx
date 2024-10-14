@@ -60,7 +60,6 @@ const SearchModule = (props: any) => {
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
   // const cardHeight = 470;
   const cardWidth = 318;
-  // const limCount = 3;
   const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
   const [limit, setLimit] = useState([0, limCount]);
 

@@ -16,12 +16,8 @@ function Header(props: any) {
       window.scrollTo({ top: 1020, behavior: "smooth" }); // Прокрутка страницы на 500px от верха с плавным эффектом
     }, 200); // прокрутка через 1000 мс (1 секунда)
   };
+
   useEffect(() => {
-    console.log("hrefName", hrefName);
-  }, [hrefName]);
-  useEffect(() => {
-    //! записываем всех людей в редукс
-    // props.funUpdatePeople();
     //! записываем данные карты
     props.funUpdateCamps();
   }, []);

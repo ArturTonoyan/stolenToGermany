@@ -1,5 +1,11 @@
 import styles from "./styles/App.module.scss";
-import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  BrowserRouter,
+  useNavigate,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
@@ -25,34 +31,41 @@ import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
 import Logo from "./components/Logo/Logo";
 import LegalInformation from "./pages/LegalInformation/LegalInformation";
 import DataContext from "./context";
-import { RootState } from "./store/store";
 
 function App() {
+  const [autorization, setAutorization] = useState<string>(
+    localStorage.getItem("access_token") || ""
+  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/AdminPage/AdminPageAuth" && autorization) {
+      navigate("/AdminPage/AdminPanelModule");
+    }
+  }, [autorization]);
+
+  const [length, setLength] = useState(1);
+
   const location = useLocation();
   const dispacth = useDispatch();
 
-  const storPeople = useSelector((state: RootState) => state.peopleSlice);
-
-  useEffect(() => {
-    console.log("current path", location.pathname);
-  }, [location.pathname]);
-
-  const funUpdatePeople = () => {
+  const funUpdatePeople = (start: number, end: number) => {
     //! записываем всех людей в редукс
-    apiOstarbaiters({
-      start: storPeople.limit[0],
-      end: storPeople.limit[1],
-    }).then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-        console.log("req.data", req.data.ostarbaiters);
-      }
-    });
+    if (length > 0) {
+      apiOstarbaiters({
+        start: start,
+        end: end,
+      }).then((req) => {
+        if (req?.status === 200) {
+          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+          setLength(req.data?.ostarbaiters.length);
+        }
+      });
+    }
   };
   const funUpdateCamps = () => {
     //! записываем данные карты
     apiGetCamps().then((req) => {
-      console.log("карта", req);
       if (req?.status === 200) {
         dispacth(setCamps({ camps: req.data?.camps }));
       }
@@ -113,22 +126,44 @@ function App() {
                 <Route path="/ErrorPage" element={<ErrorPage />} />
                 <Route path="/NoSearchResults" element={<NoSearchResults />} />
 
-                <Route
-                  path="/AdminPage/*"
-                  element={<AdminPage loc={location.pathname} />}
-                >
-                  <Route path="AdminPageAuth" element={<AdminPageAuth />} />
+                <Route path="/AdminPage/*" element={<AdminPage />}>
+                  <Route
+                    path="AdminPageAuth"
+                    element={
+                      <AdminPageAuth setAutorization={setAutorization} />
+                    }
+                  />
+
                   <Route
                     path="AdminPanelModule"
-                    element={<AdminPanelModule />}
+                    element={
+                      autorization ? (
+                        <AdminPanelModule />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
+                    }
                   />
                   <Route
                     path="AdminSearchResult"
                     element={
-                      <AdminSearchResult funUpdatePeople={funUpdatePeople} />
+                      autorization ? (
+                        <AdminSearchResult funUpdatePeople={funUpdatePeople} />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
                     }
                   />
-                  <Route path="EditHumanModule" element={<EditHumanModule />} />
+                  <Route
+                    path="EditHumanModule"
+                    element={
+                      autorization ? (
+                        <EditHumanModule />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
+                    }
+                  />
                   <Route path="PersonalArchive" element={<PersonalArchive />} />
                   <Route
                     path="HumanProfile"

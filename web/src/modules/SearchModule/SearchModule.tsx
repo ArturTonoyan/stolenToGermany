@@ -5,10 +5,8 @@ import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetFilterPeople,
-  resetLimit,
+  resetPeople,
   setFilterPeople,
-  setLimit,
-  setLimitPlus,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
@@ -31,14 +29,12 @@ const SearchModule = (props: any) => {
   };
 
   const clickCard = (id: string) => {
-    console.log(id);
     dispacth(setSelectedPerson({ id }));
     navigate("/SearchPage/HumanProfile");
   };
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    console.log("store.people", store.people);
     const ostarbaiters = store.people.filter((person: any) =>
       Object.keys(person)
         .filter((key) => key !== "id" && key !== "img")
@@ -63,15 +59,13 @@ const SearchModule = (props: any) => {
   };
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+  // const cardHeight = 470;
+  const cardWidth = 318;
+  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
+  const [limit, setLimit] = useState([0, limCount]);
+
   const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    dispacth(resetLimit());
-  }, []);
-  useEffect(() => {
-    props.funUpdatePeople();
-    console.log("2");
-  }, [store.limit]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +73,6 @@ const SearchModule = (props: any) => {
       //! Определяем, достиг ли скролл конца страницы
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = document.documentElement.clientHeight;
-      // console.log("scrollHeight", scrollHeight, "clientHeight", clientHeight);
       const scrollPosition = (scrollHeight - clientHeight) / 1.5;
       if (scrollY >= scrollPosition && !isLoading) {
         //! Подгружаем дополнительные данные
@@ -94,9 +87,17 @@ const SearchModule = (props: any) => {
 
   const handleLoadMoreData = () => {
     setIsLoading(true);
-    dispacth(setLimitPlus());
+    setLimit([limit[0] + limCount + 1, limit[1] + limCount + 1]);
     setIsLoading(false);
   };
+
+  // useEffect(() => {
+  //   dispacth(resetPeople());
+  // }, []);
+
+  useEffect(() => {
+    props.funUpdatePeople(limit[0], limit[1]);
+  }, [limit]);
 
   return (
     <div className={styles.SearchModule}>

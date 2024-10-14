@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Person,
   resetFilterPeople,
-  resetLimit,
+  resetPeople,
 } from "../../../store/basic/people.slice";
 import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
@@ -29,10 +29,6 @@ const AdminSearchResult = (props: any) => {
     setFilterHumen(store.filterPeople);
   }, [store.filterPeople]);
 
-  useEffect(() => {
-    console.log("filterHumen", filterHumen);
-  }, [filterHumen]);
-
   const dispacth = useDispatch();
 
   //! при нажатии на кнопку найти
@@ -52,10 +48,7 @@ const AdminSearchResult = (props: any) => {
     );
     setFilterHumen(ostarbaiters);
   };
-  // const dispacth = useDispatch();
-  // useEffect(() => {
-  //   dispacth(apiGetPeople());
-  // }, []);
+
   const funReset = () => {
     //! сброс данных формы
     dispacth(resetForm());
@@ -65,12 +58,13 @@ const AdminSearchResult = (props: any) => {
   };
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+  // const cardHeight = 470;
+  const cardWidth = 318;
+  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
+  const [limit, setLimit] = useState([0, limCount]);
+
   const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    dispacth(resetLimit());
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,8 +72,7 @@ const AdminSearchResult = (props: any) => {
       //! Определяем, достиг ли скролл конца страницы
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = document.documentElement.clientHeight;
-      // console.log("scrollHeight", scrollHeight, "clientHeight", clientHeight);
-      const scrollPosition = (scrollHeight - clientHeight) / 1.5;
+      const scrollPosition = (scrollHeight - clientHeight) / 1.9;
       if (scrollY >= scrollPosition && !isLoading) {
         //! Подгружаем дополнительные данные
         handleLoadMoreData();
@@ -89,16 +82,15 @@ const AdminSearchResult = (props: any) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY]);
+  }, [isLoading, scrollY]);
 
   useEffect(() => {
-    props.funUpdatePeople();
-  }, []);
+    props.funUpdatePeople(limit[0], limit[1]);
+  }, [limit]);
 
   const handleLoadMoreData = () => {
     setIsLoading(true);
-    props.funUpdatePeople();
-    // dispacth(setLimitPlus());
+    setLimit([limit[0] + limCount + 1, limit[1] + limCount + 1]);
     setIsLoading(false);
   };
 

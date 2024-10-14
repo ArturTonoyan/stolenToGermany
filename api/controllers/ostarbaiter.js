@@ -28,7 +28,7 @@ export default {
 
 
     let pageSize = Number(filters?.end - filters?.start) + 1;
-    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start)- 1);
+    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start));
 
     if(!pageSize) pageSize=20
     if(!offset) offset=0
@@ -53,7 +53,7 @@ export default {
           departure: { [Op.iLike]: `%${filters.departure}%` },
         }),
         ...(filters.dateDeparture && {
-          dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
+            dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
         }),
         ...(filters.localityDeparture && {
           localityDeparture: { [Op.iLike]: `%${filters.localityDeparture}%` },
@@ -115,20 +115,29 @@ export default {
       const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
 
       if (response.data && response.data.length > 0) {
-        const {lat, lon} = response.data[0]; // Get the first result's coordinates
-        const city = await City.findOne({
-          where: {
-            lat: lat,
-            lon: lon
-          }
-        })
+        for (const data of response.data) {
 
-        if (!city) await City.create({
-          name: localityWork,
-          lat: lat,
-          lon: lon
-        })
+          const {lat, lon} = data; // Get the first result's coordinates
+
+          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+            const city = await City.findOne({
+              where: {
+                lat: lat,
+                lon: lon
+              }
+            })
+
+            if (!city) await City.create({
+              name: localityWork,
+              lat: lat,
+              lon: lon
+            })
+
+
+          }
+        }
       }
+
     }
 
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
@@ -175,19 +184,26 @@ export default {
       const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`);
 
       if (response.data && response.data.length > 0) {
-        const {lat, lon} = response.data[0]; // Get the first result's coordinates
-        const city = await City.findOne({
-          where: {
-            lat: lat,
-            lon: lon
-          }
-        })
+        for (const data of response.data) {
 
-        if (!city) await City.create({
-          name: localityWork,
-          lat: lat,
-          lon: lon
-        })
+          const {lat, lon} = data; // Get the first result's coordinates
+
+          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+            const city = await City.findOne({
+              where: {
+                lat: lat,
+                lon: lon
+              }
+            })
+
+            if (!city) await City.create({
+              name: localityWork,
+              lat: lat,
+              lon: lon
+            })
+
+          }
+        }
       }
 
     }

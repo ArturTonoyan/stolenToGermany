@@ -28,7 +28,6 @@ const campsSlice = createSlice({
   reducers: {
     setCamps(state, actions) {
       const { camps } = actions.payload;
-      console.log("camps", camps);
       let campsNew: Camps[] = [];
       camps?.map((el: any) => {
         const [longitude, latitude] = el.point.pos.split(" ").map(parseFloat);

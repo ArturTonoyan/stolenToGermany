@@ -11,7 +11,6 @@ function AdminPanelModule() {
       }
       return { status: 400 };
     } catch (error) {
-      console.error("Ошибка в функции createdHuman:", error);
       return { status: 400 };
     }
   };

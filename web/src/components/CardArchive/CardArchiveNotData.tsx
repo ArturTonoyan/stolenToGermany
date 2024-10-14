@@ -38,10 +38,7 @@ function CardArchiveNotData(props: any) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      console.log(
-        "file",
-        file.name.split(".")[file.name.split(".").length - 1]
-      );
+
       if (file.size > 3 * 1024 * 1024) {
         // Check if file size exceeds 3MB
         setErrorFile("Слишком большой файл");

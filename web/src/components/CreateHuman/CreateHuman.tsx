@@ -49,7 +49,6 @@ export default function CreateHuman(props: any) {
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
       res && setData(FormatedData(res?.data?.ostarbaiter));
     });
-    
   };
 
   const FormatedData = (data: any) => {
@@ -107,7 +106,6 @@ export default function CreateHuman(props: any) {
     }
   }
 
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const dete = FormatedData(data);
     let Error = false;
@@ -122,7 +120,7 @@ export default function CreateHuman(props: any) {
         }
       }
     }
-    if (!Error) {
+    if (!Error && !Object.values(dete).every((value) => value === "")) {
       props.funcCreate(dete).then((res: any) => {
         if (res?.status === 200 && res.type === "edit") {
           reset(props.dete);
@@ -145,6 +143,8 @@ export default function CreateHuman(props: any) {
           setDataNotSaved(true);
         }
       });
+    } else {
+      setDataNotSaved(true);
     }
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
@@ -209,7 +209,7 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.surname || ""}
               className={`${errors.surname ? styles.inputError : ""}`}
               maxLength={50}
-              {...register("surname", { required: true, maxLength: 50 })}
+              {...register("surname", { required: false, maxLength: 50 })}
             />
             {errorMessage.includes("surname") && (
               <p className={styles.errorMessage}>
@@ -254,7 +254,7 @@ export default function CreateHuman(props: any) {
                 }
               }}
               {...register("date", {
-                required: true,
+                required: false,
                 pattern: /^[0-9]{4}$/, // Ensures only 4 digits are allowed
               })}
             />

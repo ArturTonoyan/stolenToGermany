@@ -68,6 +68,7 @@ const SearchModule = (props: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    dispacth(resetPeople());
     props.funUpdatePeople(limit[0], limit[1]);
     setLimit([limit[1] + 1, limit[1] + limCount + 1]);
   }, []);
@@ -108,9 +109,6 @@ const SearchModule = (props: any) => {
       console.log("scroll");
       setIsLoading(true);
     }
-    // console.log("scrollHeight", e.target.documentElement.scrollHeight);
-    // console.log("scrollTop", e.target.documentElement.scrollTop);
-    // console.log("window", window.innerHeight);
   };
 
   return (

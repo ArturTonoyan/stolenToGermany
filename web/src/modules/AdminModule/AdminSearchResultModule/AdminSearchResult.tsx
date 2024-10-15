@@ -4,6 +4,7 @@ import Input from "../../../ui/Input/Input";
 import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  apiGetPeople,
   Person,
   resetFilterPeople,
   resetPeople,
@@ -13,6 +14,7 @@ import { Link } from "react-router-dom";
 import Form from "../../../components/Form/Form";
 import CardAdmin from "../../../components/CardAdmin/CardAdmin";
 import { resetForm } from "../../../store/form/form.slice";
+import { apiOstarbaiters } from "../../../api/ApiRequest";
 
 const AdminSearchResult = (props: any) => {
   const store = useSelector((state: RootState) => state.peopleSlice);
@@ -60,38 +62,52 @@ const AdminSearchResult = (props: any) => {
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
   // const cardHeight = 470;
   const cardWidth = 318;
-  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 4;
+  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
   const [limit, setLimit] = useState([0, limCount]);
-
-  const [scrollY, setScrollY] = useState(0); //! положение скролла на странице
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-      //! Определяем, достиг ли скролл конца страницы
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight;
-      const scrollPosition = (scrollHeight - clientHeight) / 1.9;
-      if (scrollY >= scrollPosition && !isLoading) {
-        //! Подгружаем дополнительные данные
-        handleLoadMoreData();
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isLoading, scrollY]);
+    dispacth(resetPeople());
+    props.funUpdatePeople(limit[0], limit[1]);
+    setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+  }, []);
 
   useEffect(() => {
-    props.funUpdatePeople(limit[0], limit[1]);
-  }, [limit]);
+    if (isLoading) {
+      apiOstarbaiters({
+        start: limit[0],
+        end: limit[1],
+      })
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            setIsLoading(false);
+            setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [isLoading]);
 
-  const handleLoadMoreData = () => {
-    setIsLoading(true);
-    setLimit([limit[0] + limCount + 1, limit[1] + limCount + 1]);
-    setIsLoading(false);
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+
+    return function () {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = (e: any) => {
+    if (
+      e.target.documentElement.scrollHeight -
+        (e.target.documentElement.scrollTop + window.innerHeight) <
+      100
+    ) {
+      console.log("scroll");
+      setIsLoading(true);
+    }
   };
 
   return (

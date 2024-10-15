@@ -8,6 +8,8 @@ import {
   resetFilterPeople,
   resetPeople,
   setFilterPeople,
+  setIsLoading,
+  setLimitPlus,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
@@ -64,33 +66,35 @@ const SearchModule = (props: any) => {
   // const cardHeight = 470;
   const cardWidth = 318;
   const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
-  const [limit, setLimit] = useState([0, limCount]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [limit, setLimit] = useState([0, limCount]);
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     dispacth(resetPeople());
-    props.funUpdatePeople(limit[0], limit[1]);
-    setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+    props.funUpdatePeople(0, limCount);
+    dispacth(setLimitPlus());
   }, []);
 
   useEffect(() => {
-    if (isLoading) {
+    if (store.isLoading) {
       apiOstarbaiters({
-        start: limit[0],
-        end: limit[1],
+        start: store.limit[0],
+        end: store.limit[1],
       })
         .then((req) => {
           if (req?.status === 200) {
             dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-            setIsLoading(false);
-            setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+            // setIsLoading(false);
+            dispacth(setIsLoading({ isLoading: false }));
+            // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+            dispacth(setLimitPlus());
           }
         })
         .finally(() => {
           setIsLoading(false);
         });
     }
-  }, [isLoading]);
+  }, [store.isLoading]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
@@ -107,7 +111,8 @@ const SearchModule = (props: any) => {
       100
     ) {
       console.log("scroll");
-      setIsLoading(true);
+      // setIsLoading(true);
+      dispacth(setIsLoading({ isLoading: true }));
     }
   };
 
@@ -140,12 +145,12 @@ const SearchModule = (props: any) => {
         </div>
       )}
       <div className={styles.container}>
-        {store.people?.map((item: any, index) => (
+        {store.people?.map((item: any) => (
           <div key={item.id + "link"} onClick={() => clickCard(item?.id)}>
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {isLoading && <p>Загрузка данных...</p>}
+        {store.isLoading && <p>Загрузка данных...</p>}
         {store.people?.length === 0 && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено

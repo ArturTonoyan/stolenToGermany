@@ -2,7 +2,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./Form.module.scss";
 import { apiGetOstarbaiterParam } from "../../api/ApiRequest";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilterPeople } from "../../store/basic/people.slice";
+import {
+  apiGetPeople,
+  resetLimit,
+  setFilterPeople,
+} from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetAction, setFormData } from "../../store/form/form.slice";
 import { RootState } from "../../store/store";
@@ -22,6 +26,7 @@ type Inputs = {
 
 export default function Form(props: any) {
   const store = useSelector((state: RootState) => state.formSlice);
+  const peopleStore = useSelector((state: RootState) => state.peopleSlice);
 
   //! функция отправки запроса
   const dispacth = useDispatch();
@@ -44,9 +49,10 @@ export default function Form(props: any) {
       param += `${key}=${data[key as keyof Inputs]}&`;
     });
     param = param.slice(0, -1); // удаляем последний символ "/"
+    param += `&start=${0}&end=${100}`;
     apiGetOstarbaiterParam(param).then((req) => {
       if (req?.status === 200) {
-        dispacth(setFilterPeople({ ostarbaiters: req.data?.ostarbaiters }));
+        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
       }
     });
   };

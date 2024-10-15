@@ -10,6 +10,8 @@ import {
 import axios from "axios";
 import send from "../utils/camps.js";
 import { Op } from "sequelize";
+  
+
 
 export default {
   async get({ query }, res) {
@@ -28,11 +30,12 @@ export default {
       },
     });
 
-    let pageSize = Number(filters?.end - filters?.start) + 1;
-    let offset = Number(filters?.start === "0" ? 0 : Number(filters?.start));
 
-    if (!pageSize) pageSize = 20;
-    if (!offset) offset = 0;
+    let pageSize = Number(filters?.end - filters?.start) + 1;
+    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start));
+
+    if(!pageSize) pageSize=20
+    if(!offset) offset=0
 
     const ostarbaiters = await Ostarbeiter.findAll({
       order: ["surname", "name", "patronymic"],
@@ -40,11 +43,13 @@ export default {
         ...(filters.surname && {
           surname: { [Op.iLike]: `%${filters.surname}%` },
         }),
-        ...(filters.name && { name: { [Op.iLike]: `%${filters.name}%` } }),
+        ...(filters.name &&
+            { name: { [Op.iLike]: `%${filters.name}%` }
+        }),
         ...(filters.patronymic && {
           patronymic: { [Op.iLike]: `%${filters.patronymic}%` },
         }),
-        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
+        ...(filters.date && { date: {[Op.like]: `%${filters.date}%`}}),
         ...(filters.localityWork && {
           localityWork: { [Op.iLike]: `%${filters.localityWork}%` },
         }),
@@ -52,7 +57,7 @@ export default {
           departure: { [Op.iLike]: `%${filters.departure}%` },
         }),
         ...(filters.dateDeparture && {
-          dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
+            dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
         }),
         ...(filters.localityDeparture && {
           localityDeparture: { [Op.iLike]: `%${filters.localityDeparture}%` },
@@ -110,46 +115,50 @@ export default {
   ) {
     if (localityWork) {
       const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+          `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
 
       if (response.data && response.data.length > 0) {
-        const { lat, lon } = response.data[0]; // Get the first result's coordinates
-        const city = await City.findOne({
-          where: {
-            lat: lat,
-            lon: lon,
-          },
-        });
+        for (const data of response.data) {
 
-        if (!city)
-          await City.create({
-            name: localityWork,
-            lat: lat,
-            lon: lon,
-          });
+          const {lat, lon} = data; // Get the first result's coordinates
+
+          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+            const city = await City.findOne({
+              where: {
+                lat: lat,
+                lon: lon
+              }
+            })
+
+            if (!city) await City.create({
+              name: localityWork,
+              lat: lat,
+              lon: lon
+            })
+          }
+        }
       }
     }
+        const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
+        if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
-    const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
-    if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
-
-    await ostarbaiter.update({
-      surname: surname,
-      name: name,
-      patronymic: patronymic,
-      date: date,
-      profession: profession,
-      dateDeparture: dateDeparture,
-      localityWork: localityWork,
-      localityDeparture: localityDeparture,
-      departure: departure,
-      infoOfRepatriation: infoOfRepatriation,
-      addressAfterReturning: addressAfterReturning,
-      infoOfDeath: infoOfDeath,
-    });
-    res.json({ status: "Ok" });
-  },
+        await ostarbaiter.update({
+          surname: surname,
+          name: name,
+          patronymic: patronymic,
+          date: date,
+          profession: profession,
+          dateDeparture: dateDeparture,
+          localityWork: localityWork,
+          localityDeparture: localityDeparture,
+          departure: departure,
+          infoOfRepatriation: infoOfRepatriation,
+          addressAfterReturning: addressAfterReturning,
+          infoOfDeath: infoOfDeath,
+        });
+        res.json({status: "Ok"});
+      },
 
   async create(
     {
@@ -172,24 +181,29 @@ export default {
   ) {
     if (localityWork) {
       const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+          `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
 
       if (response.data && response.data.length > 0) {
-        const { lat, lon } = response.data[0]; // Get the first result's coordinates
-        const city = await City.findOne({
-          where: {
-            lat: lat,
-            lon: lon,
-          },
-        });
+        for (const data of response.data) {
 
-        if (!city)
-          await City.create({
-            name: localityWork,
-            lat: lat,
-            lon: lon,
-          });
+          const {lat, lon} = data; // Get the first result's coordinates
+
+          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+            const city = await City.findOne({
+              where: {
+                lat: lat,
+                lon: lon
+              }
+            })
+
+            if (!city) await City.create({
+              name: localityWork,
+              lat: lat,
+              lon: lon
+            })
+          }
+        }
       }
     }
 
@@ -231,7 +245,9 @@ export default {
           index === self.findIndex((t) => t.name === obj.name)
       );
 
+
       const points = [];
+
 
       for (const city of localityWork) {
         let count = camps.filter(
@@ -243,6 +259,7 @@ export default {
           point: { pos: `${city.lat} ${city.lon}` },
           count: count,
         });
+
       }
       return res.json({ camps: points });
     }
@@ -267,3 +284,4 @@ export default {
     });
   },
 };
+

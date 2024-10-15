@@ -3,8 +3,7 @@ import styles from "./MapPoint.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalOpen, setSelectedPoint } from "../../store/basic/camps.slice";
 import { RootState } from "../../store/store";
-import { useEffect, useRef } from "react";
-// import { RootState } from "../../store/store";
+import { useRef } from "react";
 
 function MapPoint(props: any) {
   const dispatch = useDispatch();
@@ -26,23 +25,6 @@ function MapPoint(props: any) {
   };
 
   const plRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   // Найдите все элементы с классом "ymaps-2-1-79-image"
-  //   const elements = document.querySelectorAll(".ymaps-2-1-79-image");
-  //   // Перебирайте каждый элемент и добавьте число к классу
-  //   elements.forEach((element, index) => {
-  //     element.innerHTML = `<span class="number" style="
-  //         width: 100%;
-  //         heigth: 100%;
-  //         color: white;
-  //         display: flex;
-  //         justify-content: center;
-  //         align-items: center;
-  //         font-size: 16px;
-  //         font-weight: bold;
-  //     ">${index + 1}</span>`;
-  //   });
-  // }, [plRef, props.item]);
 
   const svgData = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="16" fill="#F8F7FF"/>

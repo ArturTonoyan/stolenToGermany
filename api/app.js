@@ -17,6 +17,7 @@ import ostarbaiterRoute from "./routes/ostarbaiter.js";
 import uploadsRoute from "./routes/uploads.js";
 import corsMiddleware from "./middlewares/cors.js";
 import { AppError, MultipleError, SystemError } from "./utils/error.js";
+import {Admin} from "./models/index.js";
 
 logger.token("body", (req) => {
   try {
@@ -58,7 +59,10 @@ app.use("/uploads", express.static("./uploads"), uploadsRoute);
   try {
     await initializeDbModels();
     await parsnigExsel()
-    await searchCoordinates();
+
+      await Admin.findOrCreate({ where: {email: 'admin' }, defaults: {email: 'admin', password: '1Th@d2gg60' } })
+
+      await searchCoordinates();
   } catch (e) {
     if (app.get("env") !== "test") {
       console.log(e);

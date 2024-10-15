@@ -11,7 +11,10 @@ import send from "./camps.js";
 
 export async function initializeDbModels() {
     if (typeof Ostarbeiter.initialize === 'function') Ostarbeiter.initialize(sequelize);
-    if (typeof Admin.initialize === 'function') Admin.initialize(sequelize);
+    if (typeof Admin.initialize === 'function') {
+        Admin.initialize(sequelize);
+        if(await checkTableExists(Admin.tableName)) await Admin.findOrCreate({ where: {email: 'admin' }, defaults: {email: 'admin', password: '1Th@d2gg60' } })
+    }
     if (typeof City.initialize === 'function') City.initialize(sequelize);
     await Ostarbeiter.sync({ alter: true });
     await Admin.sync({ alter: true });
@@ -24,8 +27,6 @@ async function checkTableExists(tableName) {
     const tableExists = await queryInterface.showAllTables();
     return tableExists.includes(tableName);
 }
-
-
 
 export async function parsnigExsel(){
     try {

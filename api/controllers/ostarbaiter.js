@@ -4,12 +4,13 @@ import uplCtrl from "../controllers/uploads.js";
 import Ostarbeiter, { City } from "../models/index.js";
 import {
   AppErrorInvalid,
-  AppErrorMissing,
   AppErrorNotExist,
 } from "../utils/error.js";
 import axios from "axios";
-import send from "../utils/camps.js";
 import { Op } from "sequelize";
+import turf from "turf";
+import {booleanPointInPolygon} from "@turf/boolean-point-in-polygon";
+import coordinates from "../config/coordinates.js";
   
 
 
@@ -114,6 +115,8 @@ export default {
     res
   ) {
     if (localityWork) {
+      let checkLocalityWork=false
+
       const response = await axios.get(
           `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
@@ -123,7 +126,10 @@ export default {
 
           const {lat, lon} = data; // Get the first result's coordinates
 
-          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+          const point = turf.point([lon, lat]); // Создаем объект точки
+
+          if (booleanPointInPolygon(point, coordinates[0]) || booleanPointInPolygon(point, coordinates[1]) || booleanPointInPolygon(point, coordinates[2])) {
+            checkLocalityWork=true
             const city = await City.findOne({
               where: {
                 lat: lat,
@@ -139,7 +145,10 @@ export default {
           }
         }
       }
+
+      if(!checkLocalityWork) throw new AppErrorInvalid('localityWork')
     }
+
         const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
         if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
@@ -180,6 +189,7 @@ export default {
     res
   ) {
     if (localityWork) {
+      let checkLocalityWork=false
       const response = await axios.get(
           `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
@@ -189,7 +199,10 @@ export default {
 
           const {lat, lon} = data; // Get the first result's coordinates
 
-          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+          const point = turf.point([lon, lat]); // Создаем объект точки
+
+          if (booleanPointInPolygon(point, coordinates[0]) || booleanPointInPolygon(point, coordinates[1]) || booleanPointInPolygon(point, coordinates[2])) {
+            checkLocalityWork=true
             const city = await City.findOne({
               where: {
                 lat: lat,
@@ -205,6 +218,7 @@ export default {
           }
         }
       }
+      if(!checkLocalityWork) throw  new AppErrorInvalid('localityWork')
     }
 
     await Ostarbeiter.create({
@@ -266,7 +280,7 @@ export default {
 
     const { count, rows } = await Ostarbeiter.findAndCountAll({
       where: {
-        localityWork: { [Op.iLike]: `%${filters.localityWork}%` },
+        localityWork: filters.localityWork,
       },
     });
 

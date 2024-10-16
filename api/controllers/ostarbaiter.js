@@ -31,9 +31,8 @@ export default {
       },
     });
 
-
     let pageSize = Number(filters?.end - filters?.start) + 1;
-    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start));
+    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start) - 1);
 
     if(!pageSize) pageSize=20
     if(!offset) offset=0
@@ -265,16 +264,18 @@ export default {
 
       for (const city of localityWork) {
         let count = camps.filter(
-          (ostarbaiter) =>
-            ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()
+            (ostarbaiter) =>
+                ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()
         ).length;
-        points.push({
-          locality: city.name,
-          point: { pos: `${city.lat} ${city.lon}` },
-          count: count,
-        });
 
+        if (count > 0){
+          points.push({
+            locality: city.name,
+            point: {pos: `${city.lat} ${city.lon}`},
+            count: count,
+          });
       }
+    }
       return res.json({ camps: points });
     }
 
@@ -286,13 +287,15 @@ export default {
 
     if (count < 1) throw new AppErrorNotExist("ostarbaiters");
 
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/search?q=${filters?.localityWork}&format=json`
-    );
+    const city=await City.findOne({
+      where: {
+        name: filters.localityWork
+      }
+    })
 
-    if (response?.length < 0) throw new AppErrorInvalid("localityWork");
+    if (!city) throw new AppErrorInvalid("localityWork");
     res.json({
-      point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
+      point: { pos: `${city.lat} ${city.lon}` },
       count: count,
       ostarbaiters: rows?.map(mapOfStolen),
     });

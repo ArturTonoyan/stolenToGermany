@@ -62,6 +62,31 @@ export default {
       offset: offset,
     });
 
+    const count = await Ostarbeiter.count({
+      where: {
+        ...(filters.surname && {
+          surname: { [Op.iLike]: `%${filters.surname}%` },
+        }),
+        ...(filters.name && { name: { [Op.iLike]: `%${filters.name}%` } }),
+        ...(filters.patronymic && {
+          patronymic: { [Op.iLike]: `%${filters.patronymic}%` },
+        }),
+        ...(filters.date && { date: { [Op.like]: `%${filters.date}%` } }),
+        ...(filters.localityWork && {
+          localityWork: { [Op.iLike]: `%${filters.localityWork}%` },
+        }),
+        ...(filters.departure && {
+          departure: { [Op.iLike]: `%${filters.departure}%` },
+        }),
+        ...(filters.dateDeparture && {
+          dateDeparture: { [Op.iLike]: `%${filters.dateDeparture}%` },
+        }),
+        ...(filters.localityDeparture && {
+          localityDeparture: { [Op.iLike]: `%${filters.localityDeparture}%` },
+        }),
+      },
+    });
+
     if (!ostarbaiters) throw new AppErrorNotExist("ostarbaiters");
 
     const mapOstarbaiters = [];
@@ -71,6 +96,7 @@ export default {
 
     res.json({
       ostarbaiters: mapOstarbaiters,
+      count: count,
     });
   },
 

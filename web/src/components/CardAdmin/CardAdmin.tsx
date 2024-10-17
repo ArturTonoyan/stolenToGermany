@@ -3,10 +3,10 @@ import { ReactComponent as DeleteIMG } from "../../imgs/delete.svg";
 import { ReactComponent as EditIMG } from "../../imgs/edit.svg";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { OstarbaitersDelete, apiOstarbaiters } from "../../api/ApiRequest";
+import { OstarbaitersDelete } from "../../api/ApiRequest";
 import { useDispatch } from "react-redux";
 import {
-  apiGetPeople,
+  deletePeople,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import notFoto from "./../../imgs/notfoto.png";
@@ -33,11 +33,7 @@ function CardAdmin(props: any) {
     setActivDeleteCard(false);
     OstarbaitersDelete(id).then((resp: any) => {
       if (resp.status === 200) {
-        apiOstarbaiters().then((req) => {
-          if (req?.status === 200) {
-            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-          }
-        });
+        dispacth(deletePeople({ id }));
       }
     });
   };

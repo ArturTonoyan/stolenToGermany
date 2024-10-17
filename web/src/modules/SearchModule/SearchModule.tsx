@@ -22,6 +22,7 @@ import { apiOstarbaiters } from "../../api/ApiRequest";
 const SearchModule = (props: any) => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
+  const [count, setCount] = useState(50000);
   const store = useSelector((state: RootState) => state.peopleSlice);
   const [inpValue, setInpValue] = useState<string>("");
   const isActionOpen = useSelector(
@@ -29,7 +30,6 @@ const SearchModule = (props: any) => {
   );
   //! при вводе данных в посик
   const funOnChange = (text: string): void => {
-    console.log("text", text);
     setInpValue(text);
   };
 
@@ -40,6 +40,7 @@ const SearchModule = (props: any) => {
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
+    setCount(50000);
     const mass = inpValue.replaceAll(",", " ").split(" ");
     let sur = "";
     let dat = "";
@@ -71,14 +72,29 @@ const SearchModule = (props: any) => {
     });
     dispacth(setSearchParam({ searchParam: param }));
     dispacth(resetLimit());
-    funUpdatePeop(param, 1, limCount);
+    funUpdatePeop(param, 1, limCount, 50000);
   };
   //! сброс данных
   const funReset = () => {
+    console.log("a", count);
+    setCount(50000);
     //! сброс данных формы
     dispacth(resetForm());
     dispacth(resetPeople());
+    // props.funUpdatePeople(1, limCount);
+    dispacth(setSearchParam({ searchParam: "" }));
+    dispacth(setLimitPlus());
+    setInpValue("");
+  };
+
+  const funReset2 = () => {
+    console.log("a", count);
+    setCount(50000);
+    //! сброс данных формы
+    dispacth(resetPeople());
     props.funUpdatePeople(1, limCount);
+    dispacth(setLimitPlus());
+
     setInpValue("");
   };
 
@@ -89,31 +105,43 @@ const SearchModule = (props: any) => {
     dispacth(setLimitPlus());
   }, []);
 
-  const funUpdatePeop = (param: string, start: number, end: number) => {
-    props.setIsLoad(true);
-    apiOstarbaiters({
-      param: param,
-      start: start,
-      end: end,
-    })
-      .then((req) => {
-        if (req?.status === 200) {
-          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-          // setIsLoading(false);
-          dispacth(setIsLoading({ isLoading: false }));
-          // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
-          dispacth(setLimitPlus());
-        }
+  const funUpdatePeop = (
+    param: string,
+    start: number,
+    end: number,
+    count: number
+  ) => {
+    console.log("count, start", count, start);
+    if (start < count) {
+      props.setIsLoad(true);
+      apiOstarbaiters({
+        param: param,
+        start: start,
+        end: end,
       })
-      .finally(() => {
-        setIsLoading(false);
-        props.setIsLoad(false);
-      });
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            // setIsLoading(false);
+            dispacth(setIsLoading({ isLoading: false }));
+            // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+            dispacth(setLimitPlus());
+            setCount(req.data?.count);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+          props.setIsLoad(false);
+        });
+    } else {
+      setIsLoading(false);
+      props.setIsLoad(false);
+    }
   };
 
   useEffect(() => {
     if (store.isLoading) {
-      funUpdatePeop(store.searchParam, store.limit[0], store.limit[1]);
+      funUpdatePeop(store.searchParam, store.limit[0], store.limit[1], count);
     }
   }, [store.isLoading]);
 
@@ -146,13 +174,13 @@ const SearchModule = (props: any) => {
               placeholder={"Фамилия, год рождения"}
               value={inpValue}
               funOnChange={funOnChange}
-              funReset={funReset}
+              funReset={funReset2}
             />
           )}
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
         {!isActionOpen && (
-          <button className={styles.reset} onClick={funReset}>
+          <button className={styles.reset} onClick={funReset2}>
             Сбросить
           </button>
         )}
@@ -163,6 +191,8 @@ const SearchModule = (props: any) => {
             isActionOpen={isActionOpen}
             funReset={funReset}
             funUpdatePeop={funUpdatePeop}
+            setCount={setCount}
+            funReset2={funReset2}
           />
         </div>
       )}

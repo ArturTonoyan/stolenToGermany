@@ -36,12 +36,8 @@ const peopleSlice = createSlice({
   initialState,
   reducers: {
     apiGetPeople(state, action) {
-      if (state.limit[0] === 0) {
-        state.people = action.payload.ostarbaiters;
-      } else {
-        state.people.push(...action.payload.ostarbaiters);
-        state.filterPeople = action.payload.ostarbaiters;
-      }
+      state.people.push(...action.payload.ostarbaiters);
+      state.filterPeople = action.payload.ostarbaiters;
     },
 
     setSearchParam(state, action) {
@@ -71,6 +67,11 @@ const peopleSlice = createSlice({
       state.filterPeople = state.people;
     },
 
+    deletePeople(state, action) {
+      const { id } = action.payload;
+      state.people = state.people.filter((el) => el.id !== id);
+    },
+
     // setLimit(state, action) {
     //   const { start, end } = action.payload;
     //   state.limit = [start, end];
@@ -96,6 +97,7 @@ export const {
   apiGetPeopleSearch,
   setFilterPeople,
   setSelectedPerson,
+  deletePeople,
   resetPeople,
   setLimitPlus,
   setIsLoading,

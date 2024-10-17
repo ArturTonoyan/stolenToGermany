@@ -53,7 +53,8 @@ export default function Form(props: any) {
     });
     dispacth(setSearchParam({ searchParam: param }));
     dispacth(resetLimit());
-    props.funUpdatePeop(param, 1, limCount);
+    props.funUpdatePeop(param, 1, limCount, 50000);
+    props.setCount(50000);
   };
 
   //! отслеживаем сброс данных
@@ -75,8 +76,8 @@ export default function Form(props: any) {
   const dispatch = useDispatch();
 
   const handleImgClick = () => {
-    props.funReset();
-    dispatch(openClodeAction()); // Dispatch the openAction to update the state to true when the image is clicked
+    props.funReset2();
+    dispatch(openClodeAction());
   };
 
   return (

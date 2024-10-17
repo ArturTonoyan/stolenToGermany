@@ -30,34 +30,42 @@ const AdminSearchResult = (props: any) => {
   const funOnChange = (text: string): void => {
     setInpValue(text);
   };
-  const [filterHumen, setFilterHumen] = useState<Person[]>([]);
-
-  useEffect(() => {
-    setFilterHumen(store.filterPeople);
-  }, [store.filterPeople]);
 
   const dispacth = useDispatch();
 
   //! при нажатии на кнопку найти
   //! при нажатии на кнопку найти
-  function funUpdatePeop(param: string, start: number, end: number) {
-    props.setIsLoad(true);
-    apiOstarbaiters({
-      param: param,
-      start: start,
-      end: end,
-    })
-      .then((req) => {
-        if (req?.status === 200) {
-          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-          setIsLoading(false);
-          setLimit([limit[1] + 1, limit[1] + limCount + 1]);
-        }
+  const [count, setCount] = useState(50000);
+  function funUpdatePeop(
+    param: string,
+    start: number,
+    end: number,
+    count: number
+  ) {
+    if (start < count) {
+      props.setIsLoad(true);
+      apiOstarbaiters({
+        param: param,
+        start: start,
+        end: end,
       })
-      .finally(() => {
-        setIsLoading(false);
-        props.setIsLoad(false);
-      });
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            setIsLoading(false);
+            props.setIsLoad(false);
+            setCount(req.data?.count);
+            setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+          props.setIsLoad(false);
+        });
+    } else {
+      setIsLoading(false);
+      props.setIsLoad(false);
+    }
   }
 
   const serchPeople = () => {
@@ -92,7 +100,8 @@ const AdminSearchResult = (props: any) => {
     });
     dispacth(setSearchParam({ searchParam: param }));
     setLimit([1, limCount]);
-    funUpdatePeop(param, 1, limCount);
+    funUpdatePeop(param, 1, limCount, 50000);
+    setCount(50000);
   };
 
   //! сброс данных
@@ -101,7 +110,7 @@ const AdminSearchResult = (props: any) => {
     dispacth(setSearchParam({ searchParam: "" }));
     dispacth(resetForm());
     dispacth(resetPeople());
-    funUpdatePeop("", 1, limCount);
+    funUpdatePeop("", 1, limCount, 50000);
     setLimit([1, limCount]);
     setInpValue("");
   };
@@ -120,13 +129,13 @@ const AdminSearchResult = (props: any) => {
 
   useEffect(() => {
     if (isLoading) {
-      funUpdatePeop(store.searchParam, limit[0], limit[1]);
+      funUpdatePeop(store.searchParam, limit[0], limit[1], count);
     }
   }, [isLoading]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-
+    console.log("scroll");
     return function () {
       document.removeEventListener("scroll", handleScroll);
     };
@@ -139,10 +148,13 @@ const AdminSearchResult = (props: any) => {
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {
-      console.log("scroll");
       setIsLoading(true);
     }
   };
+
+  useEffect(() => {
+    console.log("count", count);
+  }, [count]);
 
   return (
     <div className={styles.SearchModule}>
@@ -160,7 +172,7 @@ const AdminSearchResult = (props: any) => {
           {!isActionOpen && (
             <Input
               type="text"
-              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              placeholder={"Фамилия, год рождения"}
               value={inpValue}
               funOnChange={funOnChange}
               funReset={funReset}
@@ -180,6 +192,8 @@ const AdminSearchResult = (props: any) => {
             isActionOpen={isActionOpen}
             funReset={funReset}
             funUpdatePeop={funUpdatePeop}
+            setCount={setCount}
+            count={count}
           />
         </div>
       )}

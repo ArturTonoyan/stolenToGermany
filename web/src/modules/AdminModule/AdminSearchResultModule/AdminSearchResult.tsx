@@ -41,6 +41,7 @@ const AdminSearchResult = (props: any) => {
   //! при нажатии на кнопку найти
   //! при нажатии на кнопку найти
   function funUpdatePeop(param: string, start: number, end: number) {
+    props.setIsLoad(true);
     apiOstarbaiters({
       param: param,
       start: start,
@@ -55,6 +56,7 @@ const AdminSearchResult = (props: any) => {
       })
       .finally(() => {
         setIsLoading(false);
+        props.setIsLoad(false);
       });
   }
 
@@ -185,11 +187,14 @@ const AdminSearchResult = (props: any) => {
         {store.people.map((item) => (
           <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
         ))}
-        {store.people?.length === 0 && (
+        {store.people?.length === 0 && !props.isLoad && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>
         )}
+      </div>
+      <div className={styles.loaderMain}>
+        {props.isLoad && <span className={styles.loader}></span>}
       </div>
     </div>
   );

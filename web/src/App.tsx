@@ -87,7 +87,7 @@ function App() {
     );
     setIsMobile(isMobileDevice);
   }, []);
-  const REACT_APP_API_URL = "https://ostarbaiters.ru/api";
+  const REACT_APP_API_URL = "https://ostarbaiters.dev.rdcenter.ru/api";
   const context = { REACT_APP_API_URL };
 
   return (

@@ -34,7 +34,7 @@ import DataContext from "./context";
 
 function App() {
   const [autorization, setAutorization] = useState<string>(
-    localStorage.getItem("access_token") || ""
+    sessionStorage.getItem("access_token") || ""
   );
   const navigate = useNavigate();
 

@@ -37,6 +37,7 @@ function App() {
     sessionStorage.getItem("access_token") || ""
   );
   const navigate = useNavigate();
+  const [isLoad, setIsLoad] = useState<boolean>(false);
 
   useEffect(() => {
     if (location.pathname === "/AdminPage/AdminPageAuth" && autorization) {
@@ -52,16 +53,21 @@ function App() {
   const funUpdatePeople = (start: number, end: number) => {
     //! записываем всех людей в редукс
     if (length > 0) {
+      setIsLoad(true);
       apiOstarbaiters({
         param: "",
         start: start,
         end: end,
-      }).then((req) => {
-        if (req?.status === 200) {
-          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-          setLength(req.data?.ostarbaiters.length);
-        }
-      });
+      })
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            setLength(req.data?.ostarbaiters.length);
+          }
+        })
+        .finally(() => {
+          setIsLoad(false);
+        });
     }
   };
   const funUpdateCamps = () => {
@@ -115,7 +121,13 @@ function App() {
                 <Route path="/SearchPage/*" element={<SearchPage />}>
                   <Route
                     path="SearchModule"
-                    element={<SearchModule funUpdatePeople={funUpdatePeople} />}
+                    element={
+                      <SearchModule
+                        funUpdatePeople={funUpdatePeople}
+                        isLoad={isLoad}
+                        setIsLoad={setIsLoad}
+                      />
+                    }
                   />
                   <Route
                     path="HumanProfile"
@@ -149,7 +161,11 @@ function App() {
                     path="AdminSearchResult"
                     element={
                       autorization ? (
-                        <AdminSearchResult funUpdatePeople={funUpdatePeople} />
+                        <AdminSearchResult
+                          funUpdatePeople={funUpdatePeople}
+                          isLoad={isLoad}
+                          setIsLoad={setIsLoad}
+                        />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
                       )

@@ -6,10 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   apiGetPeople,
   limCount,
-  resetFilterPeople,
   resetLimit,
   resetPeople,
-  setFilterPeople,
   setIsLoading,
   setLimitPlus,
   setSearchParam,
@@ -29,7 +27,6 @@ const SearchModule = (props: any) => {
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
   );
-
   //! при вводе данных в посик
   const funOnChange = (text: string): void => {
     console.log("text", text);
@@ -93,6 +90,7 @@ const SearchModule = (props: any) => {
   }, []);
 
   const funUpdatePeop = (param: string, start: number, end: number) => {
+    props.setIsLoad(true);
     apiOstarbaiters({
       param: param,
       start: start,
@@ -109,6 +107,7 @@ const SearchModule = (props: any) => {
       })
       .finally(() => {
         setIsLoading(false);
+        props.setIsLoad(false);
       });
   };
 
@@ -173,12 +172,14 @@ const SearchModule = (props: any) => {
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {store.isLoading && <p>Загрузка данных...</p>}
-        {store.people?.length === 0 && (
+        {store.people?.length === 0 && !props.isLoad && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>
         )}
+      </div>
+      <div className={styles.loaderMain}>
+        {props.isLoad && <span className={styles.loader}></span>}
       </div>
     </div>
   );

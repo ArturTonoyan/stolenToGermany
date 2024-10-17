@@ -5,15 +5,20 @@ import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   apiGetPeople,
+  limCount,
   resetFilterPeople,
+  resetLimit,
   resetPeople,
   setFilterPeople,
+  setIsLoading,
+  setLimitPlus,
+  setSearchParam,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
-import { resetForm } from "../../store/form/form.slice";
+import { Inputs, resetForm, setFormData } from "../../store/form/form.slice";
 import { apiOstarbaiters } from "../../api/ApiRequest";
 
 const SearchModule = (props: any) => {
@@ -27,6 +32,7 @@ const SearchModule = (props: any) => {
 
   //! при вводе данных в посик
   const funOnChange = (text: string): void => {
+    console.log("text", text);
     setInpValue(text);
   };
 
@@ -37,64 +43,83 @@ const SearchModule = (props: any) => {
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    const ostarbaiters = store.people.filter((person: any) =>
-      Object.keys(person)
-        .filter((key) => key !== "id" && key !== "img")
-        .some(
-          (key) =>
-            person[key] !== null &&
-            person[key] !== undefined &&
-            person[key]
-              .toString()
-              .toLowerCase()
-              .includes(inpValue.trim().toLowerCase())
-        )
-    );
-    dispacth(setFilterPeople({ ostarbaiters }));
+    const mass = inpValue.replaceAll(",", " ").split(" ");
+    let sur = "";
+    let dat = "";
+
+    mass.map((el) => {
+      if (el) {
+        if (Number(el)) {
+          dat = el;
+        } else if (el !== " ") {
+          sur = el;
+        }
+      }
+    });
+
+    const data: Inputs = {
+      surname: sur || "",
+      name: "",
+      patronymic: "",
+      date: dat || "",
+      localityWork: "",
+      departure: "",
+      profession: "",
+      localityDeparture: "",
+      dateDeparture: "",
+    };
+    let param = "";
+    Object.keys(data).forEach((key) => {
+      param += `${key}=${data[key as keyof Inputs]}&`;
+    });
+    dispacth(setSearchParam({ searchParam: param }));
+    dispacth(resetLimit());
+    funUpdatePeop(param, 1, limCount);
   };
   //! сброс данных
   const funReset = () => {
     //! сброс данных формы
     dispacth(resetForm());
-    dispacth(resetFilterPeople());
+    dispacth(resetPeople());
+    props.funUpdatePeople(1, limCount);
     setInpValue("");
   };
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
-  // const cardHeight = 470;
-  const cardWidth = 318;
-  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
-  const [limit, setLimit] = useState([0, limCount]);
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     dispacth(resetPeople());
-    props.funUpdatePeople(limit[0], limit[1]);
-    setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+    props.funUpdatePeople(1, limCount);
+    dispacth(setLimitPlus());
   }, []);
 
-  useEffect(() => {
-    if (isLoading) {
-      apiOstarbaiters({
-        start: limit[0],
-        end: limit[1],
+  const funUpdatePeop = (param: string, start: number, end: number) => {
+    apiOstarbaiters({
+      param: param,
+      start: start,
+      end: end,
+    })
+      .then((req) => {
+        if (req?.status === 200) {
+          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+          // setIsLoading(false);
+          dispacth(setIsLoading({ isLoading: false }));
+          // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+          dispacth(setLimitPlus());
+        }
       })
-        .then((req) => {
-          if (req?.status === 200) {
-            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-            setIsLoading(false);
-            setLimit([limit[1] + 1, limit[1] + limCount + 1]);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (store.isLoading) {
+      funUpdatePeop(store.searchParam, store.limit[0], store.limit[1]);
     }
-  }, [isLoading]);
+  }, [store.isLoading]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-
     return function () {
       document.removeEventListener("scroll", handleScroll);
     };
@@ -103,11 +128,12 @@ const SearchModule = (props: any) => {
   const handleScroll = (e: any) => {
     if (
       e.target.documentElement.scrollHeight -
+        200 -
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {
       console.log("scroll");
-      setIsLoading(true);
+      dispacth(setIsLoading({ isLoading: true }));
     }
   };
 
@@ -118,11 +144,9 @@ const SearchModule = (props: any) => {
           {!isActionOpen && (
             <Input
               type="text"
-              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              placeholder={"Фамилия, год рождения"}
               value={inpValue}
-              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-                funOnChange(e.target.value)
-              }
+              funOnChange={funOnChange}
               funReset={funReset}
             />
           )}
@@ -136,16 +160,20 @@ const SearchModule = (props: any) => {
       </div>
       {isActionOpen && (
         <div className={styles.filter}>
-          <Form isActionOpen={isActionOpen} funReset={funReset} />
+          <Form
+            isActionOpen={isActionOpen}
+            funReset={funReset}
+            funUpdatePeop={funUpdatePeop}
+          />
         </div>
       )}
       <div className={styles.container}>
-        {store.people?.map((item: any, index) => (
+        {store.people?.map((item: any) => (
           <div key={item.id + "link"} onClick={() => clickCard(item?.id)}>
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {isLoading && <p>Загрузка данных...</p>}
+        {store.isLoading && <p>Загрузка данных...</p>}
         {store.people?.length === 0 && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено

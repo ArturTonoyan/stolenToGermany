@@ -1,7 +1,7 @@
 @import "./../../styles/mixins.scss";
 
 .SearchModule {
-  min-height: 40vh;
+  min-height: 70vh;
   .topMenu {
     display: flex;
     flex-direction: row;
@@ -24,7 +24,6 @@
       width: 100%;
       border: none;
       background-color: inherit;
-    
     }
   }
   .filter {
@@ -61,5 +60,3 @@
     color: #000;
   }
 }
-
-

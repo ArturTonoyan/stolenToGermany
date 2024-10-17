@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
 export interface Person {
   date: string;
@@ -14,12 +15,20 @@ export interface PeopleState {
   people: Person[];
   filterPeople: Person[];
   selectedPerson: string;
+  limit: [number, number];
+  isLoading: boolean;
+  searchParam: string;
 }
+const cardWidth = 318;
+export const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
 
 const initialState: PeopleState = {
   people: [],
   filterPeople: [],
   selectedPerson: "",
+  limit: [1, limCount],
+  isLoading: false,
+  searchParam: "",
 };
 
 const peopleSlice = createSlice({
@@ -27,12 +36,27 @@ const peopleSlice = createSlice({
   initialState,
   reducers: {
     apiGetPeople(state, action) {
-      state.people.push(...action.payload.ostarbaiters);
-      state.filterPeople = action.payload.ostarbaiters;
+      if (state.limit[0] === 0) {
+        state.people = action.payload.ostarbaiters;
+      } else {
+        state.people.push(...action.payload.ostarbaiters);
+        state.filterPeople = action.payload.ostarbaiters;
+      }
+    },
+
+    setSearchParam(state, action) {
+      state.searchParam = action.payload.searchParam;
+      state.people = [];
+      state.limit = [1, limCount];
+    },
+
+    apiGetPeopleSearch(state, action) {
+      state.people = action.payload.ostarbaiters;
     },
 
     resetPeople(state) {
       state.people = [];
+      state.limit = [1, limCount];
     },
 
     setFilterPeople(state, action) {
@@ -52,26 +76,30 @@ const peopleSlice = createSlice({
     //   state.limit = [start, end];
     // },
 
-    // setLimitPlus(state) {
-    //   if (state.filterPeople.length > limCount - 1) {
-    //     state.limit = [
-    //       state.limit[0] + limCount + 1,
-    //       state.limit[1] + limCount + 1,
-    //     ];
-    //   }
-    // },
+    setLimitPlus(state) {
+      state.limit = [state.limit[1] + 1, state.limit[1] + limCount + 1];
+    },
 
-    // resetLimit(state) {
-    //   state.limit = [0, limCount];
-    // },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload.isLoading;
+    },
+
+    resetLimit(state) {
+      state.limit = [1, limCount];
+    },
   },
 });
 
 export const {
   resetFilterPeople,
   apiGetPeople,
+  apiGetPeopleSearch,
   setFilterPeople,
   setSelectedPerson,
   resetPeople,
+  setLimitPlus,
+  setIsLoading,
+  resetLimit,
+  setSearchParam,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

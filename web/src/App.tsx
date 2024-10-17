@@ -53,6 +53,7 @@ function App() {
     //! записываем всех людей в редукс
     if (length > 0) {
       apiOstarbaiters({
+        param: "",
         start: start,
         end: end,
       }).then((req) => {

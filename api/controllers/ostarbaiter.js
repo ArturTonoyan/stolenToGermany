@@ -4,12 +4,13 @@ import uplCtrl from "../controllers/uploads.js";
 import Ostarbeiter, { City } from "../models/index.js";
 import {
   AppErrorInvalid,
-  AppErrorMissing,
   AppErrorNotExist,
 } from "../utils/error.js";
 import axios from "axios";
-import send from "../utils/camps.js";
 import { Op } from "sequelize";
+import turf from "turf";
+import {booleanPointInPolygon} from "@turf/boolean-point-in-polygon";
+import coordinates from "../config/coordinates.js";
   
 
 
@@ -30,9 +31,8 @@ export default {
       },
     });
 
-
     let pageSize = Number(filters?.end - filters?.start) + 1;
-    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start));
+    let offset = Number(filters?.start === '0' ? 0 : Number(filters?.start) - 1);
 
     if(!pageSize) pageSize=20
     if(!offset) offset=0
@@ -114,6 +114,8 @@ export default {
     res
   ) {
     if (localityWork) {
+      let checkLocalityWork=false
+
       const response = await axios.get(
           `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
@@ -123,7 +125,10 @@ export default {
 
           const {lat, lon} = data; // Get the first result's coordinates
 
-          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+          const point = turf.point([lon, lat]); // Создаем объект точки
+
+          if (booleanPointInPolygon(point, coordinates[0]) || booleanPointInPolygon(point, coordinates[1]) || booleanPointInPolygon(point, coordinates[2])) {
+            checkLocalityWork=true
             const city = await City.findOne({
               where: {
                 lat: lat,
@@ -139,7 +144,10 @@ export default {
           }
         }
       }
+
+      if(!checkLocalityWork) throw new AppErrorInvalid('localityWork')
     }
+
         const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
         if (!ostarbaiter) throw new AppErrorNotExist("ostarbaiter");
 
@@ -180,6 +188,7 @@ export default {
     res
   ) {
     if (localityWork) {
+      let checkLocalityWork=false
       const response = await axios.get(
           `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
       );
@@ -189,7 +198,10 @@ export default {
 
           const {lat, lon} = data; // Get the first result's coordinates
 
-          if (lat > 35.0 && lat < 72.0 && lon > -25 && lon < 60) {
+          const point = turf.point([lon, lat]); // Создаем объект точки
+
+          if (booleanPointInPolygon(point, coordinates[0]) || booleanPointInPolygon(point, coordinates[1]) || booleanPointInPolygon(point, coordinates[2])) {
+            checkLocalityWork=true
             const city = await City.findOne({
               where: {
                 lat: lat,
@@ -205,6 +217,7 @@ export default {
           }
         }
       }
+      if(!checkLocalityWork) throw  new AppErrorInvalid('localityWork')
     }
 
     await Ostarbeiter.create({
@@ -251,34 +264,38 @@ export default {
 
       for (const city of localityWork) {
         let count = camps.filter(
-          (ostarbaiter) =>
-            ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()
+            (ostarbaiter) =>
+                ostarbaiter?.localityWork?.toUpperCase() === city.name.toUpperCase()
         ).length;
-        points.push({
-          locality: city.name,
-          point: { pos: `${city.lat} ${city.lon}` },
-          count: count,
-        });
 
+        if (count > 0){
+          points.push({
+            locality: city.name,
+            point: {pos: `${city.lat} ${city.lon}`},
+            count: count,
+          });
       }
+    }
       return res.json({ camps: points });
     }
 
     const { count, rows } = await Ostarbeiter.findAndCountAll({
       where: {
-        localityWork: { [Op.iLike]: `%${filters.localityWork}%` },
+        localityWork: filters.localityWork,
       },
     });
 
     if (count < 1) throw new AppErrorNotExist("ostarbaiters");
 
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/search?q=${filters?.localityWork}&format=json`
-    );
+    const city=await City.findOne({
+      where: {
+        name: filters.localityWork
+      }
+    })
 
-    if (response?.length < 0) throw new AppErrorInvalid("localityWork");
+    if (!city) throw new AppErrorInvalid("localityWork");
     res.json({
-      point: { pos: `${response.data[0].lat} ${response.data[0].lon}` },
+      point: { pos: `${city.lat} ${city.lon}` },
       count: count,
       ostarbaiters: rows?.map(mapOfStolen),
     });

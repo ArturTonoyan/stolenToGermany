@@ -7,10 +7,10 @@ const http = axios.create({
 });
 
 //! получаем людей
-export const apiOstarbaiters = async ({ start, end }) => {
+export const apiOstarbaiters = async ({ param, start, end }) => {
   try {
     const response = await http.get(
-      `${server}/ostarbaiters?start=${start}&end=${end}`
+      `${server}/ostarbaiters?${param}start=${start}&end=${end}`
     );
     // console.log(response);
     return response;

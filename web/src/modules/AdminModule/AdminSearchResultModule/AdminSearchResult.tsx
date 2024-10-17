@@ -5,19 +5,24 @@ import Card from "../../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   apiGetPeople,
+  limCount,
   Person,
   resetFilterPeople,
+  resetLimit,
   resetPeople,
+  setSearchParam,
 } from "../../../store/basic/people.slice";
 import { RootState } from "../../../store/store";
 import { Link } from "react-router-dom";
 import Form from "../../../components/Form/Form";
 import CardAdmin from "../../../components/CardAdmin/CardAdmin";
-import { resetForm } from "../../../store/form/form.slice";
+import { Inputs, resetForm } from "../../../store/form/form.slice";
 import { apiOstarbaiters } from "../../../api/ApiRequest";
 
 const AdminSearchResult = (props: any) => {
   const store = useSelector((state: RootState) => state.peopleSlice);
+  const [limit, setLimit] = useState([1, limCount]);
+  const [isLoading, setIsLoading] = useState(false);
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
   );
@@ -34,37 +39,76 @@ const AdminSearchResult = (props: any) => {
   const dispacth = useDispatch();
 
   //! при нажатии на кнопку найти
+  //! при нажатии на кнопку найти
+  function funUpdatePeop(param: string, start: number, end: number) {
+    apiOstarbaiters({
+      param: param,
+      start: start,
+      end: end,
+    })
+      .then((req) => {
+        if (req?.status === 200) {
+          dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+          setIsLoading(false);
+          setLimit([limit[1] + 1, limit[1] + limCount + 1]);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
   const serchPeople = () => {
-    const ostarbaiters = store.people.filter((person: any) =>
-      Object.keys(person)
-        .filter((key) => key !== "id" && key !== "img")
-        .some(
-          (key) =>
-            person[key] !== null &&
-            person[key] !== undefined &&
-            person[key]
-              .toString()
-              .toLowerCase()
-              .includes(inpValue.trim().toLowerCase())
-        )
-    );
-    setFilterHumen(ostarbaiters);
+    const mass = inpValue.replaceAll(",", " ").split(" ");
+    let sur = "";
+    let dat = "";
+
+    mass.map((el) => {
+      if (el) {
+        if (Number(el)) {
+          dat = el;
+        } else if (el !== " ") {
+          sur = el;
+        }
+      }
+    });
+
+    const data: Inputs = {
+      surname: sur || "",
+      name: "",
+      patronymic: "",
+      date: dat || "",
+      localityWork: "",
+      departure: "",
+      profession: "",
+      localityDeparture: "",
+      dateDeparture: "",
+    };
+    let param = "";
+    Object.keys(data).forEach((key) => {
+      param += `${key}=${data[key as keyof Inputs]}&`;
+    });
+    dispacth(setSearchParam({ searchParam: param }));
+    setLimit([1, limCount]);
+    funUpdatePeop(param, 1, limCount);
   };
 
+  //! сброс данных
   const funReset = () => {
     //! сброс данных формы
+    dispacth(setSearchParam({ searchParam: "" }));
     dispacth(resetForm());
-    dispacth(resetFilterPeople());
+    dispacth(resetPeople());
+    funUpdatePeop("", 1, limCount);
+    setLimit([1, limCount]);
     setInpValue("");
-    setFilterHumen(store.people);
   };
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
-  // const cardHeight = 470;
-  const cardWidth = 318;
-  const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
-  const [limit, setLimit] = useState([0, limCount]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    dispacth(setSearchParam({ searchParam: "" }));
+  }, [isActionOpen]);
 
   useEffect(() => {
     dispacth(resetPeople());
@@ -74,20 +118,7 @@ const AdminSearchResult = (props: any) => {
 
   useEffect(() => {
     if (isLoading) {
-      apiOstarbaiters({
-        start: limit[0],
-        end: limit[1],
-      })
-        .then((req) => {
-          if (req?.status === 200) {
-            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-            setIsLoading(false);
-            setLimit([limit[1] + 1, limit[1] + limCount + 1]);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      funUpdatePeop(store.searchParam, limit[0], limit[1]);
     }
   }, [isLoading]);
 
@@ -102,6 +133,7 @@ const AdminSearchResult = (props: any) => {
   const handleScroll = (e: any) => {
     if (
       e.target.documentElement.scrollHeight -
+        200 -
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {
@@ -128,9 +160,7 @@ const AdminSearchResult = (props: any) => {
               type="text"
               placeholder={"Фамилия, Имя, Отчество, год рождения"}
               value={inpValue}
-              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-                funOnChange(e.target.value)
-              }
+              funOnChange={funOnChange}
               funReset={funReset}
             />
           )}
@@ -144,7 +174,11 @@ const AdminSearchResult = (props: any) => {
       </div>
       {isActionOpen && (
         <div className={styles.filter}>
-          <Form isActionOpen={isActionOpen} funReset={funReset} />
+          <Form
+            isActionOpen={isActionOpen}
+            funReset={funReset}
+            funUpdatePeop={funUpdatePeop}
+          />
         </div>
       )}
       <div className={styles.container}>

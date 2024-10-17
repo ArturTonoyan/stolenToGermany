@@ -24,7 +24,7 @@ function AdminAuth(props: any) {
     };
     Auth(datas).then((response: any) => {
       if (response && response.status === 200) {
-        localStorage.setItem("access_token", response?.data?.token);
+        sessionStorage.setItem("access_token", response?.data?.token);
         props.setAutorization(response?.data?.token);
       } else {
         setErrorMessage(true);

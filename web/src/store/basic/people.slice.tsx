@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
 export interface Person {
   date: string;
@@ -16,16 +17,18 @@ export interface PeopleState {
   selectedPerson: string;
   limit: [number, number];
   isLoading: boolean;
+  searchParam: string;
 }
 const cardWidth = 318;
-const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
+export const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
 
 const initialState: PeopleState = {
   people: [],
   filterPeople: [],
   selectedPerson: "",
-  limit: [0, limCount],
+  limit: [1, limCount],
   isLoading: false,
+  searchParam: "",
 };
 
 const peopleSlice = createSlice({
@@ -41,9 +44,19 @@ const peopleSlice = createSlice({
       }
     },
 
+    setSearchParam(state, action) {
+      state.searchParam = action.payload.searchParam;
+      state.people = [];
+      state.limit = [1, limCount];
+    },
+
+    apiGetPeopleSearch(state, action) {
+      state.people = action.payload.ostarbaiters;
+    },
+
     resetPeople(state) {
       state.people = [];
-      state.limit = [0, limCount];
+      state.limit = [1, limCount];
     },
 
     setFilterPeople(state, action) {
@@ -72,7 +85,7 @@ const peopleSlice = createSlice({
     },
 
     resetLimit(state) {
-      state.limit = [0, limCount];
+      state.limit = [1, limCount];
     },
   },
 });
@@ -80,11 +93,13 @@ const peopleSlice = createSlice({
 export const {
   resetFilterPeople,
   apiGetPeople,
+  apiGetPeopleSearch,
   setFilterPeople,
   setSelectedPerson,
   resetPeople,
   setLimitPlus,
   setIsLoading,
   resetLimit,
+  setSearchParam,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

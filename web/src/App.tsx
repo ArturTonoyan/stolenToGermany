@@ -34,7 +34,7 @@ import DataContext from "./context";
 
 function App() {
   const [autorization, setAutorization] = useState<string>(
-    localStorage.getItem("access_token") || ""
+    sessionStorage.getItem("access_token") || ""
   );
   const navigate = useNavigate();
 
@@ -53,6 +53,7 @@ function App() {
     //! записываем всех людей в редукс
     if (length > 0) {
       apiOstarbaiters({
+        param: "",
         start: start,
         end: end,
       }).then((req) => {

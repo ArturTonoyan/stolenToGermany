@@ -4,8 +4,11 @@ import { apiGetOstarbaiterParam } from "../../api/ApiRequest";
 import { useDispatch, useSelector } from "react-redux";
 import {
   apiGetPeople,
+  apiGetPeopleSearch,
+  limCount,
   resetLimit,
   setFilterPeople,
+  setSearchParam,
 } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetAction, setFormData } from "../../store/form/form.slice";
@@ -26,7 +29,7 @@ type Inputs = {
 
 export default function Form(props: any) {
   const store = useSelector((state: RootState) => state.formSlice);
-  const peopleStore = useSelector((state: RootState) => state.peopleSlice);
+  // const peopleStore = useSelector((state: RootState) => state.peopleSlice);
 
   //! функция отправки запроса
   const dispacth = useDispatch();
@@ -44,17 +47,13 @@ export default function Form(props: any) {
       navigate("/SearchPage/SearchModule");
       dispacth(openAction());
     }
-    let param = "?";
+    let param = "";
     Object.keys(data).forEach((key) => {
       param += `${key}=${data[key as keyof Inputs]}&`;
     });
-    param = param.slice(0, -1); // удаляем последний символ "/"
-    param += `&start=${0}&end=${100}`;
-    apiGetOstarbaiterParam(param).then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-      }
-    });
+    dispacth(setSearchParam({ searchParam: param }));
+    dispacth(resetLimit());
+    props.funUpdatePeop(param, 1, limCount);
   };
 
   //! отслеживаем сброс данных

@@ -21,7 +21,7 @@ function Input(props: any) {
         placeholder={props.placeholder}
         type={props.type}
         className={styles.input}
-        onChange={(el) => props.funOnChange(el)}
+        onChange={(el) => props.funOnChange(el.target.value)}
       ></input>
       <img
         onClick={handleImgClick}

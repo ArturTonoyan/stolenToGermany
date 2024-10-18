@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchModule.module.scss";
 import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
@@ -16,8 +16,9 @@ import {
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
-import { Inputs, resetForm, setFormData } from "../../store/form/form.slice";
+import { Inputs, resetForm } from "../../store/form/form.slice";
 import { apiOstarbaiters } from "../../api/ApiRequest";
+import { openClodeAction } from "../../store/basic/action.slice";
 
 const SearchModule = (props: any) => {
   const navigate = useNavigate();
@@ -74,29 +75,30 @@ const SearchModule = (props: any) => {
     dispacth(resetLimit());
     funUpdatePeop(param, 1, limCount, 50000);
   };
-  //! сброс данных
-  const funReset = () => {
-    console.log("a", count);
-    setCount(50000);
-    //! сброс данных формы
-    dispacth(resetForm());
-    dispacth(resetPeople());
-    // props.funUpdatePeople(1, limCount);
+
+  //! сброс для узкого поиска
+  const funResetData = () => {
+    setInpValue("");
+    funUpdatePeop("", 1, limCount, 50000);
     dispacth(setSearchParam({ searchParam: "" }));
-    dispacth(setLimitPlus());
-    setInpValue("");
   };
 
-  const funReset2 = () => {
-    console.log("a", count);
-    setCount(50000);
-    //! сброс данных формы
-    dispacth(resetPeople());
-    props.funUpdatePeople(1, limCount);
-    dispacth(setLimitPlus());
-
-    setInpValue("");
+  //! сброс широкого поиска
+  const funResetDataBig = () => {
+    dispacth(resetForm());
+    dispacth(setSearchParam({ searchParam: "" }));
   };
+
+  //! при клике на открытие заркрытие расширенного поска
+  const funOpenBigSearch = () => {
+    dispacth(resetForm());
+    setInpValue("");
+    dispacth(openClodeAction());
+  };
+
+  useEffect(() => {
+    console.log("count", count);
+  }, [count]);
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
   useEffect(() => {
@@ -105,13 +107,13 @@ const SearchModule = (props: any) => {
     dispacth(setLimitPlus());
   }, []);
 
-  const funUpdatePeop = (
+  function funUpdatePeop(
     param: string,
     start: number,
     end: number,
     count: number
-  ) => {
-    console.log("count, start", count, start);
+  ) {
+    console.log("count = ", count, "start = ", start);
     if (start < count) {
       props.setIsLoad(true);
       apiOstarbaiters({
@@ -126,6 +128,7 @@ const SearchModule = (props: any) => {
             dispacth(setIsLoading({ isLoading: false }));
             // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
             dispacth(setLimitPlus());
+            console.log("req.data?.count", req.data?.count);
             setCount(req.data?.count);
           }
         })
@@ -137,7 +140,7 @@ const SearchModule = (props: any) => {
       setIsLoading(false);
       props.setIsLoad(false);
     }
-  };
+  }
 
   useEffect(() => {
     if (store.isLoading) {
@@ -174,13 +177,13 @@ const SearchModule = (props: any) => {
               placeholder={"Фамилия, год рождения"}
               value={inpValue}
               funOnChange={funOnChange}
-              funReset={funReset2}
+              funOpenBigSearch={funOpenBigSearch}
             />
           )}
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
         {!isActionOpen && (
-          <button className={styles.reset} onClick={funReset2}>
+          <button className={styles.reset} onClick={funResetData}>
             Сбросить
           </button>
         )}
@@ -189,10 +192,10 @@ const SearchModule = (props: any) => {
         <div className={styles.filter}>
           <Form
             isActionOpen={isActionOpen}
-            funReset={funReset}
+            funReset={funResetDataBig}
             funUpdatePeop={funUpdatePeop}
             setCount={setCount}
-            funReset2={funReset2}
+            funOpenBigSearch={funOpenBigSearch}
           />
         </div>
       )}

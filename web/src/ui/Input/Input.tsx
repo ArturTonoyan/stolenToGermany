@@ -9,10 +9,10 @@ function Input(props: any) {
     (state: RootState) => state.actionSlice.action
   );
 
-  const handleImgClick = () => {
-    props.funReset();
-    dispatch(openClodeAction()); // Dispatch the openAction to update the state to true when the image is clicked
-  };
+  // const handleImgClick = () => {
+  //   // props.funReset();
+  //   dispatch(openClodeAction());
+  // };
 
   return (
     <div className={styles.Input}>
@@ -24,7 +24,7 @@ function Input(props: any) {
         onChange={(el) => props.funOnChange(el.target.value)}
       ></input>
       <img
-        onClick={handleImgClick}
+        onClick={props.funOpenBigSearch}
         src={!isActionOpen ? "./../../img/param.svg" : "../../img/Close.svg"}
         alt="filter"
       />

@@ -1,19 +1,15 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./Form.module.scss";
-import { apiGetOstarbaiterParam } from "../../api/ApiRequest";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  apiGetPeople,
-  apiGetPeopleSearch,
   limCount,
   resetLimit,
-  setFilterPeople,
   setSearchParam,
 } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetAction, setFormData } from "../../store/form/form.slice";
 import { RootState } from "../../store/store";
-import { openAction, openClodeAction } from "../../store/basic/action.slice";
+import { openAction } from "../../store/basic/action.slice";
 import { useEffect } from "react";
 type Inputs = {
   surname: string;
@@ -73,25 +69,12 @@ export default function Form(props: any) {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => appealApi(data);
 
-  const dispatch = useDispatch();
-
-  const handleImgClick = () => {
-    props.funReset2();
-    dispatch(openClodeAction());
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* {errors.lastName && errors.lastName.type === "maxLength" && (
-        <span>Фамилия должна содержать не более 50 символов</span>
-      )}
-      {errors.lastName && errors.lastName.type === "required" && (
-      <span>Поле обязательно к заполнению</span>
-      )} */}
       <div className={styles.blockInput}>
         {!props.isFunction && (
           <img
-            onClick={handleImgClick}
+            onClick={props.funOpenBigSearch}
             src={
               !props.isActionOpen
                 ? "./../../img/param.svg"

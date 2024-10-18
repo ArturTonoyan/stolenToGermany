@@ -8,6 +8,7 @@ import {
   limCount,
   resetLimit,
   resetPeople,
+  setCount,
   setIsLoading,
   setLimitPlus,
   setSearchParam,
@@ -23,7 +24,7 @@ import { openClodeAction } from "../../store/basic/action.slice";
 const SearchModule = (props: any) => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
-  const [count, setCount] = useState(50000);
+  // const [count, setCount] = useState(50000);
   const store = useSelector((state: RootState) => state.peopleSlice);
   const [inpValue, setInpValue] = useState<string>("");
   const isActionOpen = useSelector(
@@ -39,9 +40,13 @@ const SearchModule = (props: any) => {
     navigate("/SearchPage/HumanProfile");
   };
 
+  useEffect(() => {
+    console.log("store.isLoading", store.isLoading);
+  }, [store.isLoading]);
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    setCount(50000);
+    // setCount(50000);
+    dispacth(setCount({ count: 50000 }));
     const mass = inpValue.replaceAll(",", " ").split(" ");
     let sur = "";
     let dat = "";
@@ -73,13 +78,13 @@ const SearchModule = (props: any) => {
     });
     dispacth(setSearchParam({ searchParam: param }));
     dispacth(resetLimit());
-    funUpdatePeop(param, 1, limCount, 50000);
+    props.funUpdatePeop(param, 1, limCount, 50000);
   };
 
   //! сброс для узкого поиска
   const funResetData = () => {
     setInpValue("");
-    funUpdatePeop("", 1, limCount, 50000);
+    props.funUpdatePeop("", 1, limCount, 50000);
     dispacth(setSearchParam({ searchParam: "" }));
   };
 
@@ -97,54 +102,28 @@ const SearchModule = (props: any) => {
   };
 
   useEffect(() => {
-    console.log("count", count);
-  }, [count]);
+    console.log("count", store.count);
+  }, [store.count]);
 
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
-  useEffect(() => {
-    dispacth(resetPeople());
-    props.funUpdatePeople(1, limCount);
-    dispacth(setLimitPlus());
-  }, []);
 
-  function funUpdatePeop(
-    param: string,
-    start: number,
-    end: number,
-    count: number
-  ) {
-    console.log("count = ", count, "start = ", start);
-    if (start < count) {
-      props.setIsLoad(true);
-      apiOstarbaiters({
-        param: param,
-        start: start,
-        end: end,
-      })
-        .then((req) => {
-          if (req?.status === 200) {
-            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-            // setIsLoading(false);
-            dispacth(setIsLoading({ isLoading: false }));
-            // setLimit([limit[1] + 1, limit[1] + limCount + 1]);
-            dispacth(setLimitPlus());
-            console.log("req.data?.count", req.data?.count);
-            setCount(req.data?.count);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-          props.setIsLoad(false);
-        });
-    } else {
-      setIsLoading(false);
-      props.setIsLoad(false);
+  useEffect(() => {
+    if (!store.searchParam) {
+      dispacth(resetPeople());
+      props.funUpdatePeop("", 1, limCount, 50000);
+      dispacth(setLimitPlus());
+      dispacth(setIsLoading({ isLoading: true }));
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (store.isLoading) {
-      funUpdatePeop(store.searchParam, store.limit[0], store.limit[1], count);
+      props.funUpdatePeop(
+        store.searchParam,
+        store.limit[0],
+        store.limit[1],
+        store.count
+      );
     }
   }, [store.isLoading]);
 
@@ -193,8 +172,7 @@ const SearchModule = (props: any) => {
           <Form
             isActionOpen={isActionOpen}
             funReset={funResetDataBig}
-            funUpdatePeop={funUpdatePeop}
-            setCount={setCount}
+            funUpdatePeop={props.funUpdatePeop}
             funOpenBigSearch={funOpenBigSearch}
           />
         </div>
@@ -205,14 +183,14 @@ const SearchModule = (props: any) => {
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {store.people?.length === 0 && !props.isLoad && (
+        {store.people?.length === 0 && !store.isLoading && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>
         )}
       </div>
       <div className={styles.loaderMain}>
-        {props.isLoad && <span className={styles.loader}></span>}
+        {store.isLoading && <span className={styles.loader}></span>}
       </div>
     </div>
   );

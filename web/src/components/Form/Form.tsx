@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   limCount,
   resetLimit,
+  setCount,
   setSearchParam,
 } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -50,7 +51,8 @@ export default function Form(props: any) {
     dispacth(setSearchParam({ searchParam: param }));
     dispacth(resetLimit());
     props.funUpdatePeop(param, 1, limCount, 50000);
-    props.setCount(50000);
+    // props.setCount(50000);
+    dispacth(setCount({ count: 50000 }));
   };
 
   //! отслеживаем сброс данных

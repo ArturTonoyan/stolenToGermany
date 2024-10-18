@@ -2,11 +2,11 @@ import FormModuleHomePage from "../../modules/HomePageFormModule/FormModuleHomeP
 import SliderModule from "../../modules/SliderModule/SliderModule";
 import styles from "./HomePage.module.scss";
 
-function HomePage() {
+function HomePage(props: any) {
   return (
     <div className={styles.HomePage}>
       <div className={styles.HomePage__firstBlock}>
-        <FormModuleHomePage />
+        <FormModuleHomePage funUpdatePeop={props.funUpdatePeop} />
         <SliderModule />
       </div>
       <img className={styles.sliderImg} src="./img/sliderImg.png" alt="bg" />

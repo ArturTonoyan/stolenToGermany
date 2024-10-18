@@ -24,7 +24,12 @@ import AdminSearchResult from "./modules/AdminModule/AdminSearchResultModule/Adm
 import EditHumanModule from "./modules/EditHumanModule/EditHumanModule";
 import AdminPageEditArchiveModule from "./modules/AdminModule/AdminPageEditArchiveModule/AdminPageEditArchiveModule";
 import { apiGetCamps, apiOstarbaiters } from "./api/ApiRequest";
-import { apiGetPeople } from "./store/basic/people.slice";
+import {
+  apiGetPeople,
+  setCount,
+  setIsLoading,
+  setLimitPlus,
+} from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
 import { useEffect, useState } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
@@ -70,6 +75,36 @@ function App() {
         });
     }
   };
+
+  function funUpdatePeop(
+    param: string,
+    start: number,
+    end: number,
+    count: number
+  ) {
+    if (start < count) {
+      apiOstarbaiters({
+        param: param,
+        start: start,
+        end: end,
+      })
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            dispacth(setIsLoading({ isLoading: false }));
+            dispacth(setLimitPlus());
+            console.log("req.data?.count", req.data?.count);
+            dispacth(setCount({ count: req.data?.count }));
+          }
+        })
+        .finally(() => {
+          dispacth(setIsLoading({ isLoading: false }));
+        });
+    } else {
+      dispacth(setIsLoading({ isLoading: false }));
+    }
+  }
+
   const funUpdateCamps = () => {
     //! записываем данные карты
     apiGetCamps().then((req) => {
@@ -117,15 +152,19 @@ function App() {
           <div className={styles.mainpage}>
             <DataContext.Provider value={context}>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/"
+                  element={<HomePage funUpdatePeop={funUpdatePeop} />}
+                />
                 <Route path="/SearchPage/*" element={<SearchPage />}>
                   <Route
                     path="SearchModule"
                     element={
                       <SearchModule
-                        funUpdatePeople={funUpdatePeople}
+                        // funUpdatePeople={funUpdatePeople}
                         isLoad={isLoad}
                         setIsLoad={setIsLoad}
+                        funUpdatePeop={funUpdatePeop}
                       />
                     }
                   />

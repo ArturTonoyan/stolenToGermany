@@ -18,6 +18,7 @@ export interface PeopleState {
   limit: [number, number];
   isLoading: boolean;
   searchParam: string;
+  count: number;
 }
 const cardWidth = 318;
 export const limCount = Math.floor((window.innerWidth - 98) / cardWidth) * 10;
@@ -29,6 +30,7 @@ const initialState: PeopleState = {
   limit: [1, limCount],
   isLoading: false,
   searchParam: "",
+  count: 50000,
 };
 
 const peopleSlice = createSlice({
@@ -38,6 +40,10 @@ const peopleSlice = createSlice({
     apiGetPeople(state, action) {
       state.people.push(...action.payload.ostarbaiters);
       state.filterPeople = action.payload.ostarbaiters;
+    },
+
+    setCount(state, action) {
+      state.count = action.payload.count;
     },
 
     setSearchParam(state, action) {
@@ -103,5 +109,6 @@ export const {
   setIsLoading,
   resetLimit,
   setSearchParam,
+  setCount,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

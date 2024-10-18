@@ -63,7 +63,11 @@ function Footer() {
           <div className={styles.footer_innerBottom}>
             <p>© Все права защищены</p>
             <div className={styles.footer__rnf}>
-              <img className={styles.rnf} src={rnf} alt="img" />
+              <img
+                className={styles.rnf}
+                src={rnf || "/img/rnf.svg"}
+                alt="rnf"
+              />
               <p>Ресурс создан при поддержке Российского научного фонда</p>
             </div>
           </div>

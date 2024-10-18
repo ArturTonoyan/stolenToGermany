@@ -4,7 +4,6 @@ import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  apiGetPeople,
   limCount,
   resetLimit,
   resetPeople,
@@ -18,13 +17,11 @@ import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
 import { Inputs, resetForm } from "../../store/form/form.slice";
-import { apiOstarbaiters } from "../../api/ApiRequest";
 import { openClodeAction } from "../../store/basic/action.slice";
 
 const SearchModule = (props: any) => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
-  // const [count, setCount] = useState(50000);
   const store = useSelector((state: RootState) => state.peopleSlice);
   const [inpValue, setInpValue] = useState<string>("");
   const isActionOpen = useSelector(
@@ -40,9 +37,6 @@ const SearchModule = (props: any) => {
     navigate("/SearchPage/HumanProfile");
   };
 
-  useEffect(() => {
-    console.log("store.isLoading", store.isLoading);
-  }, [store.isLoading]);
   //! при нажатии на кнопку найти
   const serchPeople = () => {
     // setCount(50000);
@@ -101,14 +95,12 @@ const SearchModule = (props: any) => {
     dispacth(openClodeAction());
   };
 
-  useEffect(() => {
-    console.log("count", store.count);
-  }, [store.count]);
-
   //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
 
   useEffect(() => {
     if (!store.searchParam) {
+      dispacth(resetForm());
+      setInpValue("");
       dispacth(resetPeople());
       props.funUpdatePeop("", 1, limCount, 50000);
       dispacth(setLimitPlus());

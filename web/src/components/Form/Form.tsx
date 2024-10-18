@@ -6,6 +6,7 @@ import {
   resetLimit,
   setCount,
   setSearchParam,
+  setSearchParamAdmin,
 } from "../../store/basic/people.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetAction, setFormData } from "../../store/form/form.slice";
@@ -48,7 +49,11 @@ export default function Form(props: any) {
     Object.keys(data).forEach((key) => {
       param += `${key}=${data[key as keyof Inputs]}&`;
     });
-    dispacth(setSearchParam({ searchParam: param }));
+    if (props.isAdmin) {
+      dispacth(setSearchParamAdmin({ searchParam: param }));
+    } else {
+      dispacth(setSearchParam({ searchParam: param }));
+    }
     dispacth(resetLimit());
     props.funUpdatePeop(param, 1, limCount, 50000);
     // props.setCount(50000);

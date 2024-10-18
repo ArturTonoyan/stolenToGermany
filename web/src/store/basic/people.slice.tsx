@@ -18,6 +18,7 @@ export interface PeopleState {
   limit: [number, number];
   isLoading: boolean;
   searchParam: string;
+  searchParamAdmin: string;
   count: number;
 }
 const cardWidth = 318;
@@ -30,6 +31,7 @@ const initialState: PeopleState = {
   limit: [1, limCount],
   isLoading: false,
   searchParam: "",
+  searchParamAdmin: "",
   count: 50000,
 };
 
@@ -48,6 +50,11 @@ const peopleSlice = createSlice({
 
     setSearchParam(state, action) {
       state.searchParam = action.payload.searchParam;
+      state.people = [];
+      state.limit = [1, limCount];
+    },
+    setSearchParamAdmin(state, action) {
+      state.searchParamAdmin = action.payload.searchParamAdmin;
       state.people = [];
       state.limit = [1, limCount];
     },
@@ -109,6 +116,7 @@ export const {
   setIsLoading,
   resetLimit,
   setSearchParam,
+  setSearchParamAdmin,
   setCount,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

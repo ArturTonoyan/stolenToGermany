@@ -201,9 +201,9 @@ function App() {
                     element={
                       autorization ? (
                         <AdminSearchResult
-                          funUpdatePeople={funUpdatePeople}
                           isLoad={isLoad}
                           setIsLoad={setIsLoad}
+                          funUpdatePeop={funUpdatePeop}
                         />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />

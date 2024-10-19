@@ -1,6 +1,11 @@
 import MapPointList from "../MapPointList/MapPointList";
 import styles from "./MapComponent.module.scss";
-import { GeolocationControl, Map, ZoomControl } from "react-yandex-map";
+import {
+  GeolocationControl,
+  Map,
+  // SearchControl,
+  ZoomControl,
+} from "react-yandex-map";
 
 function MapComponent() {
   return (
@@ -19,6 +24,13 @@ function MapComponent() {
         <GeolocationControl options={{ float: "left" }} />
         <ZoomControl options={{ float: "left" }} />
         <MapPointList />
+        {/* <SearchControl
+          options={{
+            float: "right",
+            size: "large",
+            noPlacemark: true,
+          }}
+        /> */}
       </Map>
     </div>
   );

@@ -38,6 +38,8 @@ import LegalInformation from "./pages/LegalInformation/LegalInformation";
 import DataContext from "./context";
 
 function App() {
+  sessionStorage.setItem("access_token", "efee");
+
   const [autorization, setAutorization] = useState<string>(
     sessionStorage.getItem("access_token") || ""
   );

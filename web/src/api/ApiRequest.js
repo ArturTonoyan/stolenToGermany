@@ -14,7 +14,6 @@ export const apiOstarbaiters = async ({ param, start, end }) => {
     const response = await http.get(
       `${server}/ostarbaiters?${param}start=${start}&end=${end}`
     );
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -25,7 +24,6 @@ export const apiOstarbaiters = async ({ param, start, end }) => {
 export const apiGetOstarbaiter = async (param) => {
   try {
     const response = await http.get(`${server}/ostarbaiters/${param}`);
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -36,7 +34,6 @@ export const apiGetOstarbaiter = async (param) => {
 export const apiGetOstarbaiterParam = async (param) => {
   try {
     const response = await http.get(`${server}/ostarbaiters/${param}`);
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -84,7 +81,6 @@ export const apiGetAdress = async (data) => {
 export const OstarbaitersCreate = async (data) => {
   try {
     const response = await http.post(`${server}/ostarbaiters`, data);
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -96,7 +92,6 @@ export const OstarbaitersCreate = async (data) => {
 export const apiGetCamps = async () => {
   try {
     const response = await http.get(`${server}/ostarbaiters/camps`);
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -107,7 +102,6 @@ export const apiGetCamps = async () => {
 export const apiGetPeopleCamps = async (param) => {
   try {
     const response = await http.get(`${server}/ostarbaiters/camps${param}`);
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -128,7 +122,6 @@ export const apiCheckAuthorization = async () => {
 export const OstarbaitersDelete = async (id) => {
   try {
     const response = await http.delete(`${server}/ostarbaiters/${id}`);
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -139,7 +132,6 @@ export const OstarbaitersDelete = async (id) => {
 export const OstarbaitersEdit = async (data, id) => {
   try {
     const response = await http.put(`${server}/ostarbaiters/${id}`, data);
-    console.log(response);
     return response;
   } catch (error) {
     // console.error("Error:", error);
@@ -151,7 +143,6 @@ export const OstarbaitersEdit = async (data, id) => {
 export const AddPhoto = async (data) => {
   try {
     const response = await http.post(`${server}/uploads`, data);
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -170,7 +161,6 @@ export const AddMorePhotoImg = async (files) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -180,7 +170,6 @@ export const AddMorePhotoImg = async (files) => {
 
 //! запрос на удаление нагрузки
 export const apiDeleteFotoAdmin = async (data) => {
-  console.log("data фотки", ...data);
   try {
     const response = await http.delete(`${server}/uploads${data}`);
     return response;
@@ -188,45 +177,3 @@ export const apiDeleteFotoAdmin = async (data) => {
     console.error("Error:", error);
   }
 };
-
-// просто слеш для 1 img to body
-// /image для архива files to body
-
-// export const CreateEducator = async (data) => {
-//   try {
-//     const response = await http.post(`${server}/educator/`, data);
-//     return response;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     return error;
-//     //throw error;
-//   }
-// };
-
-// //! запрос на добавление преподавателя к нагрузке
-// export const addEducatorWorkload = async (data) => {
-//   console.log("Добавление преподавателя ", data);
-//   try {
-//     const response = await http.patch(`${server}/workload/faculty`, data);
-//     console.log("response ", response);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     //throw error;
-//   }
-// };
-
-// //! запрос на изменени данных в админке
-// export const apiAdminUpdata = async (data) => {
-//   console.log("изменение данных админке ", data);
-//   try {
-//     const response = await http.put(`${server}/user/${data.id}/update`, {
-//       [data.key]: data.value,
-//     });
-//     console.log("response ", response);
-//     return response;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     //throw error;
-//   }
-// };

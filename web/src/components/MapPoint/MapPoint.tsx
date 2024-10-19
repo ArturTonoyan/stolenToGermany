@@ -3,7 +3,6 @@ import styles from "./MapPoint.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalOpen, setSelectedPoint } from "../../store/basic/camps.slice";
 import { RootState } from "../../store/store";
-import { useRef } from "react";
 
 function MapPoint(props: any) {
   const dispatch = useDispatch();
@@ -24,8 +23,6 @@ function MapPoint(props: any) {
       </div>`;
   };
 
-  const plRef = useRef<HTMLDivElement>(null);
-
   const svgData = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="16" fill="#F8F7FF"/>
     <circle cx="16" cy="16" r="12" fill="#5B6A99"/>
@@ -39,7 +36,6 @@ function MapPoint(props: any) {
   return (
     <div className={styles.MapPoint}>
       <Placemark
-        ref={plRef}
         onClick={funClickPoint}
         // onBalloonClose={handleBalloonClose}
         modules={["geoObject.addon.balloon"]}

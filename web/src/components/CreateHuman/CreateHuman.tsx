@@ -33,6 +33,7 @@ export default function CreateHuman(props: any) {
   const suggestionsRef = useRef<AddressSuggestions>(null);
   const localityDepartureRef = useRef<AddressSuggestions>(null);
   const addressAfterReturningRef = useRef<AddressSuggestions>(null);
+  const [errorText, setErrorText] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -107,6 +108,7 @@ export default function CreateHuman(props: any) {
   }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setErrorText("");
     const dete = FormatedData(data);
     let Error = false;
     for (const key of Object.keys(dete) as (keyof Inputs)[]) {
@@ -148,6 +150,12 @@ export default function CreateHuman(props: any) {
           if (error?.response?.status === 401) {
             props.setAutorization("");
             sessionStorage.removeItem("access_token");
+          } else {
+            console.log("error?.response", error?.response?.data?.errNum);
+            setDataNotSaved(true);
+            setErrorText(
+              "Введите корректное место трудоустройства в Третьем рейхе*"
+            );
           }
         });
     } else {
@@ -369,9 +377,9 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.localityWork || ""}
               {...register("localityWork", { required: false, maxLength: 100 })}
             />
-            {errorMessage.includes("localityWork") && (
+            {(errorMessage.includes("localityWork") || errorText) && (
               <p className={styles.errorMessage}>
-                Поле содержит недопустимые символы.
+                {errorText || "Поле содержит недопустимые символы."}
               </p>
             )}
             <input

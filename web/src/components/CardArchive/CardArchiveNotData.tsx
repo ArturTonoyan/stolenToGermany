@@ -97,15 +97,22 @@ function CardArchiveNotData(props: any) {
       formData.append("id", store.selectedPerson as any);
       formData.append("file", selectedFile as Blob);
 
-      AddPhoto(formData).then((resp) => {
-        if (resp?.status === 200) {
-          props.apiGetData();
-          setSelectedOptions([]);
-          setSelectedFile(null);
-          setFileName("");
-          props.funUpdatePeople();
-        }
-      });
+      AddPhoto(formData)
+        .then((resp) => {
+          if (resp?.status === 200) {
+            props.apiGetData();
+            setSelectedOptions([]);
+            setSelectedFile(null);
+            setFileName("");
+            props.funUpdatePeople();
+          }
+        })
+        .catch((error) => {
+          if (error?.response?.status === 401) {
+            sessionStorage.removeItem("access_token");
+            props.setAutorization("");
+          }
+        });
     }
   };
 

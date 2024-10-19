@@ -32,7 +32,11 @@ function CardAdmin(props: any) {
   const deleteHuman = (id: string): void => {
     setActivDeleteCard(false);
     OstarbaitersDelete(id).then((resp: any) => {
-      if (resp.status === 200) {
+      if (!resp || resp?.status === 400) {
+        props.setAutorization("");
+        sessionStorage.removeItem("access_token");
+      }
+      if (resp?.status === 200) {
         dispacth(deletePeople({ id }));
       }
     });

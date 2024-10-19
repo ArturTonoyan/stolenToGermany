@@ -93,7 +93,6 @@ function App() {
             dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
             dispacth(setIsLoading({ isLoading: false }));
             dispacth(setLimitPlus());
-            console.log("req.data?.count", req.data?.count);
             dispacth(setCount({ count: req.data?.count }));
           }
         })
@@ -190,7 +189,7 @@ function App() {
                     path="AdminPanelModule"
                     element={
                       autorization ? (
-                        <AdminPanelModule />
+                        <AdminPanelModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
                       )
@@ -204,6 +203,7 @@ function App() {
                           isLoad={isLoad}
                           setIsLoad={setIsLoad}
                           funUpdatePeop={funUpdatePeop}
+                          setAutorization={setAutorization}
                         />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
@@ -214,7 +214,7 @@ function App() {
                     path="EditHumanModule"
                     element={
                       autorization ? (
-                        <EditHumanModule />
+                        <EditHumanModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
                       )
@@ -229,9 +229,14 @@ function App() {
                   <Route
                     path="AdminPageEditArchiveModule"
                     element={
-                      <AdminPageEditArchiveModule
-                        funUpdatePeople={funUpdatePeople}
-                      />
+                      autorization ? (
+                        <AdminPageEditArchiveModule
+                          funUpdatePeople={funUpdatePeople}
+                          setAutorization={setAutorization}
+                        />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
                     }
                   />
                 </Route>

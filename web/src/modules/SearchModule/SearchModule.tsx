@@ -133,7 +133,6 @@ const SearchModule = (props: any) => {
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {
-      console.log("scroll");
       dispacth(setIsLoading({ isLoading: true }));
     }
   };

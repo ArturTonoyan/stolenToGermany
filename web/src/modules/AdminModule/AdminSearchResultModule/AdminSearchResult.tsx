@@ -126,7 +126,6 @@ const AdminSearchResult = (props: any) => {
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-    console.log("scroll");
     return function () {
       document.removeEventListener("scroll", handleScroll);
     };
@@ -186,7 +185,12 @@ const AdminSearchResult = (props: any) => {
       )}
       <div className={styles.container}>
         {store.people.map((item) => (
-          <CardAdmin key={item.id} item={item} serchPeople={serchPeople} />
+          <CardAdmin
+            key={item.id}
+            item={item}
+            serchPeople={serchPeople}
+            setAutorization={props.setAutorization}
+          />
         ))}
         {store.people?.length === 0 && !store.isLoading && (
           <div className={styles.notFound}>

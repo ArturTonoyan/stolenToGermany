@@ -132,7 +132,6 @@ export const OstarbaitersDelete = async (id) => {
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw error;
   }
 };
 
@@ -143,7 +142,7 @@ export const OstarbaitersEdit = async (data, id) => {
     console.log(response);
     return response;
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error;
   }
 };

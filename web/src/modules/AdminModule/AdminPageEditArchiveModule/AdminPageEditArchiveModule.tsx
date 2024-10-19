@@ -112,6 +112,7 @@ function AdminPageEditArchiveModule(props: any) {
             dataHuman={data}
             apiGetData={apiGetData}
             funUpdatePeople={props.funUpdatePeople}
+            setAutorization={props.setAutorization}
           />
         </div>
       </div>

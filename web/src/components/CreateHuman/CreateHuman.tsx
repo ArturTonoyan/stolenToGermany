@@ -112,7 +112,7 @@ export default function CreateHuman(props: any) {
     for (const key of Object.keys(dete) as (keyof Inputs)[]) {
       if (dete[key] !== "") {
         if (!isValid(dete[key], key)) {
-          console.log(`${key} содержит недопустимые символы.`);
+          // console.log(`${key} содержит недопустимые символы.`);
           Error = true;
           setErrorMessage((prev) => [...prev, key]);
         } else {
@@ -121,28 +121,35 @@ export default function CreateHuman(props: any) {
       }
     }
     if (!Error && !Object.values(dete).every((value) => value === "")) {
-      props.funcCreate(dete).then((res: any) => {
-        if (res?.status === 200 && res.type === "edit") {
-          reset(props.dete);
-          SetDataResp();
-        }
-        if (res?.status === 200) {
-          reset();
-          if (suggestionsRef.current) {
-            suggestionsRef.current.setInputValue("");
+      props
+        .funcCreate(dete)
+        .then((res: any) => {
+          if (res?.status === 200 && res.type === "edit") {
+            reset(props.dete);
+            SetDataResp();
           }
-          if (localityDepartureRef.current) {
-            localityDepartureRef.current.setInputValue("");
+          if (res?.status === 200) {
+            reset();
+            if (suggestionsRef.current) {
+              suggestionsRef.current.setInputValue("");
+            }
+            if (localityDepartureRef.current) {
+              localityDepartureRef.current.setInputValue("");
+            }
+            if (addressAfterReturningRef.current) {
+              addressAfterReturningRef.current.setInputValue("");
+            }
+            setDataSaved(true);
+          } else {
+            setDataNotSaved(true);
           }
-          if (addressAfterReturningRef.current) {
-            addressAfterReturningRef.current.setInputValue("");
+        })
+        .catch((error: any) => {
+          if (error?.response?.status === 401) {
+            props.setAutorization("");
+            sessionStorage.removeItem("access_token");
           }
-
-          setDataSaved(true);
-        } else {
-          setDataNotSaved(true);
-        }
-      });
+        });
     } else {
       setDataNotSaved(true);
     }
@@ -192,7 +199,7 @@ export default function CreateHuman(props: any) {
   const funSetAddressInput = (e: any, key: any) => {
     setValue(key, e.target.value);
     if (!isValid(e.target.value, key) && e.target.value !== "") {
-      console.log(`${key} содержит недопустимые символы.`);
+      // console.log(`${key} содержит недопустимые символы.`);
       setErrorMessage((prev) => [...prev, key]);
     } else {
       setErrorMessage((prev) => prev.filter((item) => item !== key));

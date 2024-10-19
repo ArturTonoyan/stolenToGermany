@@ -1,10 +1,10 @@
 import AdminAuth from "../../../components/AdminAuth/AdminAuth";
 import Form from "../../../components/Form/Form";
 import styles from "./AdminPageAuth.module.scss";
-function AdminPageAuth() {
+function AdminPageAuth(props: any) {
   return (
     <div className={styles.AdminPageAuth}>
-       <AdminAuth/>
+      <AdminAuth setAutorization={props.setAutorization} />
     </div>
   );
 }

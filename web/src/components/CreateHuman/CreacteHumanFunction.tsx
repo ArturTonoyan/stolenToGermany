@@ -11,10 +11,6 @@ const searchAddress = async (query: string) => {
       const features = response.data.response.GeoObjectCollection.featureMember;
       const addressList: string[] = [];
       for (const feature of features) {
-        console.log(
-          "feature",
-          feature.GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails
-        );
         const addressComponent = [
           feature.GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails
             ?.Country?.AddressLine,

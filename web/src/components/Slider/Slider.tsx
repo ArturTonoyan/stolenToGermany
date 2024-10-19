@@ -23,7 +23,6 @@ const Slider = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused) {
-        console.log("indexISPause", index);
         setIndex((prevIndex) => (prevIndex + 1) % images.length);
       }
     }, 3000); // Rotate every 2 seconds

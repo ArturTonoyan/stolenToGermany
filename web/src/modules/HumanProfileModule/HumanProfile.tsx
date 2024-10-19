@@ -44,14 +44,12 @@ function HumanProfile(props: any) {
     }
     if (store.selectedPerson) {
       apiGetOstarbaiter(store.selectedPerson).then((req) => {
-        console.log("остарбайтер", req?.data?.ostarbaiter);
         if (req?.status === 200) {
           setHumanData(req?.data.ostarbaiter);
           setShowPath(true);
         }
       });
     }
-    console.log("humanData", humanData);
   }, [store.selectedPerson]);
 
   //! функция определения класса у p
@@ -79,7 +77,6 @@ function HumanProfile(props: any) {
     styles.HumanProfile__card__info__name
   );
   const funMouseEnter = () => {
-    console.log("funMouseEnter");
     if (
       humanData?.surname?.length > 15 ||
       humanData?.name?.length > 15 ||
@@ -91,7 +88,6 @@ function HumanProfile(props: any) {
   };
 
   const funMouseOut = () => {
-    console.log("funMouseOut");
     setClassName(styles.HumanProfile__card__info__name);
   };
 

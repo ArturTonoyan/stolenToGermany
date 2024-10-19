@@ -24,7 +24,6 @@ function HumanSliderFoto(props: any) {
       setSelectedImg(selectedImg + 1);
     }
   };
-  console.log("props.imgOpen", props.imgOpen);
   return (
     <div className={styles.HumanSliderFoto}>
       <div className={styles.top}>

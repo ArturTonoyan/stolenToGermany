@@ -21,7 +21,6 @@ function MapMenu(props: any) {
       const param = `?localityWork=${city}`;
       apiGetPeopleCamps(param).then((req) => {
         if (req?.status === 200) {
-          console.log("req люди", req.data);
           setSetostarbairet(req.data?.ostarbaiters);
           dispatch(
             setMapPeopleCount({
@@ -34,7 +33,6 @@ function MapMenu(props: any) {
   }, [store.selectedPoint.id]);
 
   const clickCard = (id: string) => {
-    console.log(id);
     dispatch(setSelectedPerson({ id }));
     navigate("/SearchPage/HumanProfile");
   };

@@ -23,19 +23,13 @@ function PathToPoint(props: any) {
           props.localityWork
         )}&format=json&limit=1`
       );
-      console.log(
-        "resp",
-        props.localityDeparture,
-        resp1.data[0].lat,
-        resp1.data[0].lon
-      );
+
       const response = await axios.get(
         `https://router.project-osrm.org/route/v1/driving/${resp1.data[0].lon},${resp1.data[0].lat};${resp2.data[0].lon},${resp2.data[0].lat}?overview=false&alternatives=false&steps=true`
         // `https://router.project-osrm.org/route/v1/driving/${resp2.data[0].lon},${resp2.data[0].lat};${resp1.data[0].lon},${resp1.data[0].lat}?overview=false&alternatives=false&steps=true`
       );
       setRoute(response.data);
     } catch (error) {
-      console.error("Error fetching route:", error);
       setPoints(alternative);
     }
   };
@@ -69,20 +63,9 @@ function PathToPoint(props: any) {
           Math.round((latNumber - minLat) * scaleY),
         ];
       });
-      console.log("points", points);
       setPoints(points);
     }
   }, [route]);
-
-  // const getLeft = () => {
-  //   console.log("window.innerWidth", width);
-  //   console.log("points[0][0]", points[0][0]);
-  //   if (points[0][0] + 100 > width) {
-  //     return points[0][0] - 100;
-  //   } else {
-  //     return points[0][0];
-  //   }
-  // };
 
   const pointGetStyle = () => {
     if (points.length > 0) {
@@ -93,26 +76,7 @@ function PathToPoint(props: any) {
     } else return { top: "0" };
   };
   const refPoint2 = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   const element = refPoint2?.current;
-  //   console.log("element", refPoint2);
-  //   if (element) {
-  //     const { left, right, width } = element.getBoundingClientRect();
-  //     const viewportWidth = window.innerWidth;
-  //     console.log("right", left, right, width, viewportWidth, right + left);
 
-  //     if (right + left > viewportWidth) {
-  //       console.log("да");
-  //       element.style.maxWidth = "150px";
-  //     } else {
-  //       element.style.maxWidth = "auto";
-  //     }
-  //   }
-  // }, [refPoint2, window.innerWidth]);
-  console.log(
-    "points",
-    points.map(([x, y]: [number, number]) => `${x},${y}`).join(" ")
-  );
   return (
     <div
       className={styles.PathToPoint}

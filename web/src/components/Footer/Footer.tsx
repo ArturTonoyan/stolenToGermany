@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Footer.module.scss";
 import { Link, useLocation } from "react-router-dom";
+import rnf from "./../../imgs/rnf.svg";
 
 function Footer() {
   const { pathname } = useLocation();
@@ -62,7 +63,11 @@ function Footer() {
           <div className={styles.footer_innerBottom}>
             <p>© Все права защищены</p>
             <div className={styles.footer__rnf}>
-              <img className={styles.rnf} src="./img/rnf.svg" alt="img" />
+              <img
+                className={styles.rnf}
+                src={rnf || "/img/rnf.svg"}
+                alt="rnf"
+              />
               <p>Ресурс создан при поддержке Российского научного фонда</p>
             </div>
           </div>

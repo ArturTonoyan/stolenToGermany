@@ -1,21 +1,25 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchModule.module.scss";
 import Input from "../../ui/Input/Input";
 import Card from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resetFilterPeople,
-  setFilterPeople,
+  limCount,
+  resetLimit,
+  resetPeople,
+  setCount,
+  setIsLoading,
+  setLimitPlus,
+  setSearchParam,
   setSelectedPerson,
 } from "../../store/basic/people.slice";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form/Form";
-import { resetForm } from "../../store/form/form.slice";
+import { Inputs, resetForm } from "../../store/form/form.slice";
+import { openClodeAction } from "../../store/basic/action.slice";
 
-interface SearchModuleProps {}
-
-const SearchModule: React.FC<SearchModuleProps> = () => {
+const SearchModule = (props: any) => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
   const store = useSelector((state: RootState) => state.peopleSlice);
@@ -23,42 +27,114 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
   const isActionOpen = useSelector(
     (state: RootState) => state.actionSlice.action
   );
-
   //! при вводе данных в посик
   const funOnChange = (text: string): void => {
     setInpValue(text);
   };
 
   const clickCard = (id: string) => {
-    console.log(id);
     dispacth(setSelectedPerson({ id }));
     navigate("/SearchPage/HumanProfile");
   };
 
   //! при нажатии на кнопку найти
   const serchPeople = () => {
-    console.log("store.people", store.people);
-    const ostarbaiters = store.people.filter((person: any) =>
-      Object.keys(person)
-        .filter((key) => key !== "id" && key !== "img")
-        .some(
-          (key) =>
-            person[key] !== null &&
-            person[key] !== undefined &&
-            person[key]
-              .toString()
-              .toLowerCase()
-              .includes(inpValue.trim().toLowerCase())
-        )
-    );
-    dispacth(setFilterPeople({ ostarbaiters }));
+    // setCount(50000);
+    dispacth(setCount({ count: 50000 }));
+    const mass = inpValue.replaceAll(",", " ").split(" ");
+    let sur = "";
+    let dat = "";
+
+    mass.map((el) => {
+      if (el) {
+        if (Number(el)) {
+          dat = el;
+        } else if (el !== " ") {
+          sur = el;
+        }
+      }
+    });
+
+    const data: Inputs = {
+      surname: sur || "",
+      name: "",
+      patronymic: "",
+      date: dat || "",
+      localityWork: "",
+      departure: "",
+      profession: "",
+      localityDeparture: "",
+      dateDeparture: "",
+    };
+    let param = "";
+    Object.keys(data).forEach((key) => {
+      param += `${key}=${data[key as keyof Inputs]}&`;
+    });
+    dispacth(setSearchParam({ searchParam: param }));
+    dispacth(resetLimit());
+    props.funUpdatePeop(param, 1, limCount, 50000);
   };
-  //! сброс данных
-  const funReset = () => {
-    //! сброс данных формы
-    dispacth(resetForm());
-    dispacth(resetFilterPeople());
+
+  //! сброс для узкого поиска
+  const funResetData = () => {
     setInpValue("");
+    props.funUpdatePeop("", 1, limCount, 50000);
+    dispacth(setSearchParam({ searchParam: "" }));
+  };
+
+  //! сброс широкого поиска
+  const funResetDataBig = () => {
+    dispacth(resetForm());
+    dispacth(setSearchParam({ searchParam: "" }));
+  };
+
+  //! при клике на открытие заркрытие расширенного поска
+  const funOpenBigSearch = () => {
+    dispacth(resetForm());
+    setInpValue("");
+    dispacth(openClodeAction());
+  };
+
+  //! ДИНАМИЧЕСКАЯ ПОДГРУЗКА ДАННЫХ
+
+  useEffect(() => {
+    if (!store.searchParam) {
+      dispacth(resetForm());
+      setInpValue("");
+      dispacth(resetPeople());
+      props.funUpdatePeop("", 1, limCount, 50000);
+      dispacth(setLimitPlus());
+      dispacth(setIsLoading({ isLoading: true }));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (store.isLoading) {
+      props.funUpdatePeop(
+        store.searchParam,
+        store.limit[0],
+        store.limit[1],
+        store.count
+      );
+    }
+  }, [store.isLoading]);
+
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    return function () {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = (e: any) => {
+    if (
+      e.target.documentElement.scrollHeight -
+        200 -
+        (e.target.documentElement.scrollTop + window.innerHeight) <
+      100
+    ) {
+      dispacth(setIsLoading({ isLoading: true }));
+    }
   };
 
   return (
@@ -68,38 +144,44 @@ const SearchModule: React.FC<SearchModuleProps> = () => {
           {!isActionOpen && (
             <Input
               type="text"
-              placeholder={"Фамилия, Имя, Отчество, год рождения"}
+              placeholder={"Фамилия, год рождения"}
               value={inpValue}
-              funOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-                funOnChange(e.target.value)
-              }
-              funReset={funReset}
+              funOnChange={funOnChange}
+              funOpenBigSearch={funOpenBigSearch}
             />
           )}
         </div>
         {!isActionOpen && <button onClick={serchPeople}>НАЙТИ</button>}
         {!isActionOpen && (
-          <button className={styles.reset} onClick={funReset}>
+          <button className={styles.reset} onClick={funResetData}>
             Сбросить
           </button>
         )}
       </div>
       {isActionOpen && (
         <div className={styles.filter}>
-          <Form isActionOpen={isActionOpen} funReset={funReset} />
+          <Form
+            isActionOpen={isActionOpen}
+            funReset={funResetDataBig}
+            funUpdatePeop={props.funUpdatePeop}
+            funOpenBigSearch={funOpenBigSearch}
+          />
         </div>
       )}
       <div className={styles.container}>
-        {store.filterPeople?.map((item) => (
+        {store.people?.map((item: any) => (
           <div key={item.id + "link"} onClick={() => clickCard(item?.id)}>
             <Card key={item.id} item={item} />
           </div>
         ))}
-        {store.filterPeople?.length === 0 && (
+        {store.people?.length === 0 && !store.isLoading && (
           <div className={styles.notFound}>
             Информации по введенным данным не найдено
           </div>
         )}
+      </div>
+      <div className={styles.loaderMain}>
+        {store.isLoading && <span className={styles.loader}></span>}
       </div>
     </div>
   );

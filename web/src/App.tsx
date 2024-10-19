@@ -1,9 +1,15 @@
 import styles from "./styles/App.module.scss";
-import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  BrowserRouter,
+  useNavigate,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import SearchPage from "./pages/SearchPage/SearchPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MapPage from "./pages/MapPage/MapPage";
 import SearchModule from "./modules/SearchModule/SearchModule";
 import HumanProfile from "./modules/HumanProfileModule/HumanProfile";
@@ -18,36 +24,91 @@ import AdminSearchResult from "./modules/AdminModule/AdminSearchResultModule/Adm
 import EditHumanModule from "./modules/EditHumanModule/EditHumanModule";
 import AdminPageEditArchiveModule from "./modules/AdminModule/AdminPageEditArchiveModule/AdminPageEditArchiveModule";
 import { apiGetCamps, apiOstarbaiters } from "./api/ApiRequest";
-import { apiGetPeople } from "./store/basic/people.slice";
+import {
+  apiGetPeople,
+  setCount,
+  setIsLoading,
+  setLimitPlus,
+} from "./store/basic/people.slice";
 import { setCamps } from "./store/basic/camps.slice";
 import { useEffect, useState } from "react";
 import HeaderAdmin from "./components/HeaderAdmin/HeaderAdmin";
-import PersonalArchiveAdmin from "./pages/PersonalArchiveAdmin/PersonalArchiveAdmin";
 import Logo from "./components/Logo/Logo";
 import LegalInformation from "./pages/LegalInformation/LegalInformation";
 import DataContext from "./context";
 
 function App() {
+  sessionStorage.setItem("access_token", "efee");
+
+  const [autorization, setAutorization] = useState<string>(
+    sessionStorage.getItem("access_token") || ""
+  );
+  const navigate = useNavigate();
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (location.pathname === "/AdminPage/AdminPageAuth" && autorization) {
+      navigate("/AdminPage/AdminPanelModule");
+    }
+  }, [autorization]);
+
+  const [length, setLength] = useState(1);
+
   const location = useLocation();
   const dispacth = useDispatch();
 
-  useEffect(() => {
-    console.log("current path", location.pathname);
-  }, [location.pathname]);
-
-  const funUpdatePeople = () => {
+  const funUpdatePeople = (start: number, end: number) => {
     //! записываем всех людей в редукс
-    apiOstarbaiters().then((req) => {
-      if (req?.status === 200) {
-        dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
-        console.log("req.data", req.data.ostarbaiters);
-      }
-    });
+    if (length > 0) {
+      setIsLoad(true);
+      apiOstarbaiters({
+        param: "",
+        start: start,
+        end: end,
+      })
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            setLength(req.data?.ostarbaiters.length);
+          }
+        })
+        .finally(() => {
+          setIsLoad(false);
+        });
+    }
   };
+
+  function funUpdatePeop(
+    param: string,
+    start: number,
+    end: number,
+    count: number
+  ) {
+    if (start < count) {
+      apiOstarbaiters({
+        param: param,
+        start: start,
+        end: end,
+      })
+        .then((req) => {
+          if (req?.status === 200) {
+            dispacth(apiGetPeople({ ostarbaiters: req.data?.ostarbaiters }));
+            dispacth(setIsLoading({ isLoading: false }));
+            dispacth(setLimitPlus());
+            dispacth(setCount({ count: req.data?.count }));
+          }
+        })
+        .finally(() => {
+          dispacth(setIsLoading({ isLoading: false }));
+        });
+    } else {
+      dispacth(setIsLoading({ isLoading: false }));
+    }
+  }
+
   const funUpdateCamps = () => {
     //! записываем данные карты
     apiGetCamps().then((req) => {
-      console.log("карта", req);
       if (req?.status === 200) {
         dispacth(setCamps({ camps: req.data?.camps }));
       }
@@ -62,11 +123,11 @@ function App() {
     );
     setIsMobile(isMobileDevice);
   }, []);
-  const REACT_APP_API_URL = "https://ostarbaiters.ru/api";
+  const REACT_APP_API_URL = "https://ostarbaiters.dev.rdcenter.ru/api";
   const context = { REACT_APP_API_URL };
 
   return (
-  <>
+    <>
       {isMobile ? (
         <div className={styles.mobil}>
           <div className={styles.mobilLogo}>
@@ -92,9 +153,22 @@ function App() {
           <div className={styles.mainpage}>
             <DataContext.Provider value={context}>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/"
+                  element={<HomePage funUpdatePeop={funUpdatePeop} />}
+                />
                 <Route path="/SearchPage/*" element={<SearchPage />}>
-                  <Route path="SearchModule" element={<SearchModule />} />
+                  <Route
+                    path="SearchModule"
+                    element={
+                      <SearchModule
+                        // funUpdatePeople={funUpdatePeople}
+                        isLoad={isLoad}
+                        setIsLoad={setIsLoad}
+                        funUpdatePeop={funUpdatePeop}
+                      />
+                    }
+                  />
                   <Route
                     path="HumanProfile"
                     element={<HumanProfile loc={location.pathname} />}
@@ -105,17 +179,49 @@ function App() {
                 <Route path="/ErrorPage" element={<ErrorPage />} />
                 <Route path="/NoSearchResults" element={<NoSearchResults />} />
 
-                <Route
-                  path="/AdminPage/*"
-                  element={<AdminPage loc={location.pathname} />}
-                >
-                  <Route path="AdminPageAuth" element={<AdminPageAuth />} />
-                  <Route path="AdminPanelModule" element={<AdminPanelModule />} />
+                <Route path="/AdminPage/*" element={<AdminPage />}>
+                  <Route
+                    path="AdminPageAuth"
+                    element={
+                      <AdminPageAuth setAutorization={setAutorization} />
+                    }
+                  />
+
+                  <Route
+                    path="AdminPanelModule"
+                    element={
+                      autorization ? (
+                        <AdminPanelModule setAutorization={setAutorization} />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
+                    }
+                  />
                   <Route
                     path="AdminSearchResult"
-                    element={<AdminSearchResult />}
+                    element={
+                      autorization ? (
+                        <AdminSearchResult
+                          isLoad={isLoad}
+                          setIsLoad={setIsLoad}
+                          funUpdatePeop={funUpdatePeop}
+                          setAutorization={setAutorization}
+                        />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
+                    }
                   />
-                  <Route path="EditHumanModule" element={<EditHumanModule />} />
+                  <Route
+                    path="EditHumanModule"
+                    element={
+                      autorization ? (
+                        <EditHumanModule setAutorization={setAutorization} />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
+                    }
+                  />
                   <Route path="PersonalArchive" element={<PersonalArchive />} />
                   <Route
                     path="HumanProfile"
@@ -125,9 +231,14 @@ function App() {
                   <Route
                     path="AdminPageEditArchiveModule"
                     element={
-                      <AdminPageEditArchiveModule
-                        funUpdatePeople={funUpdatePeople}
-                      />
+                      autorization ? (
+                        <AdminPageEditArchiveModule
+                          funUpdatePeople={funUpdatePeople}
+                          setAutorization={setAutorization}
+                        />
+                      ) : (
+                        <AdminPageAuth setAutorization={setAutorization} />
+                      )
                     }
                   />
                 </Route>

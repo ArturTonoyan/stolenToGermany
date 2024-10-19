@@ -33,6 +33,7 @@ export default function CreateHuman(props: any) {
   const suggestionsRef = useRef<AddressSuggestions>(null);
   const localityDepartureRef = useRef<AddressSuggestions>(null);
   const addressAfterReturningRef = useRef<AddressSuggestions>(null);
+  const [errorText, setErrorText] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -49,7 +50,6 @@ export default function CreateHuman(props: any) {
     apiGetOstarbaiter(store.selectedPerson).then((res) => {
       res && setData(FormatedData(res?.data?.ostarbaiter));
     });
-    
   };
 
   const FormatedData = (data: any) => {
@@ -107,14 +107,14 @@ export default function CreateHuman(props: any) {
     }
   }
 
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setErrorText("");
     const dete = FormatedData(data);
     let Error = false;
     for (const key of Object.keys(dete) as (keyof Inputs)[]) {
       if (dete[key] !== "") {
         if (!isValid(dete[key], key)) {
-          console.log(`${key} содержит недопустимые символы.`);
+          // console.log(`${key} содержит недопустимые символы.`);
           Error = true;
           setErrorMessage((prev) => [...prev, key]);
         } else {
@@ -122,29 +122,44 @@ export default function CreateHuman(props: any) {
         }
       }
     }
-    if (!Error) {
-      props.funcCreate(dete).then((res: any) => {
-        if (res?.status === 200 && res.type === "edit") {
-          reset(props.dete);
-          SetDataResp();
-        }
-        if (res?.status === 200) {
-          reset();
-          if (suggestionsRef.current) {
-            suggestionsRef.current.setInputValue("");
+    if (!Error && !Object.values(dete).every((value) => value === "")) {
+      props
+        .funcCreate(dete)
+        .then((res: any) => {
+          if (res?.status === 200 && res.type === "edit") {
+            reset(props.dete);
+            SetDataResp();
           }
-          if (localityDepartureRef.current) {
-            localityDepartureRef.current.setInputValue("");
+          if (res?.status === 200) {
+            reset();
+            if (suggestionsRef.current) {
+              suggestionsRef.current.setInputValue("");
+            }
+            if (localityDepartureRef.current) {
+              localityDepartureRef.current.setInputValue("");
+            }
+            if (addressAfterReturningRef.current) {
+              addressAfterReturningRef.current.setInputValue("");
+            }
+            setDataSaved(true);
+          } else {
+            setDataNotSaved(true);
           }
-          if (addressAfterReturningRef.current) {
-            addressAfterReturningRef.current.setInputValue("");
+        })
+        .catch((error: any) => {
+          if (error?.response?.status === 401) {
+            props.setAutorization("");
+            sessionStorage.removeItem("access_token");
+          } else {
+            console.log("error?.response", error?.response?.data?.errNum);
+            setDataNotSaved(true);
+            setErrorText(
+              "Введите корректное место трудоустройства в Третьем рейхе*"
+            );
           }
-
-          setDataSaved(true);
-        } else {
-          setDataNotSaved(true);
-        }
-      });
+        });
+    } else {
+      setDataNotSaved(true);
     }
   };
   const [DataSaved, setDataSaved] = useState<boolean>(false);
@@ -192,7 +207,7 @@ export default function CreateHuman(props: any) {
   const funSetAddressInput = (e: any, key: any) => {
     setValue(key, e.target.value);
     if (!isValid(e.target.value, key) && e.target.value !== "") {
-      console.log(`${key} содержит недопустимые символы.`);
+      // console.log(`${key} содержит недопустимые символы.`);
       setErrorMessage((prev) => [...prev, key]);
     } else {
       setErrorMessage((prev) => prev.filter((item) => item !== key));
@@ -209,7 +224,7 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.surname || ""}
               className={`${errors.surname ? styles.inputError : ""}`}
               maxLength={50}
-              {...register("surname", { required: true, maxLength: 50 })}
+              {...register("surname", { required: false, maxLength: 50 })}
             />
             {errorMessage.includes("surname") && (
               <p className={styles.errorMessage}>
@@ -254,7 +269,7 @@ export default function CreateHuman(props: any) {
                 }
               }}
               {...register("date", {
-                required: true,
+                required: false,
                 pattern: /^[0-9]{4}$/, // Ensures only 4 digits are allowed
               })}
             />
@@ -362,9 +377,9 @@ export default function CreateHuman(props: any) {
               defaultValue={props.data?.localityWork || ""}
               {...register("localityWork", { required: false, maxLength: 100 })}
             />
-            {errorMessage.includes("localityWork") && (
+            {(errorMessage.includes("localityWork") || errorText) && (
               <p className={styles.errorMessage}>
-                Поле содержит недопустимые символы.
+                {errorText || "Поле содержит недопустимые символы."}
               </p>
             )}
             <input

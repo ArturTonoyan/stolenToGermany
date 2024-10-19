@@ -16,7 +16,7 @@ function HeaderAdmin(props: any) {
 
   useEffect(() => {
     //! записываем всех людей в редукс
-    props.funUpdatePeople();
+    // props.funUpdatePeople();
 
     //! записываем данные карты
     props.funUpdateCamps();

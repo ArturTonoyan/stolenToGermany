@@ -129,7 +129,6 @@ const SearchModule = (props: any) => {
   const handleScroll = (e: any) => {
     if (
       e.target.documentElement.scrollHeight -
-        200 -
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {

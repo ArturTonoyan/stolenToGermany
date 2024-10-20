@@ -127,7 +127,7 @@ function App() {
   // const REACT_APP_API_URL = "http://localhost:3002/api";
 
   const context = { REACT_APP_API_URL };
-console.log("adminPageModule", autorization)
+
   return (
     <>
       {isMobile ? (
@@ -192,7 +192,7 @@ console.log("adminPageModule", autorization)
                   <Route
                     path="AdminPanelModule"
                     element={
-                      autorization!== "" ? (
+                      autorization !== "" ? (
                         <AdminPanelModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
@@ -217,7 +217,7 @@ console.log("adminPageModule", autorization)
                   <Route
                     path="EditHumanModule"
                     element={
-                      autorization!== "" ? (
+                      autorization !== "" ? (
                         <EditHumanModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
@@ -233,7 +233,7 @@ console.log("adminPageModule", autorization)
                   <Route
                     path="AdminPageEditArchiveModule"
                     element={
-                      autorization!== "" ? (
+                      autorization !== "" ? (
                         <AdminPageEditArchiveModule
                           funUpdatePeople={funUpdatePeople}
                           setAutorization={setAutorization}

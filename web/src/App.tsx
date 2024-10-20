@@ -38,7 +38,7 @@ import LegalInformation from "./pages/LegalInformation/LegalInformation";
 import DataContext from "./context";
 
 function App() {
-  sessionStorage.setItem("access_token", "efee");
+  // sessionStorage.setItem("access_token", "");
 
   const [autorization, setAutorization] = useState<string>(
     sessionStorage.getItem("access_token") || ""
@@ -124,8 +124,10 @@ function App() {
     setIsMobile(isMobileDevice);
   }, []);
   const REACT_APP_API_URL = "https://ostarbaiters.ru/api";
-  const context = { REACT_APP_API_URL };
+  // const REACT_APP_API_URL = "http://localhost:3002/api";
 
+  const context = { REACT_APP_API_URL };
+console.log("adminPageModule", autorization)
   return (
     <>
       {isMobile ? (
@@ -190,7 +192,7 @@ function App() {
                   <Route
                     path="AdminPanelModule"
                     element={
-                      autorization ? (
+                      autorization!== "" ? (
                         <AdminPanelModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
@@ -200,7 +202,7 @@ function App() {
                   <Route
                     path="AdminSearchResult"
                     element={
-                      autorization ? (
+                      autorization !== "" ? (
                         <AdminSearchResult
                           isLoad={isLoad}
                           setIsLoad={setIsLoad}
@@ -215,7 +217,7 @@ function App() {
                   <Route
                     path="EditHumanModule"
                     element={
-                      autorization ? (
+                      autorization!== "" ? (
                         <EditHumanModule setAutorization={setAutorization} />
                       ) : (
                         <AdminPageAuth setAutorization={setAutorization} />
@@ -231,7 +233,7 @@ function App() {
                   <Route
                     path="AdminPageEditArchiveModule"
                     element={
-                      autorization ? (
+                      autorization!== "" ? (
                         <AdminPageEditArchiveModule
                           funUpdatePeople={funUpdatePeople}
                           setAutorization={setAutorization}

@@ -95,7 +95,11 @@ export default function CreateHuman(props: any) {
     const regex2 = /^[А-Яа-яЁё0-9\s/_,.()-]+$/;
     if (key === "name" || key === "surname" || key === "patronymic") {
       return regex.test(value);
-    } else if (key !== "date" && key !== "dateDeparture") {
+    } else if (
+      key !== "date" &&
+      key !== "dateDeparture" &&
+      key !== "localityWork"
+    ) {
       return regex2.test(value);
     } else {
       const date = Number(value);

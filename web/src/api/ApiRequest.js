@@ -5,7 +5,7 @@ import axios from "axios";
 // const server = "http://localhost:3001";
 
 let url = new URL(window.location.href);
-const server = `${url.origin}/api/2`;
+const server = `${url.origin}/api`;
 
 const http = axios.create({
   withCredentials: true,

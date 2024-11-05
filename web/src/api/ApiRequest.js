@@ -1,8 +1,11 @@
 import axios from "axios";
 
 // const server = "https://ostarbaiters.ru/api";
-const server = "https://ostarbaiters.dev.rdcenter.ru/api";
+// const server = "https://ostarbaiters.dev.rdcenter.ru/api";
 // const server = "http://localhost:3001";
+
+let url = new URL(window.location.href);
+const server = `${url.origin}/api/2`;
 
 const http = axios.create({
   withCredentials: true,

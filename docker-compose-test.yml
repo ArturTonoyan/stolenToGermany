@@ -1,7 +1,7 @@
 
 services:
   app:
-    image: git.rdcenter.ru/rdcenter/stolentogermany/stolentogermany-backend:main
+    image: git.rdcenter.ru/rdcenter/stolentogermany/stolentogermany-backend:staging
     volumes:
       - /srv/stolen/uploads:/api/uploads
     environment:
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: git.rdcenter.ru/rdcenter/stolentogermany/stolentogermany-frontend:main
+    image: git.rdcenter.ru/rdcenter/stolentogermany/stolentogermany-frontend:staging
     ports:
       - "2234:80"
     restart: unless-stopped

@@ -6,11 +6,12 @@ services:
       dockerfile: Dockerfile
     volumes:
       - "./api:${DOCKER_PATH}/api"
-      -   "${DOCKER_PATH}/api/node_modules"
+      - "${DOCKER_PATH}/api/node_modules"
+      - ./uploads:/api/uploads
     env_file:
       - .env
     ports:
-      - '3001:3001'  # Изменено с expose на ports для доступа извне
+      - '3001:3001'
     depends_on:
       - db
     restart: unless-stopped
@@ -19,8 +20,6 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
-    env_file:
-      - .env
     ports:
       - "3000:3001"
     restart: unless-stopped
@@ -35,17 +34,5 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
     ports:
-      - '5432:5432'  # Изменено с expose на ports для доступа извне
-    restart: always
-
-  nginx:
-    depends_on:
-      - app
-      - web
-    image: nginx:latest
-    ports:
-      - '80:80'
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./static:/var/www/static
+      - '5432:5432'
     restart: always

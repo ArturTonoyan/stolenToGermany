@@ -69,3 +69,30 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    needs: [backend, frontend]
+    name: Update stack on Portaienr
+    steps:
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+          method: 'POST'
+          ignoreSsl: true
+          timeout: 60000
+      - name: Send telegram message on deploy
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ vars.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          format: markdown 
+          message: |
+            -------- Stolen To Germany ---------
+            🚀 ОБНОВА УЖЕ НА СЕРВЕРЕ 🚀
+            `${{ gitea.actor }}` залил коммит: `${{ gitea.event.head_commit.message }}`
+
+            [Открыть](${{ vars.DEPLOYED_URL }})

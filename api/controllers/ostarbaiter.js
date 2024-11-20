@@ -135,42 +135,55 @@ export default {
     res
   ) {
     if (localityWork) {
-      let checkLocalityWork = false;
 
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
-      );
+      const cityCheck = await City.findOne({
+        where: {
+          name: localityWork?.trim(),
+        },
+      });
 
-      if (response.data && response.data.length > 0) {
-        for (const data of response.data) {
-          const { lat, lon } = data; // Get the first result's coordinates
 
-          const point = turf.point([lon, lat]); // Создаем объект точки
+      if (!cityCheck) {
+        let checkLocalityWork = false;
 
-          if (
-            booleanPointInPolygon(point, coordinates[0]) ||
-            booleanPointInPolygon(point, coordinates[1]) ||
-            booleanPointInPolygon(point, coordinates[2])
-          ) {
-            checkLocalityWork = true;
-            const city = await City.findOne({
-              where: {
-                lat: lat,
-                lon: lon,
-              },
-            });
+        const response = await axios.get(
+            `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+        );
 
-            if (!city)
-              await City.create({
-                name: localityWork,
-                lat: lat,
-                lon: lon,
+        if (response.data && response.data.length > 0) {
+          for (const data of response.data) {
+            const {lat, lon} = data; // Get the first result's coordinates
+
+            const point = turf.point([lon, lat]); // Создаем объект точки
+
+            if (
+                booleanPointInPolygon(point, coordinates[0]) ||
+                booleanPointInPolygon(point, coordinates[1]) ||
+                booleanPointInPolygon(point, coordinates[2])
+            ) {
+              checkLocalityWork = true;
+              const city = await City.findOne({
+                where: {
+                  lat: lat,
+                  lon: lon,
+                },
               });
+
+              if (!city)
+                await City.create({
+                  name: localityWork,
+                  lat: lat,
+                  lon: lon,
+                });
+                else await city.update({
+                name: localityWork?.trim()
+              })
+            }
           }
         }
-      }
 
-      if (!checkLocalityWork) throw new AppErrorInvalid("localityWork");
+        if (!checkLocalityWork) throw new AppErrorInvalid("localityWork");
+      }
     }
 
     const ostarbaiter = await Ostarbeiter.findByPk(ostarbaiterId);
@@ -213,40 +226,52 @@ export default {
     res
   ) {
     if (localityWork) {
-      let checkLocalityWork = false;
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
-      );
 
-      if (response.data && response.data.length > 0) {
-        for (const data of response.data) {
-          const { lat, lon } = data; // Get the first result's coordinates
+      const cityCheck = await City.findOne({
+        where: {
+          name: localityWork?.trim(),
+        },
+      });
 
-          const point = turf.point([lon, lat]); // Создаем объект точки
+      if (!cityCheck) {
+        let checkLocalityWork = false;
+        const response = await axios.get(
+            `https://nominatim.openstreetmap.org/search?q=${localityWork}&format=json`
+        );
 
-          if (
-            booleanPointInPolygon(point, coordinates[0]) ||
-            booleanPointInPolygon(point, coordinates[1]) ||
-            booleanPointInPolygon(point, coordinates[2])
-          ) {
-            checkLocalityWork = true;
-            const city = await City.findOne({
-              where: {
-                lat: lat,
-                lon: lon,
-              },
-            });
+        if (response.data && response.data.length > 0) {
+          for (const data of response.data) {
+            const {lat, lon} = data; // Get the first result's coordinates
 
-            if (!city)
-              await City.create({
-                name: localityWork,
-                lat: lat,
-                lon: lon,
+            const point = turf.point([lon, lat]); // Создаем объект точки
+
+            if (
+                booleanPointInPolygon(point, coordinates[0]) ||
+                booleanPointInPolygon(point, coordinates[1]) ||
+                booleanPointInPolygon(point, coordinates[2])
+            ) {
+              checkLocalityWork = true;
+              const city = await City.findOne({
+                where: {
+                  lat: lat,
+                  lon: lon,
+                },
               });
+
+              if (!city)
+                await City.create({
+                  name: localityWork,
+                  lat: lat,
+                  lon: lon,
+                });
+              else await city.update({
+                name: localityWork?.trim()
+              })
+            }
           }
         }
+        if (!checkLocalityWork) throw new AppErrorInvalid("localityWork");
       }
-      if (!checkLocalityWork) throw new AppErrorInvalid("localityWork");
     }
 
     await Ostarbeiter.create({

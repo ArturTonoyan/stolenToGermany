@@ -126,8 +126,8 @@ function App() {
 
   let url = new URL(window.location.href);
   const REACT_APP_API_URL = `${url.origin}/api`;
-  console.log("REACT_APP_API_URL", REACT_APP_API_URL)
- 
+  console.log("REACT_APP_API_URL", REACT_APP_API_URL);
+
   const context = { REACT_APP_API_URL };
 
   return (

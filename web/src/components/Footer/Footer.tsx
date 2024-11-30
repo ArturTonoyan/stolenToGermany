@@ -56,8 +56,14 @@ function Footer() {
               </ul>
             </div>
             <div className={styles.footer__mesagers}>
-              <img src="./../../img/vk.png" />
-              <img src="./../../img/tg.png" />
+              <img
+                onClick={() => window.open("https://vk.com/club228475857")}
+                src="./../../img/vk.png"
+              />
+              <img
+                onClick={() => window.open("https://t.me/ostarbaiters")}
+                src="./../../img/tg.png"
+              />
             </div>
           </div>
           <div className={styles.footer_innerBottom}>

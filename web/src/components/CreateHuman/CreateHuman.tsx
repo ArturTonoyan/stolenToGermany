@@ -155,7 +155,6 @@ export default function CreateHuman(props: any) {
             props.setAutorization("");
             sessionStorage.removeItem("access_token");
           } else {
-            console.log("error?.response", error?.response?.data?.errNum);
             setDataNotSaved(true);
             setErrorText(
               "Введите корректное место трудоустройства в Третьем рейхе*"

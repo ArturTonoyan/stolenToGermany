@@ -99,17 +99,18 @@ export default function Form(props: any) {
             {...register("surname", { maxLength: 50 })}
           />
           <input
-            placeholder="Отчество"
-            defaultValue={store.formData.patronymic || ""}
-            maxLength={50}
-            {...register("patronymic", { maxLength: 20 })}
-          />
-          <input
             placeholder="Имя"
             maxLength={50}
             defaultValue={store.formData.name || ""}
             {...register("name", { maxLength: 50 })}
           />
+          <input
+            placeholder="Отчество"
+            defaultValue={store.formData.patronymic || ""}
+            maxLength={50}
+            {...register("patronymic", { maxLength: 20 })}
+          />
+
           <input
             placeholder="Год рождения"
             maxLength={4}

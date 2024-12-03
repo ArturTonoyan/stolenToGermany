@@ -301,7 +301,6 @@ export default {
     if (!filters.localityWork) {
       const cities = await City.findAll({});
 
-      let sumCount=0
       const camps = await Ostarbeiter.findAll({
         where: {
           localityWork: { [Op.ne]: null },
@@ -322,7 +321,6 @@ export default {
         ).length;
 
         if (count > 0) {
-          sumCount+=count
           points.push({
             locality: city.name,
             point: { pos: `${city.lat} ${city.lon}` },
@@ -330,8 +328,6 @@ export default {
           });
         }
       }
-
-      console.log(sumCount)
       return res.json({ camps: points });
     }
 

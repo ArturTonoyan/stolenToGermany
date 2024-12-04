@@ -8,7 +8,7 @@ function FormModuleHomePage(props: any) {
           <h1>
             Поиск информации об угнанных на принудительные работы в нацистскую
             Германию жителей Ростовской области в годы Великой Отечественной
-            войны 1941-1945 гг.:
+            войны
           </h1>
           <Form isFunction={true} funUpdatePeop={props.funUpdatePeop} />
         </div>
